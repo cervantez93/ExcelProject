@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class TeamNamesList {
 
     //Lista drużyn będzie prawidłowa przy założeniu, że w każdym innym pliku drużyny są zapisane w takim samym formacie (np polskie znaki)
-    public static List<String> getTeamNames(String path) {
+    public  List<String> getTeamNames(String path) {
         List<String> names = new ArrayList<>();
         try {
             // TODO: ta lista musi być pobierana w każdej kolejce, żeby móc przypisywać odpowiednim drużynom odpowiedni wartości (punkty, bramki) <-- zrobione za pomocą PATH
@@ -31,7 +31,9 @@ public class TeamNamesList {
             }
             return names;
         } catch (Exception e) {
+            System.out.println("Wyrzucono błąd w metodzie getTeamNames()");
             throw new RuntimeException(e);
         }
     }
-}
+    }
+

@@ -29,7 +29,6 @@ public class EverythingInOneClass {
         //TODO chyba nie będzie potrzebne, jeśli będzie to pobierane z MAPY.getValue
         TeamResultsObject teamResultsObject = new TeamResultsObject();
 
-
         //zmienna określająca ilość plików do przetworzenia znajdujących się w oddzielnym package'u
         File directory = new File("src/main/java/ExcelTyperProject/AllRoundsFiles");
         int fileAmount = directory.list().length;
@@ -66,7 +65,10 @@ public class EverythingInOneClass {
                 }
 
                 //TODO : aby uzupełniać dane o drużynach będzie trzeba iterować po tej liście z przyrostem stringlistIterator+=2 (pobierać dwie nazwy drużyn co iterację)
-                List<String> teamNamesFromThisRound = TeamNamesList.getTeamNames(path); // tutaj jest lista drużyn dla każdej kolejki w ODPOWIEDNIEJ kolejności
+                TeamNamesList teamNamesList = new TeamNamesList();
+                System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY === "+teamNamesList.getTeamNames(path).get(0));
+
+                List<String> teamNamesFromThisRound = teamNamesList.getTeamNames(path); // tutaj jest lista drużyn dla każdej kolejki w ODPOWIEDNIEJ kolejności
 
                 int tempCheckResult = checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
                 // wynik checkResult przekazany jest do metody bothTeamResultsObjectUpdate -> a tam dalej w zależności od typu wyniku następują update'y drużyn
@@ -75,24 +77,28 @@ public class EverythingInOneClass {
                 int firstIndex = 2 * stringlistIterator;
                 int secondIndex = firstIndex + 1;
 
-
                 // TODO: Ta mapa będzie zbierać wyniki jednej kolejki, a następnie będzie je zerować (patrz sposób inicjalizacji
                 //  Z niej można przenosić wyniki do mapy zawierającej wszystkie wyniki (per kolejka)
                 // TODO: tutaj trzeba przeształcić sposób inicjalizacji - bo inicjalizuje się chyba ciągle ten sam obiekt
-                Map<String, TeamResultsObject> initilizeTempTeamResultsMap = teamResultsObject.initilizeTeamResultsMap(path);
+                Map<String, TeamResultsObject> initilizeTempTeamResultsMap = teamResultsObject.initilizeTeamResultsMap(path, stringlistIterator);
 
                 //TODO: zamiast get trzeba dać put? Tak czy siak wygląda na przypiswanie wartości do tej samej drużyny
-                //TODO: poniżej do poprawy/kasacji
-                    PutResultsOnMap putResultsOnMap =new PutResultsOnMap();
-                    putResultsOnMap.bothTeamResultsObjectUpdate(path, teamResultsObject, teamNamesFromThisRound.get(stringlistIterator),
-                            teamNamesFromThisRound.get(secondIndex), tempCheckResult,
-                            initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(firstIndex)).setHomeScoredGoals(tempResults.get(0).charAt(0)),
-                            initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(firstIndex)).setHomeLostGoals(tempResults.get(0).charAt(2)),
-                            initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(secondIndex)).setAwayLostGoals(tempResults.get(0).charAt(2)),
-                            initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(secondIndex)).setAwayLostGoals(tempResults.get(0).charAt(0)));
+                PutResultsOnMap putResultsOnMap = new PutResultsOnMap();
 
-                    //bothTeamResultsObjectUpdate(String path, TeamResultsObject teamResultsObject, String teamHomeName, String teamAwayName, int checkResult,
-                    //                            int homeScoredGoals, int homeLostGoals, int awayScoredGoals, int awayLostGoals)
+
+//               initilizeTempTeamResultsMap.bothTeamResultsObjectUpdate <-- metodę bothTeamResultsObjectUpdate przenieść do klasy TeamResultsObject dzięki czemu
+//                  na instancji teamResultsObject można będzie właśnie tą metodę wywołać - i nie będzie to pusta mapa
+
+                putResultsOnMap.bothTeamResultsObjectUpdate(path, teamResultsObject, teamNamesFromThisRound.get(stringlistIterator),
+                        teamNamesFromThisRound.get(secondIndex), tempCheckResult,
+                        initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(firstIndex)).setHomeScoredGoals(+tempResults.get(0).charAt(0)),
+                        initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(firstIndex)).setHomeLostGoals(+tempResults.get(0).charAt(2)),
+                        initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(secondIndex)).setAwayScoredGoals(+tempResults.get(0).charAt(2)),
+                        initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(secondIndex)).setAwayLostGoals(+tempResults.get(0).charAt(0)),
+                        stringlistIterator);
+
+                //bothTeamResultsObjectUpdate(String path, TeamResultsObject teamResultsObject, String teamHomeName, String teamAwayName, int checkResult,
+                //                            int homeScoredGoals, int homeLostGoals, int awayScoredGoals, int awayLostGoals)
 
 //                putResultsOnMap.bothTeamResultsObjectUpdate(path, teamResultsObject, teamNamesFromThisRound.get(stringlistIterator),
 //                        teamNamesFromThisRound.get(secondIndex), tempCheckResult,
@@ -102,15 +108,13 @@ public class EverythingInOneClass {
 //                        tempResults.get(0).charAt(0)); //bramki strzelone na wyjeździe
 
 
-
-
                 //TODO: sout kontrolny z nazwami drużyn w danej iteracji
                 // System.out.println("Nazwa drużyn: " + teamNamesFromThisRound.get(firstIndex) + " - " + teamNamesFromThisRound.get(secondIndex));
 
 
                 // TODO: Wyrzucenie souta w ostatniej kolejce // można zrobić co kolejke żeby sprawdzić czy prawidłowo zapisuje wartości do każdej kolejki
                 if (roundNumber == fileAmount - 1) {
-                              System.out.println("XXX: " + initilizeTempTeamResultsMap.values());
+                    System.out.println("XXX: " + initilizeTempTeamResultsMap.values());
                 }
 
 

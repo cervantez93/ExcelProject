@@ -3,11 +3,11 @@ package ExcelTyperProject.A_TempPackageName;
 import java.util.*;
 
 public class TeamResultsObject {
-    private static String teamName;
+    private String teamName;
 
-    private static int points;
-    private static int homePoints;
-    private static int awayPoints;
+    private int points;
+    private int homePoints;
+    private int awayPoints;
 
     private int wonGames;
     private int awayWonGames;
@@ -96,34 +96,42 @@ public class TeamResultsObject {
 
     ;
 
-    public Map<String, TeamResultsObject> initilizeTeamResultsMap(String path) {
+    //TODO: tutaj raczej zamiast pętli trzeba chyba podawać w parametrze licznik pętli -> wtedy tutaj wywoływać pojedynczo,
+    // a w klasie Everything... wywoływać tą metodę w pętli???
+    public Map<String, TeamResultsObject> initilizeTeamResultsMap(String path, int i) {
         TeamNamesList teamNamesList = new TeamNamesList();
         Map<String, TeamResultsObject> teamResultsObjectHashMap = new HashMap<>();
 
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX === "+teamNamesList.getTeamNames(path).get(0));
 
-        String tempTeamName = "";
+        teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(i), new TeamResultsObject(teamNamesList.getTeamNames(path).get(i), 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0));
 
+
+//        String tempTeamName = "";
 //        for (int i = 0; i < teamNamesList.getTeamNames(path).size(); i++) {
 //            tempTeamName = teamNamesList.getTeamNames(path).get(i);
 //            //      System.out.println("AAAAAAAAAAAAAAAAAA = "+teamNamesList.getTeamNames(path).get(i));
 //            teamResultsObjectHashMap.put(tempTeamName, new TeamResultsObject(tempTeamName, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 //        }
-
-
-        for (String teamNames : teamNamesList.getTeamNames(path)) {
-            teamResultsObjectHashMap.put(teamNames, new TeamResultsObject(teamNames, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0));
-        }
+//        for (String teamNames : teamNamesList.getTeamNames(path)) {
+//            teamResultsObjectHashMap.put(teamNames, new TeamResultsObject(teamNames, 0, 0,
+//                    0, 0, 0, 0, 0, 0, 0, 0,
+//                    0, 0));
+//        }
 
 
         System.out.println("teamResultsObjectHashMap= " + teamResultsObjectHashMap.values());
         return teamResultsObjectHashMap;
     }
 
+    //TODO: wszelkiego rodzaju settery można chyba zmienić tak, żeby zwracały wartość obecną powiększoną o parametr, np:
+    //public int setHomePoints(int getHomePoints) {
+    //        return this.homePoints = getHomePoints()+getHomePoints;
+    //    }
 
     //Zastanowić się co lepsze - prosta metoda zliczania punktów, czy getter do int points i aktualizowanie zmiennej
-    public static int getAllPoints() {
+    public int getAllPoints() {
         return getHomePoints() + getAwayPoints();
     }
 
@@ -152,7 +160,7 @@ public class TeamResultsObject {
     }
 
     public int setAwayScoredGoals(int getAwayScoredGoals) {
-        return this.awayScoredGoals = getAwayScoredGoals;
+        return this.awayScoredGoals = getAwayScoredGoals() + getAwayScoredGoals;
     }
 
     public int setAwayLostGoals(int getAwayLostGoals) {
@@ -196,15 +204,15 @@ public class TeamResultsObject {
         return homeDrawGames;
     }
 
-    public static String getTeamName() {
+    public String getTeamName() {
         return teamName;
     }
 
-    public static int getPoints() {
+    public int getPoints() {
         return points;
     }
 
-    public static int getAwayPoints() {
+    public int getAwayPoints() {
         return awayPoints;
     }
 
@@ -236,7 +244,7 @@ public class TeamResultsObject {
         return awayLostGoals;
     }
 
-    public static int getHomePoints() {
+    public int getHomePoints() {
         return homePoints;
     }
 
