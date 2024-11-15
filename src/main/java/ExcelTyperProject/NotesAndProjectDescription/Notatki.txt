@@ -1,0 +1,18 @@
+
+Znaleźć sposób na ładowanie danych z excela, po kolumnach + per arkusz.
+
+Ewentualnie na nadpisanie danych - tak żeby stworzyć metodę do zapisywanie wyników typera z zakończonych kolejek.
+
+*Stan na 05.11.2024 - typer ekstraklasa - plik excel nie jest w pełni przygotowany, należy wypełnić jeszcze oficjalne
+wyniki, puste miejsca zastąpić XXX lub 999/9:9 (trzy znaki tak jak przy wyniku, np 2:1) / oznaczyć jakoś, aby później można było automatycznie dać 0pkt (za brak typu).
+
+Pliki CSV mogą zawierać błędy wynikające z kodowania polskich znaków, można to rozwiazać tak:
+1. Sprawdzić we wszystkich plikach CSV czy zamiana jest zawsze taka sama, np zamiast Raków = Rak?w
+2. Wczytać wszystkie dane, zapisywać nazwy drużyn (wyniki raczej też) do stringów, w seperatorze nie brać pytajnika, bo
+to znak, który zastępuje polskie litery.
+3. Na samym końcu, przy wyświetlaniu danych typu tabela ekstraklasy, najlepiej punktujące drużyny dom/wyjazd itd użyć
+metody String.replace i zamiast nieprawidłowych nazw (np Rak?w) wpisać prawidłowe (Raków).
+
+Zrobić pięć list (wynik oraz typerzy) z wynikami.
+
+Można też zrobić mapę z wynikami danej drużyni Map <Integer (ID = numer kolejki), Integer/String (wynik meczu)>

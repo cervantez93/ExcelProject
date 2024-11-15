@@ -1,0 +1,31 @@
+Z pliku excela (pobrać google sheet i zapisać jako xls) pobierać  dane po arkuszu.
+Zapisywać do list wyniki (może jako stringi), dopisać metody trim (usuwanie białych znaków na końcu),
+seperator (dwukropek, myślnik itd). Zrobić listy wyników dla danej osoby w kolejce, porównać z oficjalnymi wynikami,
+wymyśleć jak porównywać wyniki, żeby punktować odpowiedni za typ wyniku(1X2 - 1pkt) lub dokładny wynik (3pkt).
+
+Zliczyć wyniki i zapisać je do wyników per kolejka + łączny wynik każdego gracza.
+
+Zależnie od sposobu zapisu wyników:
+
+Map1 = MapWynikówWKolejceGracza <Mecz, Wynik>
+Map2 = MapWynikówGracza <NumerKolejki, MapWynikówWKolejceGracza>
+
+^Jeśli będzie sens tak zapisywać, to z Map1 zapisywać na bieżąco punkty itd danemu typerowi, chyba,
+że będzie można je wyciągnąć z Map2 (coś a'la map2.map1.getValue)
+
+Można spróbować na bazie wszystkich wyników:
+- ustalić aktualne wyniki typera
+- ustalić rekordowy wynik typera (ilość punktów) -> w kolejce + w całej rundzie/sezonie
+- liczyć ilość dokładnych wyników oraz poprawnych typów (i np kto ma najwięcej typów / DW)
+
+Nie korzystając z żadnego API, można stworzyć także tabelę drużyn, a w niej:
+- miejsce (sortowanie po ilości pkt, później bilans bramkowy, na końcu kolejność alfabetyczna)
+- ilość punktów
+- bilans bramkowy
+- zapisywać wygrane domowe / na wyjeździe (tabela dom/wyjazd)
+- rekordowa wygrana (największą ilością bramek), wygrana domowa/wyjazdowa  <-- drużyny oraz w danej kolejce/rundzie itd
+- wyświetlene informacji o aktualnej / następnej kolejce (aktualna - ostatni arkusz z zapisanymi danymi;
+następna - pierwszy arkusz z pustymi danymi, ale trzeba byłoby jeszcze uzupełnić typera i w kolejce bez typów wstawić
+np same znaki "X" (lub np "Bez typów)", które automatycznie dawałyby zero punktów)
+
+
