@@ -39,6 +39,7 @@ public class EverythingInOneClass {
             String path = "src/main/java/ExcelTyperProject/AllRoundsFiles/Typer" + (roundNumber + 1) + ".txt";
             ReadFiles.readFiles(path);
 
+            System.out.println("\nAktualny numer kolejki: " + (roundNumber + 1)+"\n");
 
             // indeks 0 = Damian, 1 = Ryszard, 2 = Paweł, 3 = Łukasz
             List<Integer> typerPointsOneRoundList = new ArrayList<>();
@@ -66,7 +67,7 @@ public class EverythingInOneClass {
 
                 //TODO : aby uzupełniać dane o drużynach będzie trzeba iterować po tej liście z przyrostem stringlistIterator+=2 (pobierać dwie nazwy drużyn co iterację)
                 TeamNamesList teamNamesList = new TeamNamesList();
-               // Ten sout zwraca poprawnie parę drużyn
+                // Ten sout zwraca poprawnie parę drużyn
                 //System.out.println("Para drużyn to: " + teamNamesList.getTeamNames(path).get(0) + " oraz " + teamNamesList.getTeamNames(path).get(1));
 
                 List<String> teamNamesFromThisRound = teamNamesList.getTeamNames(path); // tutaj jest lista drużyn dla każdej kolejki w ODPOWIEDNIEJ kolejności
@@ -82,7 +83,7 @@ public class EverythingInOneClass {
                 //  Z niej można przenosić wyniki do mapy zawierającej wszystkie wyniki (per kolejka)
                 // TODO: tutaj trzeba przeształcić sposób inicjalizacji - bo inicjalizuje się chyba ciągle ten sam obiekt
                 Map<String, TeamResultsObject> initilizeTempTeamResultsMap = teamResultsObject.initilizeTeamResultsMap(path, firstIndex, secondIndex);
-                System.out.println("Aktuany stan, klucze w mapie: "+initilizeTempTeamResultsMap.keySet());
+                System.out.println("Aktuany stan, klucze w mapie: " + initilizeTempTeamResultsMap.keySet());
 
                 //TODO: zamiast get trzeba dać put? Tak czy siak wygląda na przypiswanie wartości do tej samej drużyny
                 PutResultsOnMap putResultsOnMap = new PutResultsOnMap();
@@ -91,7 +92,7 @@ public class EverythingInOneClass {
 //               initilizeTempTeamResultsMap.bothTeamResultsObjectUpdate <-- metodę bothTeamResultsObjectUpdate przenieść do klasy TeamResultsObject dzięki czemu
 //                  na instancji teamResultsObject można będzie właśnie tą metodę wywołać - i nie będzie to pusta mapa
 
-                System.out.println("Para drużyn to: " + teamNamesFromThisRound.get(firstIndex)+" oraz " + teamNamesFromThisRound.get(secondIndex));
+  //              System.out.println("Para drużyn to: " + teamNamesFromThisRound.get(firstIndex) + " oraz " + teamNamesFromThisRound.get(secondIndex));
 
                 teamResultsObject.bothTeamResultsObjectUpdate(path, teamResultsObject, teamNamesFromThisRound.get(firstIndex),
                         teamNamesFromThisRound.get(secondIndex), tempCheckResult,
@@ -152,6 +153,11 @@ public class EverythingInOneClass {
                     }
                 }
                 tempResults.clear();
+
+
+                System.out.println("XXXXXXXXXXXXXXXXXX = "+initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(firstIndex)).toString());
+                System.out.println("YYYYYYYYYYYYYYYYYY = "+initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(secondIndex)).toString());
+
             }
 
             for (int n = 0; n < 4; n++) {
@@ -171,7 +177,7 @@ public class EverythingInOneClass {
                 //odjęcie jednego punktu za mecz 3 kolejki: Śląsk - Radomiak
                 typerPointsOneRoundList.set(1, typerPointsOneRoundList.get(1) - 1);
             }
-            System.out.println("Łączna punktacja " + (roundNumber + 1) + " kolejki [Damian, Ryszard, Paweł, Łukasz] =" + typerPointsOneRoundList);
+            System.out.println("Łączna punktacja " + (roundNumber + 1) + " kolejki [Damian, Ryszard, Paweł, Łukasz] = " + typerPointsOneRoundList);
 
 
             //TODO: koniec pierwszego fora
