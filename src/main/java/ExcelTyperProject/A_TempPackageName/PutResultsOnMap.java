@@ -6,9 +6,10 @@ import java.util.*;
 public class PutResultsOnMap {
     //TODO: trzeba tutaj zainicjalizować mapę z drużynami, gdzie kluczem będą nazwy drużyn, a wartością lista wartości drużyn (ZMIENIĆ NA OBIEKT)
 
-    public  Map<String, TeamResultsObject> bothTeamResultsObjectUpdate(String path, TeamResultsObject teamResultsObject, String teamHomeName, String teamAwayName, int checkResult,
-                                                                             int homeScoredGoals, int homeLostGoals, int awayScoredGoals, int awayLostGoals, int loopCounter) {
-        Map<String, TeamResultsObject> resultsMap = teamResultsObject.initilizeTeamResultsMap(path, loopCounter);
+    public Map<String, TeamResultsObject> bothTeamResultsObjectUpdate(String path, TeamResultsObject teamResultsObject, String teamHomeName, String teamAwayName, int checkResult,
+                                                                      int homeScoredGoals, int homeLostGoals, int awayScoredGoals, int awayLostGoals, int firstIndex, int secondIndex) {
+        Map<String, TeamResultsObject> resultsMap = teamResultsObject.initilizeTeamResultsMap(path, firstIndex, secondIndex);
+
 
         //TODO: zweryfikować czy metoda uptdatuje wyniki
         if (checkResult == 1) {
@@ -31,6 +32,7 @@ public class PutResultsOnMap {
         resultsMap.get(teamAwayName).setAwayScoredGoals(+awayScoredGoals);
 
         //trzeba uzupełnić tak, żeby aktualizować mapę z wynikami każdej drużyny
+        System.out.println("2. Jestem w metodzie bothTeamResultsObjectUpdate");
         return resultsMap;
     }
 }

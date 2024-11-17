@@ -66,7 +66,8 @@ public class EverythingInOneClass {
 
                 //TODO : aby uzupełniać dane o drużynach będzie trzeba iterować po tej liście z przyrostem stringlistIterator+=2 (pobierać dwie nazwy drużyn co iterację)
                 TeamNamesList teamNamesList = new TeamNamesList();
-                System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY === "+teamNamesList.getTeamNames(path).get(0));
+               // Ten sout zwraca poprawnie parę drużyn
+                //System.out.println("Para drużyn to: " + teamNamesList.getTeamNames(path).get(0) + " oraz " + teamNamesList.getTeamNames(path).get(1));
 
                 List<String> teamNamesFromThisRound = teamNamesList.getTeamNames(path); // tutaj jest lista drużyn dla każdej kolejki w ODPOWIEDNIEJ kolejności
 
@@ -80,7 +81,8 @@ public class EverythingInOneClass {
                 // TODO: Ta mapa będzie zbierać wyniki jednej kolejki, a następnie będzie je zerować (patrz sposób inicjalizacji
                 //  Z niej można przenosić wyniki do mapy zawierającej wszystkie wyniki (per kolejka)
                 // TODO: tutaj trzeba przeształcić sposób inicjalizacji - bo inicjalizuje się chyba ciągle ten sam obiekt
-                Map<String, TeamResultsObject> initilizeTempTeamResultsMap = teamResultsObject.initilizeTeamResultsMap(path, stringlistIterator);
+                Map<String, TeamResultsObject> initilizeTempTeamResultsMap = teamResultsObject.initilizeTeamResultsMap(path, firstIndex, secondIndex);
+                System.out.println("Aktuany stan, klucze w mapie: "+initilizeTempTeamResultsMap.keySet());
 
                 //TODO: zamiast get trzeba dać put? Tak czy siak wygląda na przypiswanie wartości do tej samej drużyny
                 PutResultsOnMap putResultsOnMap = new PutResultsOnMap();
@@ -89,13 +91,15 @@ public class EverythingInOneClass {
 //               initilizeTempTeamResultsMap.bothTeamResultsObjectUpdate <-- metodę bothTeamResultsObjectUpdate przenieść do klasy TeamResultsObject dzięki czemu
 //                  na instancji teamResultsObject można będzie właśnie tą metodę wywołać - i nie będzie to pusta mapa
 
-                putResultsOnMap.bothTeamResultsObjectUpdate(path, teamResultsObject, teamNamesFromThisRound.get(stringlistIterator),
+                System.out.println("Para drużyn to: " + teamNamesFromThisRound.get(firstIndex)+" oraz " + teamNamesFromThisRound.get(secondIndex));
+
+                teamResultsObject.bothTeamResultsObjectUpdate(path, teamResultsObject, teamNamesFromThisRound.get(firstIndex),
                         teamNamesFromThisRound.get(secondIndex), tempCheckResult,
                         initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(firstIndex)).setHomeScoredGoals(+tempResults.get(0).charAt(0)),
                         initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(firstIndex)).setHomeLostGoals(+tempResults.get(0).charAt(2)),
                         initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(secondIndex)).setAwayScoredGoals(+tempResults.get(0).charAt(2)),
                         initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(secondIndex)).setAwayLostGoals(+tempResults.get(0).charAt(0)),
-                        stringlistIterator);
+                        firstIndex, secondIndex);
 
                 //bothTeamResultsObjectUpdate(String path, TeamResultsObject teamResultsObject, String teamHomeName, String teamAwayName, int checkResult,
                 //                            int homeScoredGoals, int homeLostGoals, int awayScoredGoals, int awayLostGoals)

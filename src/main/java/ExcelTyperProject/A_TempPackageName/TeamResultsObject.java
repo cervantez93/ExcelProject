@@ -98,20 +98,25 @@ public class TeamResultsObject {
 
     //TODO: tutaj raczej zamiast pętli trzeba chyba podawać w parametrze licznik pętli -> wtedy tutaj wywoływać pojedynczo,
     // a w klasie Everything... wywoływać tą metodę w pętli???
-    public Map<String, TeamResultsObject> initilizeTeamResultsMap(String path, int i) {
+    public Map<String, TeamResultsObject> initilizeTeamResultsMap(String path, int firstIndex, int secondIndex) {
         TeamNamesList teamNamesList = new TeamNamesList();
         Map<String, TeamResultsObject> teamResultsObjectHashMap = new HashMap<>();
 
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX === "+teamNamesList.getTeamNames(path).get(0));
+        //System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX === " + teamNamesList.getTeamNames(path).get(0));
 
-        teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(i), new TeamResultsObject(teamNamesList.getTeamNames(path).get(i), 0, 0, 0,
+        teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(firstIndex), new TeamResultsObject(teamNamesList.getTeamNames(path).get(firstIndex), 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0));
 
 
+        teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(secondIndex), new TeamResultsObject(teamNamesList.getTeamNames(path).get(secondIndex), 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0));
+        //   System.out.println("Pierwsza drużna z pary: "+teamNamesList.getTeamNames(path).get(firstIndex) +" oraz druga: "+teamNamesList.getTeamNames(path).get(secondIndex));
+
+
 //        String tempTeamName = "";
-//        for (int i = 0; i < teamNamesList.getTeamNames(path).size(); i++) {
-//            tempTeamName = teamNamesList.getTeamNames(path).get(i);
-//            //      System.out.println("AAAAAAAAAAAAAAAAAA = "+teamNamesList.getTeamNames(path).get(i));
+//        for (int firstIndex = 0; firstIndex < teamNamesList.getTeamNames(path).size(); firstIndex++) {
+//            tempTeamName = teamNamesList.getTeamNames(path).get(firstIndex);
+//            //      System.out.println("AAAAAAAAAAAAAAAAAA = "+teamNamesList.getTeamNames(path).get(firstIndex));
 //            teamResultsObjectHashMap.put(tempTeamName, new TeamResultsObject(tempTeamName, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 //        }
 //        for (String teamNames : teamNamesList.getTeamNames(path)) {
@@ -120,10 +125,39 @@ public class TeamResultsObject {
 //                    0, 0));
 //        }
 
-
         System.out.println("teamResultsObjectHashMap= " + teamResultsObjectHashMap.values());
         return teamResultsObjectHashMap;
     }
+
+
+    public Map<String, TeamResultsObject> bothTeamResultsObjectUpdate(String path, TeamResultsObject teamResultsObject, String teamHomeName, String teamAwayName, int checkResult,
+                                                                      int homeScoredGoals, int homeLostGoals, int awayScoredGoals, int awayLostGoals, int firstIndex, int secondIndex) {
+        Map<String, TeamResultsObject> resultsMap = teamResultsObject.initilizeTeamResultsMap(path, firstIndex,secondIndex);
+
+        //TODO: zweryfikować czy metoda uptdatuje wyniki
+        if (checkResult == 1) {
+            resultsMap.get(teamHomeName).setHomePoints(teamResultsObject.getHomePoints() + 3);
+        } else if (checkResult == 2) {
+            resultsMap.get(teamAwayName).setAwayPoints(teamResultsObject.getAwayPoints() + 3);
+        } else if (checkResult == 0) {
+            resultsMap.get(teamHomeName).setHomeDrawGames(teamResultsObject.getHomeDrawGames() + 1);
+            resultsMap.get(teamAwayName).setAwayDrawGames(teamResultsObject.getAwayDrawGames() + 1);
+        } else if (checkResult == 3) {
+            System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
+        }
+
+        resultsMap.get(teamHomeName).setHomeLostGoals(homeLostGoals);
+        resultsMap.get(teamHomeName).setHomeScoredGoals(homeScoredGoals);
+        // ^^ wyżej update drużyny gospodarzy
+
+        // niżej update drużyny gości
+        resultsMap.get(teamAwayName).setAwayLostGoals(+awayLostGoals);
+        resultsMap.get(teamAwayName).setAwayScoredGoals(+awayScoredGoals);
+
+        //trzeba uzupełnić tak, żeby aktualizować mapę z wynikami każdej drużyny
+        return resultsMap;
+    }
+
 
     //TODO: wszelkiego rodzaju settery można chyba zmienić tak, żeby zwracały wartość obecną powiększoną o parametr, np:
     //public int setHomePoints(int getHomePoints) {
