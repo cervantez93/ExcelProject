@@ -9,31 +9,39 @@ public class PutResultsOnMap {
     public Map<String, TeamResultsObject> bothTeamResultsObjectUpdate(String path, TeamResultsObject teamResultsObject, String teamHomeName, String teamAwayName, int checkResult,
                                                                       int homeScoredGoals, int homeLostGoals, int awayScoredGoals, int awayLostGoals, int firstIndex, int secondIndex) {
         Map<String, TeamResultsObject> resultsMap = teamResultsObject.initilizeTeamResultsMap(path, firstIndex, secondIndex);
+        System.out.println("Rozmiar mapy = " + resultsMap.size());
+
+        //TODO: zmienić metodę na PUT - trzeba aktualizować całe obiekty, te pola, które pozostają bez zmian ustawić jako setPole(getPole)
 
         //przypisanie dwóch obiektów - domowej i wyjazdowej drużyny
         TeamResultsObject teamResultsObjectHome = resultsMap.get(teamHomeName);
         TeamResultsObject teamResultsObjectAway = resultsMap.get(teamAwayName);
-        resultsMap.get(teamResultsObjectAway).setAwayPoints(0);
+
 
         if (checkResult == 1) {
-            resultsMap.get(teamHomeName).setHomePoints(teamResultsObjectHome.getHomePoints() + 3);
+            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomePoints() + 3);
+            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomeWonGames() + 1);
         } else if (checkResult == 2) {
-            resultsMap.get(teamAwayName).setAwayPoints(teamResultsObjectAway.getAwayPoints() + 3);
+            teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getAwayPoints() + 3);
+            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getAwayWonGames() + 1);
         } else if (checkResult == 0) {
-            resultsMap.get(teamHomeName).setHomeDrawGames(teamResultsObjectHome.getHomeDrawGames() + 1);
-            resultsMap.get(teamAwayName).setAwayDrawGames(teamResultsObjectAway.getAwayDrawGames() + 1);
+            teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getHomeDrawGames() + 1);
+            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomeDrawGames() + 1);
         } else if (checkResult == 3) {
             System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
         }
 
-        resultsMap.get(teamHomeName).setHomeLostGoals(teamResultsObjectHome.getHomeLostGoals() + homeLostGoals);
-        resultsMap.get(teamHomeName).setHomeScoredGoals(teamResultsObjectHome.getHomeScoredGoals() + homeScoredGoals);
+        teamResultsObjectHome.setHomeScoredGoals(teamResultsObjectHome.getHomeScoredGoals() + homeScoredGoals);
+        teamResultsObjectHome.setHomeLostGoals(teamResultsObjectHome.getHomeLostGoals() + homeLostGoals);
         // ^^ wyżej update drużyny gospodarzy
 
         // niżej update drużyny gości
-        resultsMap.get(teamAwayName).setAwayLostGoals(teamResultsObjectAway.getAwayLostGoals() + awayLostGoals);
-        resultsMap.get(teamAwayName).setAwayScoredGoals(teamResultsObjectAway.getAwayScoredGoals() + awayScoredGoals);
+        teamResultsObjectHome.setAwayLostGoals(teamResultsObjectAway.getAwayLostGoals() + awayLostGoals);
+        teamResultsObjectHome.setAwayScoredGoals(teamResultsObjectAway.getAwayScoredGoals() + awayScoredGoals);
 
+
+        resultsMap.put(teamHomeName, teamResultsObjectHome);
+        resultsMap.put(teamAwayName, teamResultsObjectAway);
 
         //TODO: poprzednia wersja, w razie czego odkomentować
 //        //TODO: zweryfikować czy metoda uptdatuje wyniki
