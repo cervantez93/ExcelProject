@@ -96,6 +96,7 @@ public class TeamResultsObject {
 
     ;
 
+
     //TODO: tutaj raczej zamiast pętli trzeba chyba podawać w parametrze licznik pętli -> wtedy tutaj wywoływać pojedynczo,
     // a w klasie Everything... wywoływać tą metodę w pętli???
     public Map<String, TeamResultsObject> initilizeTeamResultsMap(String path, int firstIndex, int secondIndex) {
@@ -107,54 +108,65 @@ public class TeamResultsObject {
         teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(firstIndex), new TeamResultsObject(teamNamesList.getTeamNames(path).get(firstIndex), 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0));
 
-
         teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(secondIndex), new TeamResultsObject(teamNamesList.getTeamNames(path).get(secondIndex), 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0));
-        //   System.out.println("Pierwsza drużna z pary: "+teamNamesList.getTeamNames(path).get(firstIndex) +" oraz druga: "+teamNamesList.getTeamNames(path).get(secondIndex));
 
+        // System.out.println("TeamResultsObjectHashMap  =  " + teamResultsObjectHashMap.values());
+        return teamResultsObjectHashMap;
 
-//        String tempTeamName = "";
-//        for (int firstIndex = 0; firstIndex < teamNamesList.getTeamNames(path).size(); firstIndex++) {
-//            tempTeamName = teamNamesList.getTeamNames(path).get(firstIndex);
-//            //      System.out.println("AAAAAAAAAAAAAAAAAA = "+teamNamesList.getTeamNames(path).get(firstIndex));
-//            teamResultsObjectHashMap.put(tempTeamName, new TeamResultsObject(tempTeamName, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-//        }
-//        for (String teamNames : teamNamesList.getTeamNames(path)) {
-//            teamResultsObjectHashMap.put(teamNames, new TeamResultsObject(teamNames, 0, 0,
-//                    0, 0, 0, 0, 0, 0, 0, 0,
-//                    0, 0));
-//        }
+    }
 
-     //   System.out.println("teamResultsObjectHashMap= " + teamResultsObjectHashMap.values());
+    public Map<String, TeamResultsObject> initilizeAllTeamResultsMap() {
+        String path = "src/main/java/ExcelTyperProject/AllRoundsFiles/Typer1.txt";
+        TeamNamesList teamNamesList = new TeamNamesList();
+        Map<String, TeamResultsObject> teamResultsObjectHashMap = new HashMap<>();
+
+        for (int i = 0; i < teamNamesList.getTeamNames(path).size(); i++) {
+            teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(i), new TeamResultsObject(teamNamesList.getTeamNames(path).get(i), 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0));
+        }
         return teamResultsObjectHashMap;
     }
 
 
     public Map<String, TeamResultsObject> bothTeamResultsObjectUpdate(String path, TeamResultsObject teamResultsObject, String teamHomeName, String teamAwayName, int checkResult,
                                                                       int homeScoredGoals, int homeLostGoals, int awayScoredGoals, int awayLostGoals, int firstIndex, int secondIndex) {
-        Map<String, TeamResultsObject> resultsMap = teamResultsObject.initilizeTeamResultsMap(path, firstIndex,secondIndex);
+        Map<String, TeamResultsObject> resultsMap = teamResultsObject.initilizeTeamResultsMap(path, firstIndex, secondIndex);
+        System.out.println("Rozmiar mapy = " + resultsMap.size());
 
-        //TODO: zweryfikować czy metoda uptdatuje wyniki
+        //TODO: zmienić metodę na PUT - trzeba aktualizować całe obiekty, te pola, które pozostają bez zmian ustawić jako setPole(getPole)
+
+        //przypisanie dwóch obiektów - domowej i wyjazdowej drużyny
+        TeamResultsObject teamResultsObjectHome = resultsMap.get(teamHomeName);
+        TeamResultsObject teamResultsObjectAway = resultsMap.get(teamAwayName);
+
+
         if (checkResult == 1) {
-            resultsMap.get(teamHomeName).setHomePoints(teamResultsObject.getHomePoints() + 3);
+            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomePoints() + 3);
+            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomeWonGames() + 1);
         } else if (checkResult == 2) {
-            resultsMap.get(teamAwayName).setAwayPoints(teamResultsObject.getAwayPoints() + 3);
+            teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getAwayPoints() + 3);
+            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getAwayWonGames() + 1);
         } else if (checkResult == 0) {
-            resultsMap.get(teamHomeName).setHomeDrawGames(teamResultsObject.getHomeDrawGames() + 1);
-            resultsMap.get(teamAwayName).setAwayDrawGames(teamResultsObject.getAwayDrawGames() + 1);
+            teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getHomeDrawGames() + 1);
+            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomeDrawGames() + 1);
         } else if (checkResult == 3) {
             System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
         }
 
-        resultsMap.get(teamHomeName).setHomeLostGoals(homeLostGoals);
-        resultsMap.get(teamHomeName).setHomeScoredGoals(homeScoredGoals);
+        teamResultsObjectHome.setHomeScoredGoals(teamResultsObjectHome.getHomeScoredGoals() + homeScoredGoals);
+        teamResultsObjectHome.setHomeLostGoals(teamResultsObjectHome.getHomeLostGoals() + homeLostGoals);
         // ^^ wyżej update drużyny gospodarzy
 
         // niżej update drużyny gości
-        resultsMap.get(teamAwayName).setAwayLostGoals(+awayLostGoals);
-        resultsMap.get(teamAwayName).setAwayScoredGoals(+awayScoredGoals);
+        teamResultsObjectHome.setAwayLostGoals(teamResultsObjectAway.getAwayLostGoals() + awayLostGoals);
+        teamResultsObjectHome.setAwayScoredGoals(teamResultsObjectAway.getAwayScoredGoals() + awayScoredGoals);
 
-        //trzeba uzupełnić tak, żeby aktualizować mapę z wynikami każdej drużyny
+
+        resultsMap.put(teamHomeName, teamResultsObjectHome);
+        resultsMap.put(teamAwayName, teamResultsObjectAway);
+
+        System.out.println("2. Jestem w metodzie bothTeamResultsObjectUpdate");
         return resultsMap;
     }
 
@@ -194,7 +206,7 @@ public class TeamResultsObject {
     }
 
     public int setAwayScoredGoals(int getAwayScoredGoals) {
-        return this.awayScoredGoals = getAwayScoredGoals() + getAwayScoredGoals;
+        return this.awayScoredGoals = getAwayScoredGoals;
     }
 
     public int setAwayLostGoals(int getAwayLostGoals) {

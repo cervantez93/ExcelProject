@@ -1,13 +1,18 @@
 package ExcelTyperProject.NotesAndProjectDescription;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TestClass {
     public static void main(String[] args) {
-        String text = "Damian-Paweł-Ryszard";
-        System.out.println(Arrays.stream(text.split("-")).toList().get(1));
-        String temp = Arrays.stream(text.split("-")).toList().get(0);
-        System.out.println(temp);
 
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < 10; i++) {
+            map.put(i, 2 * i);
+        }
+        System.out.println(map.size());
     }
 }

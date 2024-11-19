@@ -43,6 +43,9 @@ public class PutResultsOnMap {
         resultsMap.put(teamHomeName, teamResultsObjectHome);
         resultsMap.put(teamAwayName, teamResultsObjectAway);
 
+        System.out.println("HomeObject = " + teamResultsObjectHome.toString());
+        System.out.println("AwayObject = " + teamResultsObjectAway.toString());
+
         //TODO: poprzednia wersja, w razie czego odkomentować
 //        //TODO: zweryfikować czy metoda uptdatuje wyniki
 //        if (checkResult == 1) {

@@ -1,18 +1,21 @@
 package ExcelTyperProject.A_TempPackageName;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-public class EverythingInOneClass {
+public class EverythingNewApproach {
 
     // TODO: Następnie trzeba zaktualizować wartości typera i drużyn
 
     // TODO: Prawidłowe wartości tabeli wyników dla drużyn można porównać ze stanem tabeli np po 2 kolejce na jakimś flashscore
 
     public static void main(String[] args) {
+
+        TeamResultsObject teamResultsObject = new TeamResultsObject();
+        Map<String, TeamResultsObject> mapOfResults = teamResultsObject.initilizeAllTeamResultsMap();
 
         List<Integer> typerPointsAllRoundsList = new ArrayList<>();
         List<TyperClass> typerClassList = new ArrayList<>();
@@ -27,7 +30,6 @@ public class EverythingInOneClass {
             }
         }
 
-
         //zmienna określająca ilość plików do przetworzenia znajdujących się w oddzielnym package'u
         File directory = new File("src/main/java/ExcelTyperProject/AllRoundsFiles");
         int fileAmount = directory.list().length;
@@ -38,7 +40,7 @@ public class EverythingInOneClass {
             String path = "src/main/java/ExcelTyperProject/AllRoundsFiles/Typer" + (roundNumber + 1) + ".txt";
             ReadFiles.readFiles(path);
 
-            System.out.println("\nAktualny numer kolejki: " + (roundNumber + 1)+"\n");
+            System.out.println("\nAktualny numer kolejki: " + (roundNumber + 1) + "\n");
 
             // indeks 0 = Damian, 1 = Ryszard, 2 = Paweł, 3 = Łukasz
             List<Integer> typerPointsOneRoundList = new ArrayList<>();
@@ -66,57 +68,84 @@ public class EverythingInOneClass {
 
                 //TODO : aby uzupełniać dane o drużynach będzie trzeba iterować po tej liście z przyrostem stringlistIterator+=2 (pobierać dwie nazwy drużyn co iterację)
                 TeamNamesList teamNamesList = new TeamNamesList();
-                // Ten sout zwraca poprawnie parę drużyn
-                //System.out.println("Para drużyn to: " + teamNamesList.getTeamNames(path).get(0) + " oraz " + teamNamesList.getTeamNames(path).get(1));
-
                 List<String> teamNamesFromThisRound = teamNamesList.getTeamNames(path); // tutaj jest lista drużyn dla każdej kolejki w ODPOWIEDNIEJ kolejności
 
                 int tempCheckResult = checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
-                // wynik checkResult przekazany jest do metody bothTeamResultsObjectUpdate -> a tam dalej w zależności od typu wyniku następują update'y drużyn
 
                 //dopasowanie indeksów do iteracji w tej pętli, żeby nie robić oddzielnej pętli
                 int firstIndex = 2 * stringlistIterator;
                 int secondIndex = firstIndex + 1;
 
-                // TODO: Ta mapa będzie zbierać wyniki jednej kolejki, a następnie będzie je zerować (patrz sposób inicjalizacji
-                //  Z niej można przenosić wyniki do mapy zawierającej wszystkie wyniki (per kolejka)
-                // TODO: tutaj trzeba przeształcić sposób inicjalizacji - bo inicjalizuje się chyba ciągle ten sam obiekt
-                //Map<String, TeamResultsObject> initilizeTempTeamResultsMap = teamResultsObject.initilizeTeamResultsMap(path, firstIndex, secondIndex);
-               // System.out.println("Aktuany stan, klucze w mapie: " + initilizeTempTeamResultsMap.keySet());
+                //TODO: tutaj za każdym razem tworzą się dwa nowe elementy mapy (od zera),a  powinny być dodawane przy zachowaniu
+                // wszystkich poprzednich elementów - z poprzednich iteracji pętli
+                //   Map<String, TeamResultsObject> allResults = new HashMap<>();
 
-                //TODO: zamiast get trzeba dać put? Tak czy siak wygląda na przypiswanie wartości do tej samej drużyny
-                PutResultsOnMap putResultsOnMap = new PutResultsOnMap();
-                //TODO chyba nie będzie potrzebne, jeśli będzie to pobierane z MAPY.getValue
-                TeamResultsObject teamResultsObject = new TeamResultsObject();
+                TeamResultsObject teamResultsObjectHome = mapOfResults.get(teamNamesFromThisRound.get(firstIndex));
+                TeamResultsObject teamResultsObjectAway = mapOfResults.get(teamNamesFromThisRound.get(secondIndex));
 
-//               initilizeTempTeamResultsMap.bothTeamResultsObjectUpdate <-- metodę bothTeamResultsObjectUpdate przenieść do klasy TeamResultsObject dzięki czemu
-//                  na instancji teamResultsObject można będzie właśnie tą metodę wywołać - i nie będzie to pusta mapa
+                System.out.println("Drużyna gospodarzy odnaleziona w mapie: " + mapOfResults.containsKey(teamNamesFromThisRound.get(firstIndex))+" ,Drużyna gości odnaleziona w mapie: " + mapOfResults.containsKey(teamNamesFromThisRound.get(secondIndex)));
 
-  //              System.out.println("Para drużyn to: " + teamNamesFromThisRound.get(firstIndex) + " oraz " + teamNamesFromThisRound.get(secondIndex));
+                System.out.println("Mecz " + teamResultsObjectHome.getTeamName() + " - " + teamResultsObjectAway.getTeamName() + "  zakończony wynikiem [" + tempResults.get(0) + "]");
+                //System.out.println("Gospodarze: "+teamResultsObjectHome.getTeamName() +", goście: "+teamResultsObjectAway.getTeamName()); // - dobrze zwraca nazwy drużyn
 
-                //TODO: przekazywanie teamResultObject chyba jest bez sensu, bo jest to pusty, niezainicjalizowany obiekt
-                // Trzeba raczej przekazywać tutaj dwa obiekty z zainicjalizowanej mapy (drużyna gospodarzy i gości)
-                putResultsOnMap.bothTeamResultsObjectUpdate(path, teamResultsObject, teamNamesFromThisRound.get(firstIndex),
-                        teamNamesFromThisRound.get(secondIndex), tempCheckResult,
-                        tempResults.get(0).charAt(0),
-                        tempResults.get(0).charAt(2),
-                        tempResults.get(0).charAt(2),
-                        tempResults.get(0).charAt(0),
-                        firstIndex, secondIndex);
+                System.out.print("Domowa drużyna przed aktualizacją: " + teamResultsObjectHome.toString());
+                System.out.print("Wyjazdowa drużyna przed aktualizacją: " + teamResultsObjectAway.toString());
+
+
+                if (tempCheckResult == 1) {
+                    //  System.out.println("Zwycięstwo gospodarzy");
+                    teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomePoints() + 3);
+                    teamResultsObjectHome.setHomeWonGames(teamResultsObjectHome.getHomeWonGames() + 1);
+                    teamResultsObjectAway.setAwayLostGames(teamResultsObjectAway.getAwayLostGames() + 1);
+
+                } else if (tempCheckResult == 2) {
+                    // System.out.println("Zwycięstwo gości ");
+                    teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getAwayPoints() + 3);
+                    teamResultsObjectHome.setAwayWonGames(teamResultsObjectHome.getAwayWonGames() + 1);
+                    teamResultsObjectHome.setHomeLostGames(teamResultsObjectHome.getHomeLostGames() + 1);
+                } else if (tempCheckResult == 0) {
+                    //  System.out.println("Remis");
+                    teamResultsObjectHome.setHomeDrawGames(teamResultsObjectHome.getHomeDrawGames() + 1);
+                    teamResultsObjectAway.setAwayDrawGames(teamResultsObjectAway.getHomeDrawGames() + 1);
+
+                } else if (tempCheckResult == 3) {
+                    System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
+                }
+
+                teamResultsObjectHome.setHomeScoredGoals(teamResultsObjectHome.getHomeScoredGoals() + tempResults.get(0).charAt(0));
+                teamResultsObjectHome.setHomeLostGoals(teamResultsObjectHome.getHomeLostGoals() + tempResults.get(0).charAt(2));
+                // ^^ wyżej update drużyny gospodarzy
+
+                // niżej update drużyny gości
+//                System.out.println("ilość bramek przed zmianami  = " + teamResultsObjectAway.getAwayLostGoals());
+                teamResultsObjectAway.setAwayLostGoals(teamResultsObjectAway.getAwayLostGoals() + tempResults.get(0).charAt(0));
+//                System.out.println("ilość zdobytych bramek  = " + tempResults.get(0).charAt(0));
+//                System.out.println("ilość bramek po zmianach  = " + teamResultsObjectAway.getAwayLostGoals());
+                teamResultsObjectAway.setAwayScoredGoals(teamResultsObjectAway.getAwayScoredGoals() + tempResults.get(0).charAt(2));
+
+                //TODO: mapa trzyma referencję obiektu, więc wystarczy aktualizacja na obiekcie, nie trzeba aktualizować dodatkowo elementu obiektu - to dzieje się automatycznie
+//                mapOfResults.put(teamNamesFromThisRound.get(firstIndex), teamResultsObjectHome);
+//                mapOfResults.put(teamNamesFromThisRound.get(secondIndex), teamResultsObjectAway);
+
+                System.out.print("Domowa drużyna po aktualizacji: " + teamResultsObjectHome.toString());
+                System.out.println("Wyjazdowa drużyna po aktualizacji: " + teamResultsObjectAway.toString());
+
+                //   allResults.putAll(mapOfResults);
+                //      System.out.println("Rozmiar mapy = " + mapOfResults.size() + ", keySet = " + mapOfResults.keySet());
 
 
                 // TODO: Wyrzucenie souta w ostatniej kolejce // można zrobić co kolejke żeby sprawdzić czy prawidłowo zapisuje wartości do każdej kolejki
-                if (roundNumber == fileAmount - 1) {
-               //     System.out.println("XXX: " + initilizeTempTeamResultsMap.values());
+                if (roundNumber == 0) {
+                    System.out.println("XXX: " + mapOfResults.values());
                 }
 
 
                 for (int k = 1; k <= tempResults.size() - 1; k++) {
                     //sprawdzanie typu wyniku każdego meczu
-                    int tempResultType = EverythingInOneClass.checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
+                    int tempResultType = EverythingNewApproach.checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
 
                     //sprawdzenie typu wyniku dla każdego TYPERA
-                    int tempTyperResult = EverythingInOneClass.checkResultType(tempResults.get(k).charAt(0), tempResults.get(k).charAt(2));
+                    int tempTyperResult = EverythingNewApproach.checkResultType(tempResults.get(k).charAt(0), tempResults.get(k).charAt(2));
                     //   System.out.println("Porównuję typy zwycięstw " + tempResultType + ", " + tempTyperResult);
 //                    System.out.println("Sprawdzam czy wynik " + tempResults.get(0).charAt(0) + ":" + tempResults.get(0).charAt(2) + " (Typ " + tempResultType + ") jest równy wynikowi "
 //                            + tempResults.get(k).charAt(0) + ":" + tempResults.get(k).charAt(2) + " (Typ " + tempTyperResult + ")");
@@ -141,10 +170,6 @@ public class EverythingInOneClass {
                     }
                 }
                 tempResults.clear();
-
-              //  System.out.println("XXXXXXXXXXXXXXXXXX = "+initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(firstIndex)).toString());
-               // System.out.println("YYYYYYYYYYYYYYYYYY = "+initilizeTempTeamResultsMap.get(teamNamesFromThisRound.get(secondIndex)).toString());
-
             }
 
             for (int n = 0; n < 4; n++) {
@@ -165,7 +190,6 @@ public class EverythingInOneClass {
                 typerPointsOneRoundList.set(1, typerPointsOneRoundList.get(1) - 1);
             }
             System.out.println("Łączna punktacja " + (roundNumber + 1) + " kolejki [Damian, Ryszard, Paweł, Łukasz] = " + typerPointsOneRoundList);
-
 
             //TODO: koniec pierwszego fora
         }
