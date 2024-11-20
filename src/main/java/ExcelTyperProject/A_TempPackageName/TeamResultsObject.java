@@ -51,32 +51,27 @@ public class TeamResultsObject {
 //    }
     @Override
     public String toString() {
-        return "TeamResultsObject{" +
-                "teamName= " + teamName +
+        return "TeamName= " + teamName +
                 ", points= " + getAllPoints() +
                 ", wonGames=" + getWonGames() +
                 "(H:" + homeWonGames +
-                " / A:" + awayWonGames + ") " +
+                " / A:" + awayWonGames + ")" +
                 ", lostGames=" + getLostGames() +
                 "(H:" + homeLostGames +
-                " / A:" + awayLostGames + ") " +
+                " / A:" + awayLostGames + ")" +
                 ", drawGames=" + getDrawGames() +
                 "(H:" + homeDrawGames +
-                " / A:" + awayDrawGames + ") " +
+                " / A:" + awayDrawGames + ")" +
                 ", allScoredGoals=" + getAllScoredGoals() +
                 "(H:" + homeScoredGoals +
-                " / A:" + awayScoredGoals + ") " +
+                " / A:" + awayScoredGoals + ")" +
                 ", allLostGoals=" + getAllLostGoals() +
                 "(H:" + homeLostGoals +
-                " / A:" + awayLostGoals + ") " + "}\n";
+                " / A:" + awayLostGoals + ")}\n";
     }
 
-    //TODO: Do weryifikacji: czy potrzebny sparametryzowany konstruktor (może powinien być pusty, ale z wszystkimi this.Zmienna
-    // Natomiast zamiast getterów może powinny być zamiast/dodatkowo settery, tak żeby aktualizować zdobycze punktowe/bramkowe
     public TeamResultsObject(String teamName, int getHomePoints, int getAwayPoints, int getHomeDrawGames, int getAwayDrawGames, int getHomeScoredGoals, int getHomeLostGoals,
                              int getAwayScoredGoals, int getAwayLostGoals, int getHomeWonGames, int getAwayWonGames, int getLostGames, int getHomeGames) {
-        // do weryfikacji czy potrzebny jest teamName, czy zamiast tego w mapie/liście będzie się tworzyć oddzielna
-        // instancja i będzie do tej kolekcji przypisany dany obiekt
         this.teamName = teamName;
         this.points = getAllPoints();
         this.homePoints = getHomePoints;
@@ -85,7 +80,6 @@ public class TeamResultsObject {
         this.wonGames = getHomeWonGames();
         this.awayWonGames = getAwayWonGames;
         this.homeWonGames = getHomeWonGames;
-
 
         this.lostGames = getLostGames();
         this.awayLostGames = getLostGames;
@@ -118,8 +112,6 @@ public class TeamResultsObject {
     ;
 
 
-    //TODO: tutaj raczej zamiast pętli trzeba chyba podawać w parametrze licznik pętli -> wtedy tutaj wywoływać pojedynczo,
-    // a w klasie Everything... wywoływać tą metodę w pętli???
     public Map<String, TeamResultsObject> initilizeTeamResultsMap(String path, int firstIndex, int secondIndex) {
         TeamNamesList teamNamesList = new TeamNamesList();
         Map<String, TeamResultsObject> teamResultsObjectHashMap = new HashMap<>();
@@ -130,9 +122,7 @@ public class TeamResultsObject {
         teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(secondIndex), new TeamResultsObject(teamNamesList.getTeamNames(path).get(secondIndex), 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0));
 
-        // System.out.println("TeamResultsObjectHashMap  =  " + teamResultsObjectHashMap.values());
         return teamResultsObjectHashMap;
-
     }
 
     public Map<String, TeamResultsObject> initilizeAllTeamResultsMap() {
@@ -173,17 +163,13 @@ public class TeamResultsObject {
             System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
         }
 
-        teamResultsObjectHome.addHomeScoredGoals(teamResultsObjectHome.getHomeScoredGoals() + homeScoredGoals);
-        teamResultsObjectHome.addHomeLostGoals(teamResultsObjectHome.getHomeLostGoals() + homeLostGoals);
+        teamResultsObjectHome.addHomeScoredGoals(homeScoredGoals);
+        teamResultsObjectHome.addHomeLostGoals(homeLostGoals);
         // ^^ wyżej update drużyny gospodarzy
 
         // niżej update drużyny gości
-        teamResultsObjectHome.addAwayLostGoals(teamResultsObjectAway.getAwayLostGoals() + awayLostGoals);
-        teamResultsObjectHome.addAwayScoredGoals(teamResultsObjectAway.getAwayScoredGoals() + awayScoredGoals);
-
-
-        resultsMap.put(teamHomeName, teamResultsObjectHome);
-        resultsMap.put(teamAwayName, teamResultsObjectAway);
+        teamResultsObjectHome.addAwayLostGoals(awayLostGoals);
+        teamResultsObjectHome.addAwayScoredGoals(awayScoredGoals);
 
         System.out.println("2. Jestem w metodzie bothTeamResultsObjectUpdate");
         return resultsMap;
@@ -208,15 +194,6 @@ public class TeamResultsObject {
         return this.awayPoints = getAwayPoints;
     }
 
-
-//    public int setWonGames() {
-//        return awayWonGames + homeWonGames;
-//    }
-//
-//    public int setLostGames() {
-//        return homeLostGames + awayLostGames;
-//    }
-
     public int addHomeScoredGoals(int getHomeScoredGoals1) {
         return this.homeScoredGoals = homeScoredGoals + getHomeScoredGoals1;
     }
@@ -232,7 +209,6 @@ public class TeamResultsObject {
     public int addAwayLostGoals(int getAwayLostGoals1) {
         return this.awayLostGoals = awayLostGoals + getAwayLostGoals1;
     }
-
 
     public int getAwayWonGames() {
         return awayWonGames;
@@ -331,7 +307,7 @@ public class TeamResultsObject {
     }
 
     public int getAllLostGoals() {
-        return homeLostGoals + homeLostGoals;
+        return homeLostGoals + awayLostGoals;
     }
 
     public int getAllScoredGoals() {
