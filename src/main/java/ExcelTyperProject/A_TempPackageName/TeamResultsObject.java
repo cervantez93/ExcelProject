@@ -29,25 +29,46 @@ public class TeamResultsObject {
     private int awayScoredGoals;
     private int awayLostGoals;
 
+    //    @Override
+//    public String toString() {
+//        return "TeamResultsObject{" +
+//                "teamName= " + teamName +
+//                ", wonGames=" + getWonGames() +
+//                ", awayWonGames=" + awayWonGames +
+//                ", homeWonGames=" + homeWonGames +
+//                ", lostGames=" + getLostGames() +
+//                ", awayLostGames=" + awayLostGames +
+//                ", homeLostGames=" + homeLostGames +
+//                ", drawGames=" + getDrawGames() +
+//                ", homeDrawGames=" + homeDrawGames +
+//                ", awayDrawGames=" + awayDrawGames +
+//                ", allScoredGoals=" + getAllScoredGoals() +
+//                ", allLostGoals=" + getAllLostGoals() +
+//                ", homeScoredGoals=" + homeScoredGoals +
+//                ", homeLostGoals=" + homeLostGoals +
+//                ", awayScoredGoals=" + awayScoredGoals +
+//                ", awayLostGoals=" + awayLostGoals + "}\n";
+//    }
     @Override
     public String toString() {
         return "TeamResultsObject{" +
                 "teamName= " + teamName +
-                ", wonGames=" + wonGames +
-                ", awayWonGames=" + awayWonGames +
-                ", homeWonGames=" + homeWonGames +
-                ", lostGames=" + lostGames +
-                ", awayLostGames=" + awayLostGames +
-                ", homeLostGames=" + homeLostGames +
-                ", drawGames=" + drawGames +
-                ", homeDrawGames=" + homeDrawGames +
-                ", awayDrawGames=" + awayDrawGames +
-                ", allScoredGoals=" + allScoredGoals +
-                ", allLostGoals=" + allLostGoals +
-                ", homeScoredGoals=" + homeScoredGoals +
-                ", homeLostGoals=" + homeLostGoals +
-                ", awayScoredGoals=" + awayScoredGoals +
-                ", awayLostGoals=" + awayLostGoals + "}\n";
+                ", points= " + getAllPoints() +
+                ", wonGames=" + getWonGames() +
+                "(H:" + homeWonGames +
+                " / A:" + awayWonGames + ") " +
+                ", lostGames=" + getLostGames() +
+                "(H:" + homeLostGames +
+                " / A:" + awayLostGames + ") " +
+                ", drawGames=" + getDrawGames() +
+                "(H:" + homeDrawGames +
+                " / A:" + awayDrawGames + ") " +
+                ", allScoredGoals=" + getAllScoredGoals() +
+                "(H:" + homeScoredGoals +
+                " / A:" + awayScoredGoals + ") " +
+                ", allLostGoals=" + getAllLostGoals() +
+                "(H:" + homeLostGoals +
+                " / A:" + awayLostGoals + ") " + "}\n";
     }
 
     //TODO: Do weryifikacji: czy potrzebny sparametryzowany konstruktor (może powinien być pusty, ale z wszystkimi this.Zmienna
@@ -103,8 +124,6 @@ public class TeamResultsObject {
         TeamNamesList teamNamesList = new TeamNamesList();
         Map<String, TeamResultsObject> teamResultsObjectHashMap = new HashMap<>();
 
-        //System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX === " + teamNamesList.getTeamNames(path).get(0));
-
         teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(firstIndex), new TeamResultsObject(teamNamesList.getTeamNames(path).get(firstIndex), 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0));
 
@@ -154,13 +173,13 @@ public class TeamResultsObject {
             System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
         }
 
-        teamResultsObjectHome.setHomeScoredGoals(teamResultsObjectHome.getHomeScoredGoals() + homeScoredGoals);
-        teamResultsObjectHome.setHomeLostGoals(teamResultsObjectHome.getHomeLostGoals() + homeLostGoals);
+        teamResultsObjectHome.addHomeScoredGoals(teamResultsObjectHome.getHomeScoredGoals() + homeScoredGoals);
+        teamResultsObjectHome.addHomeLostGoals(teamResultsObjectHome.getHomeLostGoals() + homeLostGoals);
         // ^^ wyżej update drużyny gospodarzy
 
         // niżej update drużyny gości
-        teamResultsObjectHome.setAwayLostGoals(teamResultsObjectAway.getAwayLostGoals() + awayLostGoals);
-        teamResultsObjectHome.setAwayScoredGoals(teamResultsObjectAway.getAwayScoredGoals() + awayScoredGoals);
+        teamResultsObjectHome.addAwayLostGoals(teamResultsObjectAway.getAwayLostGoals() + awayLostGoals);
+        teamResultsObjectHome.addAwayScoredGoals(teamResultsObjectAway.getAwayScoredGoals() + awayScoredGoals);
 
 
         resultsMap.put(teamHomeName, teamResultsObjectHome);
@@ -189,28 +208,29 @@ public class TeamResultsObject {
         return this.awayPoints = getAwayPoints;
     }
 
-    public int setWonGames() {
-        return awayWonGames + homeWonGames;
+
+//    public int setWonGames() {
+//        return awayWonGames + homeWonGames;
+//    }
+//
+//    public int setLostGames() {
+//        return homeLostGames + awayLostGames;
+//    }
+
+    public int addHomeScoredGoals(int getHomeScoredGoals1) {
+        return this.homeScoredGoals = homeScoredGoals + getHomeScoredGoals1;
     }
 
-    public int setLostGames() {
-        return homeLostGames + awayLostGames;
+    public int addHomeLostGoals(int getHomeLostGoals1) {
+        return this.homeLostGoals = homeLostGoals + getHomeLostGoals1;
     }
 
-    public int setHomeScoredGoals(int getHomeScoredGoals) {
-        return this.homeScoredGoals = getHomeScoredGoals;
+    public int addAwayScoredGoals(int getAwayScoredGoals1) {
+        return this.awayScoredGoals = awayScoredGoals + getAwayScoredGoals1;
     }
 
-    public int setHomeLostGoals(int getHomeLostGoals) {
-        return this.homeLostGoals = getHomeLostGoals;
-    }
-
-    public int setAwayScoredGoals(int getAwayScoredGoals) {
-        return this.awayScoredGoals = getAwayScoredGoals;
-    }
-
-    public int setAwayLostGoals(int getAwayLostGoals) {
-        return this.awayLostGoals = getAwayLostGoals;
+    public int addAwayLostGoals(int getAwayLostGoals1) {
+        return this.awayLostGoals = awayLostGoals + getAwayLostGoals1;
     }
 
 
@@ -263,15 +283,15 @@ public class TeamResultsObject {
     }
 
     public int getWonGames() {
-        return wonGames;
+        return awayWonGames + homeWonGames;
     }
 
     public int getLostGames() {
-        return lostGames;
+        return awayLostGames + homeLostGames;
     }
 
     public int getDrawGames() {
-        return drawGames;
+        return homeDrawGames + awayDrawGames;
     }
 
     public int getHomeScoredGoals() {

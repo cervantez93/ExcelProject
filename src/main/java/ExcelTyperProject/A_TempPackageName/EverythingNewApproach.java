@@ -83,7 +83,7 @@ public class EverythingNewApproach {
                 TeamResultsObject teamResultsObjectHome = mapOfResults.get(teamNamesFromThisRound.get(firstIndex));
                 TeamResultsObject teamResultsObjectAway = mapOfResults.get(teamNamesFromThisRound.get(secondIndex));
 
-                System.out.println("Drużyna gospodarzy odnaleziona w mapie: " + mapOfResults.containsKey(teamNamesFromThisRound.get(firstIndex))+" ,Drużyna gości odnaleziona w mapie: " + mapOfResults.containsKey(teamNamesFromThisRound.get(secondIndex)));
+                System.out.println("Drużyna gospodarzy odnaleziona w mapie: " + mapOfResults.containsKey(teamNamesFromThisRound.get(firstIndex)) + " ,Drużyna gości odnaleziona w mapie: " + mapOfResults.containsKey(teamNamesFromThisRound.get(secondIndex)));
 
                 System.out.println("Mecz " + teamResultsObjectHome.getTeamName() + " - " + teamResultsObjectAway.getTeamName() + "  zakończony wynikiem [" + tempResults.get(0) + "]");
                 //System.out.println("Gospodarze: "+teamResultsObjectHome.getTeamName() +", goście: "+teamResultsObjectAway.getTeamName()); // - dobrze zwraca nazwy drużyn
@@ -92,36 +92,51 @@ public class EverythingNewApproach {
                 System.out.print("Wyjazdowa drużyna przed aktualizacją: " + teamResultsObjectAway.toString());
 
 
+                System.out.println("ilość bramek przed zmianami - gospodarze strzelone: " + teamResultsObjectHome.getHomeScoredGoals() + ", stracone" + teamResultsObjectHome.getHomeLostGoals());
+                System.out.println("ilość bramek przed zmianami - goście strzelone: " + teamResultsObjectAway.getAwayLostGoals() + ", stracone" + teamResultsObjectAway.getAwayScoredGoals());
+
+
                 if (tempCheckResult == 1) {
                     //  System.out.println("Zwycięstwo gospodarzy");
-                    teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomePoints() + 3);
+                    teamResultsObjectHome.setHomePoints(teamResultsObjectHome.getHomePoints() + 3);
                     teamResultsObjectHome.setHomeWonGames(teamResultsObjectHome.getHomeWonGames() + 1);
                     teamResultsObjectAway.setAwayLostGames(teamResultsObjectAway.getAwayLostGames() + 1);
 
                 } else if (tempCheckResult == 2) {
                     // System.out.println("Zwycięstwo gości ");
                     teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getAwayPoints() + 3);
-                    teamResultsObjectHome.setAwayWonGames(teamResultsObjectHome.getAwayWonGames() + 1);
+                    teamResultsObjectAway.setAwayWonGames(teamResultsObjectAway.getAwayWonGames() + 1);
                     teamResultsObjectHome.setHomeLostGames(teamResultsObjectHome.getHomeLostGames() + 1);
                 } else if (tempCheckResult == 0) {
                     //  System.out.println("Remis");
+                    teamResultsObjectHome.setHomePoints(teamResultsObjectHome.getHomePoints() + 1);
                     teamResultsObjectHome.setHomeDrawGames(teamResultsObjectHome.getHomeDrawGames() + 1);
+                    teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getAwayPoints() + 1);
                     teamResultsObjectAway.setAwayDrawGames(teamResultsObjectAway.getHomeDrawGames() + 1);
 
                 } else if (tempCheckResult == 3) {
                     System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
                 }
 
-                teamResultsObjectHome.setHomeScoredGoals(teamResultsObjectHome.getHomeScoredGoals() + tempResults.get(0).charAt(0));
-                teamResultsObjectHome.setHomeLostGoals(teamResultsObjectHome.getHomeLostGoals() + tempResults.get(0).charAt(2));
+                teamResultsObjectHome.addHomeScoredGoals(Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(0)).toString()));
+                teamResultsObjectHome.addHomeLostGoals(Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(2)).toString()));
                 // ^^ wyżej update drużyny gospodarzy
 
+//                Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(0)).toString())
+//                Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(2)).toString())
+
+
                 // niżej update drużyny gości
-//                System.out.println("ilość bramek przed zmianami  = " + teamResultsObjectAway.getAwayLostGoals());
-                teamResultsObjectAway.setAwayLostGoals(teamResultsObjectAway.getAwayLostGoals() + tempResults.get(0).charAt(0));
-//                System.out.println("ilość zdobytych bramek  = " + tempResults.get(0).charAt(0));
-//                System.out.println("ilość bramek po zmianach  = " + teamResultsObjectAway.getAwayLostGoals());
-                teamResultsObjectAway.setAwayScoredGoals(teamResultsObjectAway.getAwayScoredGoals() + tempResults.get(0).charAt(2));
+                teamResultsObjectAway.addAwayLostGoals(Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(0)).toString()));
+                teamResultsObjectAway.addAwayScoredGoals(Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(2)).toString()));
+
+
+                System.out.println("Wynik meczu w integerach to: " + Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(0)).toString()) + ":" + Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(2)).toString()));
+
+                //TODO: to są wartości int z tempResults - przerobione z charów!!!!!!!!
+
+                System.out.println("ilość po zmianach - gospodarze strzelone: " + teamResultsObjectHome.getHomeScoredGoals() + ", stracone" + teamResultsObjectHome.getHomeLostGoals());
+                System.out.println("ilość po zmianach - goście  strzelone: " + teamResultsObjectAway.getAwayLostGoals() + ", stracone" + teamResultsObjectHome.getAwayScoredGoals());
 
                 //TODO: mapa trzyma referencję obiektu, więc wystarczy aktualizacja na obiekcie, nie trzeba aktualizować dodatkowo elementu obiektu - to dzieje się automatycznie
 //                mapOfResults.put(teamNamesFromThisRound.get(firstIndex), teamResultsObjectHome);
@@ -135,10 +150,6 @@ public class EverythingNewApproach {
 
 
                 // TODO: Wyrzucenie souta w ostatniej kolejce // można zrobić co kolejke żeby sprawdzić czy prawidłowo zapisuje wartości do każdej kolejki
-                if (roundNumber == 0) {
-                    System.out.println("XXX: " + mapOfResults.values());
-                }
-
 
                 for (int k = 1; k <= tempResults.size() - 1; k++) {
                     //sprawdzanie typu wyniku każdego meczu
@@ -189,7 +200,8 @@ public class EverythingNewApproach {
                 //odjęcie jednego punktu za mecz 3 kolejki: Śląsk - Radomiak
                 typerPointsOneRoundList.set(1, typerPointsOneRoundList.get(1) - 1);
             }
-            System.out.println("Łączna punktacja " + (roundNumber + 1) + " kolejki [Damian, Ryszard, Paweł, Łukasz] = " + typerPointsOneRoundList);
+            System.out.println("Łączna punktacja " + (roundNumber + 1) + " kolejki [Damian, Ryszard, Paweł, Łukasz] = " + typerPointsOneRoundList + "\n");
+            System.out.println("Kolejka nr : " + (roundNumber + 1) + ", " + mapOfResults.values());
 
             //TODO: koniec pierwszego fora
         }

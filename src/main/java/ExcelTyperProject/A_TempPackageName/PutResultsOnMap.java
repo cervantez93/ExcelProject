@@ -31,13 +31,13 @@ public class PutResultsOnMap {
             System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
         }
 
-        teamResultsObjectHome.setHomeScoredGoals(teamResultsObjectHome.getHomeScoredGoals() + homeScoredGoals);
-        teamResultsObjectHome.setHomeLostGoals(teamResultsObjectHome.getHomeLostGoals() + homeLostGoals);
+        teamResultsObjectHome.addHomeScoredGoals(teamResultsObjectHome.getHomeScoredGoals() + homeScoredGoals);
+        teamResultsObjectHome.addHomeLostGoals(teamResultsObjectHome.getHomeLostGoals() + homeLostGoals);
         // ^^ wyżej update drużyny gospodarzy
 
         // niżej update drużyny gości
-        teamResultsObjectHome.setAwayLostGoals(teamResultsObjectAway.getAwayLostGoals() + awayLostGoals);
-        teamResultsObjectHome.setAwayScoredGoals(teamResultsObjectAway.getAwayScoredGoals() + awayScoredGoals);
+        teamResultsObjectHome.addAwayLostGoals(teamResultsObjectAway.getAwayLostGoals() + awayLostGoals);
+        teamResultsObjectHome.addAwayScoredGoals(teamResultsObjectAway.getAwayScoredGoals() + awayScoredGoals);
 
 
         resultsMap.put(teamHomeName, teamResultsObjectHome);
