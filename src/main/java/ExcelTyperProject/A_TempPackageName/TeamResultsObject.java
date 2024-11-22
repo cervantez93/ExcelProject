@@ -29,30 +29,12 @@ public class TeamResultsObject {
     private int awayScoredGoals;
     private int awayLostGoals;
 
-    //    @Override
-//    public String toString() {
-//        return "TeamResultsObject{" +
-//                "teamName= " + teamName +
-//                ", wonGames=" + getWonGames() +
-//                ", awayWonGames=" + awayWonGames +
-//                ", homeWonGames=" + homeWonGames +
-//                ", lostGames=" + getLostGames() +
-//                ", awayLostGames=" + awayLostGames +
-//                ", homeLostGames=" + homeLostGames +
-//                ", drawGames=" + getDrawGames() +
-//                ", homeDrawGames=" + homeDrawGames +
-//                ", awayDrawGames=" + awayDrawGames +
-//                ", allScoredGoals=" + getAllScoredGoals() +
-//                ", allLostGoals=" + getAllLostGoals() +
-//                ", homeScoredGoals=" + homeScoredGoals +
-//                ", homeLostGoals=" + homeLostGoals +
-//                ", awayScoredGoals=" + awayScoredGoals +
-//                ", awayLostGoals=" + awayLostGoals + "}\n";
-//    }
+
     @Override
     public String toString() {
-        return "TeamName= " + teamName +
-                ", points= " + getAllPoints() +
+        return ", points= " + getAllPoints() +
+                ", matches=" + (getWonGames() + getLostGames() + getDrawGames()) +
+                ", matches=" + (getWonGames() + getLostGames() + getDrawGames()) +
                 ", wonGames=" + getWonGames() +
                 "(H:" + homeWonGames +
                 " / A:" + awayWonGames + ")" +
@@ -68,6 +50,26 @@ public class TeamResultsObject {
                 ", allLostGoals=" + getAllLostGoals() +
                 "(H:" + homeLostGoals +
                 " / A:" + awayLostGoals + ")}\n";
+    }
+
+    public String homeMatchesInTableToString() {
+        return "points= " + getHomePoints() +
+                ", matches=" + (getHomeWonGames() + getHomeLostGames() + getHomeDrawGames()) +
+                ", wonGames=" + getHomeWonGames() +
+                ", lostGames=" + getLostGames() +
+                ", drawGames=" + getHomeDrawGames() +
+                ", scoredGoals=" + homeScoredGoals +
+                ", lostGoals=" + homeLostGoals + ")}\n";
+    }
+
+    public String awayMatchesInTableToString() {
+        return "points= " + getAwayPoints() +
+                ", matches=" + (getAwayWonGames() + getAwayLostGames() + getAwayDrawGames()) +
+                ", wonGames=" + getAwayWonGames() +
+                ", lostGames=" + getAwayLostGames() +
+                ", drawGames=" + getAwayDrawGames() +
+                ", scoredGoals=" + awayScoredGoals +
+                ", lostGoals=" + awayLostGoals + ")}\n";
     }
 
     public TeamResultsObject(String teamName, int getHomePoints, int getAwayPoints, int getHomeDrawGames, int getAwayDrawGames, int getHomeScoredGoals, int getHomeLostGoals,

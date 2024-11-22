@@ -5,7 +5,6 @@ public class TyperClass {
     private String name;
     private int points;
 
-    // ta zmienna może zostać wyliczona :  points - 2* exactResultsAmount
     private int correctResultsAmount;
     private int exactResultsAmount;
     private int recordAmountOfPointsInOneRound;

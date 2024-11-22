@@ -3,11 +3,12 @@ package ExcelTyperProject.A_TempPackageName;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class EverythingNewApproach {
+    Map<String, TeamResultsObject> unsortedMap = new HashMap<>();
 
     public static void main(String[] args) {
 
@@ -37,7 +38,7 @@ public class EverythingNewApproach {
             String path = "src/main/java/ExcelTyperProject/AllRoundsFiles/Typer" + (roundNumber + 1) + ".txt";
             ReadFiles.readFiles(path);
 
-            //  System.out.println("\nAktualny numer kolejki: " + (roundNumber + 1));
+            System.out.println("\nKolejka: " + (roundNumber + 1));
 
             // indeks 0 = Damian, 1 = Ryszard, 2 = Paweł, 3 = Łukasz
             List<Integer> typerPointsOneRoundList = new ArrayList<>();
@@ -91,7 +92,7 @@ public class EverythingNewApproach {
                     teamResultsObjectHome.setHomePoints(teamResultsObjectHome.getHomePoints() + 1);
                     teamResultsObjectHome.setHomeDrawGames(teamResultsObjectHome.getHomeDrawGames() + 1);
                     teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getAwayPoints() + 1);
-                    teamResultsObjectAway.setAwayDrawGames(teamResultsObjectAway.getHomeDrawGames() + 1);
+                    teamResultsObjectAway.setAwayDrawGames(teamResultsObjectAway.getAwayDrawGames() + 1);
 
                 } else if (tempCheckResult == 3) {
                     System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
@@ -107,33 +108,31 @@ public class EverythingNewApproach {
                 teamResultsObjectAway.addAwayLostGoals(Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(0)).toString()));
                 teamResultsObjectAway.addAwayScoredGoals(Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(2)).toString()));
 
+
                 for (int k = 1; k <= tempResults.size() - 1; k++) {
                     //sprawdzanie typu wyniku każdego meczu
                     int tempResultType = EverythingNewApproach.checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
 
                     //sprawdzenie typu wyniku dla każdego TYPERA
-                    int tempTyperResult = EverythingNewApproach.checkResultType(tempResults.get(k).charAt(0), tempResults.get(k).charAt(2));
+                    int tempTyperResultType = EverythingNewApproach.checkResultType(tempResults.get(k).charAt(0), tempResults.get(k).charAt(2));
 
-//                    System.out.println("Porównuję typy zwycięstw " + tempResultType + ", " + tempTyperResult);
-//                    System.out.println("Sprawdzam czy wynik " + tempResults.get(0).charAt(0) + ":" + tempResults.get(0).charAt(2) + " (Typ " + tempResultType + ") jest równy wynikowi "
-//                            + tempResults.get(k).charAt(0) + ":" + tempResults.get(k).charAt(2) + " (Typ " + tempTyperResult + ")");
-
-                    if (tempResultType == tempTyperResult) {
+                    if (tempResultType == tempTyperResultType) {
                         if ((tempResults.get(0).charAt(0) == tempResults.get(k).charAt(0)) && (tempResults.get(0).charAt(2) == tempResults.get(k).charAt(2))) {
                             typerPointsOneRoundList.set(k - 1, (typerPointsOneRoundList.get(k - 1) + 3));
 
                             typerClassList.get(k - 1).setExactResultsAmount((typerClassList.get(k - 1).getExactResultsAmount() + 1));
                             typerClassList.get(k - 1).setCorrectResultsAmount((typerClassList.get(k - 1).getCorrectResultsAmount() + 1));
-//                            System.out.println("Dla gracza o indeksie[" + (k - 1) + "], dodaję 3 pkt za dokładny wynik [" + (tempResults.get(0).charAt(0) + ":"
-//                                    + (tempResults.get(0).charAt(2) + "]" + " ,a który obstawił wynikiem: [" + tempResults.get(k).charAt(0) + ":" + tempResults.get(k).charAt(2) + "]")));
+                            System.out.println("Dla gracza " + typerClassList.get(k - 1).getName() + " dodaję 3 pkt za DOKŁADNY WYNIK [" + teamResultsObjectHome.getTeamName() + " - " + teamResultsObjectAway.getTeamName() + ", wynik:  " + (tempResults.get(0).charAt(0) + ":"
+                                    + (tempResults.get(0).charAt(2) + "]" + ", a który obstawił wynikiem: [" + tempResults.get(k).charAt(0) + ":" + tempResults.get(k).charAt(2) + "]")));
                         } else {
                             typerPointsOneRoundList.set(k - 1, (typerPointsOneRoundList.get(k - 1) + 1));
                             typerClassList.get(k - 1).setCorrectResultsAmount((typerClassList.get(k - 1).getCorrectResultsAmount() + 1));
-//                            System.out.println("Dla gracza o indeksie[" + (k - 1) + "], dodaję 1 pkt za wynik [" + (tempResults.get(0).charAt(0) + ":"
-//                                    + (tempResults.get(0).charAt(2) + "]" + " ,a który obstawił wynikiem: [" + tempResults.get(k).charAt(0) + ":" + tempResults.get(k).charAt(2) + "]")));
+                            System.out.println("Dla gracza  " + typerClassList.get(k - 1).getName() + " dodaję 1 pkt za mecz zakończony wynikiem [" + teamResultsObjectHome.getTeamName() + " - " + teamResultsObjectAway.getTeamName() + ", wynik:  " + (tempResults.get(0).charAt(0) + ":"
+                                    + (tempResults.get(0).charAt(2) + "]" + ", a który obstawił typem: [" + tempResults.get(k).charAt(0) + ":" + tempResults.get(k).charAt(2) + "]")));
                         }
                     }
                 }
+
                 tempResults.clear();
             }
 
@@ -150,8 +149,17 @@ public class EverythingNewApproach {
                 //odjęcie jednego punktu za mecz 3 kolejki: Śląsk - Radomiak
                 typerPointsOneRoundList.set(1, typerPointsOneRoundList.get(1) - 1);
                 mapOfResults.get("ŚląskWrocław").addHomeScoredGoals(-9);
+                mapOfResults.get("ŚląskWrocław").setHomeWonGames(-1);
+                mapOfResults.get("ŚląskWrocław").setHomePoints(mapOfResults.get("ŚląskWrocław").getHomePoints() - 3);
                 mapOfResults.get("RadomiakRadom").addAwayLostGoals(-9);
+                mapOfResults.get("RadomiakRadom").setAwayLostGames(-1);
             }
+
+            System.out.println("Podsumowanie " + (roundNumber + 1) + " kolejki: \n"
+                    + typerClassList.get(0).getName() + " uzyskał: " + typerPointsOneRoundList.get(0) + " punktów\n"
+                    + typerClassList.get(1).getName() + " uzyskał: " + typerPointsOneRoundList.get(1) + " punktów\n"
+                    + typerClassList.get(2).getName() + " uzyskał: " + typerPointsOneRoundList.get(2) + " punktów\n"
+                    + typerClassList.get(3).getName() + " uzyskał: " + typerPointsOneRoundList.get(3) + " punktów\n");
 
             //TODO: koniec pierwszego fora
         }
@@ -162,11 +170,7 @@ public class EverythingNewApproach {
             System.out.println(typerClassList.get(n).getName() + ": [" + "punkty: " + typerClassList.get(n).getPoints() + ", dokładne wyniki: " + typerClassList.get(n).getExactResultsAmount()
                     + ", rekodowa ilość punktów: " + typerClassList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce " + typerClassList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber() + "]");
         }
-
         //TODO : SPRAWDZIĆ POZOSTAŁE WARTOŚCI PÓL KAŻDEGO TYPERA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-        System.out.println(" Stan tabeli: " + mapOfResults.values());
         //KONIEC MAINA
     }
 
