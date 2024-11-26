@@ -15,8 +15,10 @@ public class Main {
         List<Integer> typerPointsAllRoundsList = new ArrayList<>();
         List<TyperObject> typerObjectList = new ArrayList<>();
 
+        int numberOfPlayers = GetPlayerNames.getAmountOfPlayers();
 
-        for (int i = 0; i < GetPlayerNames.getAmountOfPlayers(); i++) {
+
+        for (int i = 0; i < numberOfPlayers; i++) {
             typerPointsAllRoundsList.add(i, 0);
             try {
                 typerObjectList.add(new TyperObject(GetPlayerNames.getNames().get(i), 0, 0, 0, 0, 0));
@@ -52,11 +54,11 @@ public class Main {
                 List<String> tempResults = new ArrayList<>();
                 // Jest 4 typerów + wynik, a więc łącznie 5x3 znaków (wynik format X:Y, zakładając, że nikt nie obstawi dwucfrowego wyniku)
                 // W ten sposób otrzymujemy 5 wyników, można je przypisać do zmiennych stringlistIterator porówynwać realny wynik do wyników typera
-                for (int j = 0; j < ((GetPlayerNames.getAmountOfPlayers()) * 3 + 3); j += 3) {
+                for (int j = 0; j < ((numberOfPlayers * 3) + 3); j += 3) {
                     tempResults.add(stringList.get(stringlistIterator).substring(j + 1, j + 4));  //Wynik, Damian, Ryszard, Paweł, Łukasz <-- pierwszy jest wynik, dalej typy graczy
                 }
 
-                List<String> teamNamesFromThisRound = TeamNamesList.getTeamNames(path); // tutaj jest lista drużyn dla każdej kolejki w ODPOWIEDNIEJ kolejności
+                List<String> teamNamesFromThisRound = TeamNamesList.getTeamNames(path); // tutaj jest lista drużyn w ODPOWIEDNIEJ kolejności dla każdej kolejki
                 //dopasowanie indeksów do iteracji w tej pętli, żeby nie robić oddzielnej pętli
                 int firstIndex = 2 * stringlistIterator;
                 int secondIndex = firstIndex + 1;
@@ -70,7 +72,7 @@ public class Main {
                         (Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(0)).toString())), (Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(2)).toString())));
 
 
-                for (int k = 1; k <= tempResults.size() - 1; k++) {
+                for (int k = 1; k <= numberOfPlayers; k++) {
                     //sprawdzanie typu wyniku każdego meczu
                     int tempResultType = CheckResult.checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
 
@@ -82,11 +84,13 @@ public class Main {
                             typerPointsOneRoundList.set(k - 1, (typerPointsOneRoundList.get(k - 1) + 3));
                             typerObjectList.get(k - 1).setExactResultsAmount((typerObjectList.get(k - 1).getExactResultsAmount() + 1));
                             typerObjectList.get(k - 1).setCorrectResultsAmount((typerObjectList.get(k - 1).getCorrectResultsAmount() + 1));
+                            //TODO: NIE KASOWAĆ - KONTROLNY SOUT!
 //                            System.out.println("Dla gracza " + typerObjectList.get(k - 1).getName() + " dodaję 3 pkt za DOKŁADNY WYNIK [" + teamResultsObjectHome.getTeamName() + " - " + teamResultsObjectAway.getTeamName() + ", wynik:  " + (tempResults.get(0).charAt(0) + ":"
 //                                    + (tempResults.get(0).charAt(2) + "]" + ", a który obstawił wynikiem: [" + tempResults.get(k).charAt(0) + ":" + tempResults.get(k).charAt(2) + "]")));
                         } else {
                             typerPointsOneRoundList.set(k - 1, (typerPointsOneRoundList.get(k - 1) + 1));
                             typerObjectList.get(k - 1).setCorrectResultsAmount((typerObjectList.get(k - 1).getCorrectResultsAmount() + 1));
+                            //TODO: NIE KASOWAĆ - KONTROLNY SOUT!
 //                            System.out.println("Dla gracza  " + typerObjectList.get(k - 1).getName() + " dodaję 1 pkt za mecz zakończony wynikiem [" + teamResultsObjectHome.getTeamName() + " - " + teamResultsObjectAway.getTeamName() + ", wynik:  " + (tempResults.get(0).charAt(0) + ":"
 //                                    + (tempResults.get(0).charAt(2) + "]" + ", a który obstawił typem: [" + tempResults.get(k).charAt(0) + ":" + tempResults.get(k).charAt(2) + "]")));
                         }
@@ -112,6 +116,7 @@ public class Main {
                 mapOfResults.get("RadomiakRadom").setAwayLostGames(-1);
             }
 
+            //TODO: NIE KASOWAĆ - KONTROLNY SOUT!
 //            System.out.println("\nPodsumowanie " + (roundNumber + 1) + " kolejki: \n"
 //                    + typerObjectList.get(0).getName() + " uzyskał: " + typerPointsOneRoundList.get(0) + " punktów\n"
 //                    + typerObjectList.get(1).getName() + " uzyskał: " + typerPointsOneRoundList.get(1) + " punktów\n"
@@ -119,11 +124,12 @@ public class Main {
 //                    + typerObjectList.get(3).getName() + " uzyskał: " + typerPointsOneRoundList.get(3) + " punktów\n");
 
             //wypisanie wyniku po 8 kolejce - w momencie gdy Łukasz zrezygnował
+            //TODO: NIE KASOWAĆ - KONTROLNY SOUT!
 //            if (roundNumber == 8) {
 //                System.out.println("Stan po kolejce: " + (roundNumber));
 //                for (int n = 0; n < 4; n++) {
-//                    System.out.println(typerObjectList.get(n).getName() + ": [" + "punkty: " + typerPointsAllRoundsList.get(n) + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount()
-//                            + ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber() + "]");
+//                    System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerPointsAllRoundsList.get(n) + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount()
+//                            + ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
 //                }
 //            }
 
@@ -133,21 +139,25 @@ public class Main {
         for (int n = 0; n < 4; n++) {
             //prawidłowe ustawienie liczby zsumowanych punktów
             typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
-            System.out.println(typerObjectList.get(n).getName() + ": [" + "punkty: " + typerObjectList.get(n).getPoints() + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount()
-                    + ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber() + "]");
+            System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerObjectList.get(n).getPoints() + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount()
+                    + ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
         }
 
-        System.out.println(funFacts(mapOfResults));
 
-        //    chooseTableVariant(mapOfResults);
+        //funFacts(mapOfResults);
+        //PrintTable.chooseTableVariant(mapOfResults);
+
+        //TODO: pomyśleć jak dodać rekordową wygraną domową i wyjazdową
+        // Można liczyć różnicę bramek i założyć, że rekordowa wygrana to ta z największą ilością strzelonych bramek (np 5:2 jest lepszym wynikiem niż 3:0)
+        // Analogicznie dla rekordowych przegranych, remisów nie ma chyba sensu.
+
         //KONIEC MAINA
     }
 
 
-    public static String funFacts(Map<String, TeamResultsObject> mapOfResults) {
-        MaxValuesInMap maxValuesInMap = new MaxValuesInMap();
-
-        return "Ciekawostki:\n" + MaxValuesInMap.maxAmountOfWins(mapOfResults) + "\n" +
+    public static void funFacts(Map<String, TeamResultsObject> mapOfResults) {
+        System.out.println("Statystyki:\n" +
+                MaxValuesInMap.maxAmountOfWins(mapOfResults) + "\n" +
                 MaxValuesInMap.maxAmountOfLoses(mapOfResults) + "\n" +
                 MaxValuesInMap.maxAmountOfDraws(mapOfResults) + "\n" +
                 MaxValuesInMap.maxScoredGoals(mapOfResults) + "\n" +
@@ -155,36 +165,23 @@ public class Main {
                 MaxValuesInMap.maxAwayScoredGoals(mapOfResults) + "\n" +
                 MaxValuesInMap.maxLostGoals(mapOfResults) + "\n" +
                 MaxValuesInMap.maxHomeLostGoals(mapOfResults) + "\n" +
-                MaxValuesInMap.maxAwayLostGoals(mapOfResults);
+                MaxValuesInMap.maxAwayLostGoals(mapOfResults) + "\n" +
+                MaxValuesInMap.maxGoalDifference(mapOfResults) + "\n" +
+                MaxValuesInMap.maxHomeGoalDifference(mapOfResults) + "\n" +
+                MaxValuesInMap.maxAwayGoalDifference(mapOfResults) + "\n" +
+                MinValuesInMap.minAmountOfWins(mapOfResults) + "\n" +
+                MinValuesInMap.minAmountOfLoses(mapOfResults) + "\n" +
+                MinValuesInMap.minAmountOfDraws(mapOfResults) + "\n" +
+                MinValuesInMap.minScoredGoals(mapOfResults) + "\n" +
+                MinValuesInMap.minHomeScoredGoals(mapOfResults) + "\n" +
+                MinValuesInMap.minAwayScoredGoals(mapOfResults) + "\n" +
+                MinValuesInMap.minLostGoals(mapOfResults) + "\n" +
+                MinValuesInMap.minHomeLostGoals(mapOfResults) + "\n" +
+                MinValuesInMap.minAwayLostGoals(mapOfResults) + "\n" +
+                MinValuesInMap.minGoalDifference(mapOfResults) + "\n" +
+                MinValuesInMap.minHomeGoalDifference(mapOfResults) + "\n" +
+                MinValuesInMap.minAwayGoalDifference(mapOfResults) + "\n");
     }
 
-
-    public static void chooseTableVariant(Map<String, TeamResultsObject> mapOfResults) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Wybierz opcję: ");
-        System.out.println("1. Tabela łączna.");
-        System.out.println("2. Tabela domowa.");
-        System.out.println("3. Tabela wyjazdowa.");
-        System.out.println("4. Zakończ program");
-        int option = scanner.nextInt();
-        switch (option) {
-            case 1:
-                System.out.print("\nTabela łączna: ");
-                SortMapToTable.sortedAllMatchesInTable(mapOfResults);
-                break;
-            case 2:
-                System.out.print("\nTabela domowa: ");
-                SortMapToTable.sortedHomeMatchesInTable(mapOfResults);
-                break;
-            case 3:
-                System.out.print("\nTabela wyjazdowa: ");
-                SortMapToTable.sortedAwayMatchesInTable(mapOfResults);
-                break;
-            case 4:
-                System.out.print("\nTabela wyjazdowa: ");
-                SortMapToTable.sortedAwayMatchesInTable(mapOfResults);
-                break;
-        }
-    }
 }
 

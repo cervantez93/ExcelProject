@@ -128,9 +128,7 @@ public class TeamResultsObject {
         this.teamName = teamName;
     }
 
-    public TeamResultsObject() {
-    }
-
+    public TeamResultsObject() {}
     ;
 
 

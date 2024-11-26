@@ -1,18 +1,18 @@
 package ExcelTyperProject.A_TempPackageName;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-public class MaxValuesInMap {
+public class MinValuesInMap {
 
-    //TODO: dodać goalDifference (+home/away)
-
-    public static String maxAmountOfWins(Map<String, TeamResultsObject> mapOfResults) {
+    public static String minAmountOfWins(Map<String, TeamResultsObject> mapOfResults) {
 
         // Znalezienie maksymalnej wartości i odpowiadających kluczy
-        List<String> result = findMaxValueAndKeys(mapOfResults, "getWonGames");
+        List<String> result = findMinValueAndKeys(mapOfResults, "getWonGames");
 
-        StringBuilder temp = new StringBuilder("Największa ilość wygranych: [" + result.get(0) + "], drużyny: ");
+        StringBuilder temp = new StringBuilder("Najmniejsza ilość wygranych: [" + result.get(0) + "], drużyny: ");
 
         for (int i = 1; i < result.size(); i++) {
             temp.append(result.get(i) + ", ");
@@ -24,12 +24,12 @@ public class MaxValuesInMap {
         return temp.toString();
     }
 
-    public static String maxAmountOfLoses(Map<String, TeamResultsObject> mapOfResults) {
+    public static String minAmountOfLoses(Map<String, TeamResultsObject> mapOfResults) {
 
         // Znalezienie maksymalnej wartości i odpowiadających kluczy
-        List<String> result = findMaxValueAndKeys(mapOfResults, "getLostGames");
+        List<String> result = findMinValueAndKeys(mapOfResults, "getLostGames");
 
-        StringBuilder temp = new StringBuilder("Największa ilość przegranych: [" + result.get(0) + "],  drużyny: ");
+        StringBuilder temp = new StringBuilder("Najmniejsza ilość przegranych: [" + result.get(0) + "],  drużyny: ");
 
         for (int i = 1; i < result.size(); i++) {
             temp.append(result.get(i) + ", ");
@@ -41,12 +41,12 @@ public class MaxValuesInMap {
         return temp.toString();
     }
 
-    public static String maxAmountOfDraws(Map<String, TeamResultsObject> mapOfResults) {
+    public static String minAmountOfDraws(Map<String, TeamResultsObject> mapOfResults) {
 
         // Znalezienie maksymalnej wartości i odpowiadających kluczy
-        List<String> result = findMaxValueAndKeys(mapOfResults, "getDrawGames");
+        List<String> result = findMinValueAndKeys(mapOfResults, "getDrawGames");
 
-        StringBuilder temp = new StringBuilder("Największa ilość remisów: [" + result.get(0) + "],  drużyny: ");
+        StringBuilder temp = new StringBuilder("Najmniejsza ilość remisów: [" + result.get(0) + "],  drużyny: ");
 
         for (int i = 1; i < result.size(); i++) {
             temp.append(result.get(i) + ", ");
@@ -58,12 +58,12 @@ public class MaxValuesInMap {
         return temp.toString();
     }
 
-    public static String maxScoredGoals(Map<String, TeamResultsObject> mapOfResults) {
+    public static String minScoredGoals(Map<String, TeamResultsObject> mapOfResults) {
 
         // Znalezienie maksymalnej wartości i odpowiadających kluczy
-        List<String> result = findMaxValueAndKeys(mapOfResults, "getAllScoredGoals");
+        List<String> result = findMinValueAndKeys(mapOfResults, "getAllScoredGoals");
 
-        StringBuilder temp = new StringBuilder("Największa ilość łącznie strzelonych bramek: [" + result.get(0) + "],  drużyny: ");
+        StringBuilder temp = new StringBuilder("Najmniejsza ilość łącznie strzelonych bramek: [" + result.get(0) + "],  drużyny: ");
 
         for (int i = 1; i < result.size(); i++) {
             temp.append(result.get(i) + ", ");
@@ -75,11 +75,11 @@ public class MaxValuesInMap {
         return temp.toString();
     }
 
-    public static String maxLostGoals(Map<String, TeamResultsObject> mapOfResults) {
+    public static String minLostGoals(Map<String, TeamResultsObject> mapOfResults) {
         // Znalezienie maksymalnej wartości i odpowiadających kluczy
-        List<String> result = findMaxValueAndKeys(mapOfResults, "getAllLostGoals");
+        List<String> result = findMinValueAndKeys(mapOfResults, "getAllLostGoals");
 
-        StringBuilder temp = new StringBuilder("Największa ilość łącznie straconych bramek: [" + result.get(0) + "],  drużyny: ");
+        StringBuilder temp = new StringBuilder("Najmniejsza ilość łącznie straconych bramek: [" + result.get(0) + "],  drużyny: ");
 
         for (int i = 1; i < result.size(); i++) {
             temp.append(result.get(i) + ", ");
@@ -91,11 +91,11 @@ public class MaxValuesInMap {
         return temp.toString();
     }
 
-    public static String maxHomeLostGoals(Map<String, TeamResultsObject> mapOfResults) {
+    public static String minHomeLostGoals(Map<String, TeamResultsObject> mapOfResults) {
         // Znalezienie maksymalnej wartości i odpowiadających kluczy
-        List<String> result = findMaxValueAndKeys(mapOfResults, "getHomeLostGoals");
+        List<String> result = findMinValueAndKeys(mapOfResults, "getHomeLostGoals");
 
-        StringBuilder temp = new StringBuilder("Największa ilość straconych bramek w meczach domowych: [" + result.get(0) + "],  drużyny: ");
+        StringBuilder temp = new StringBuilder("Najmniejsza ilość straconych bramek w meczach domowych: [" + result.get(0) + "],  drużyny: ");
 
         for (int i = 1; i < result.size(); i++) {
             temp.append(result.get(i) + ", ");
@@ -107,11 +107,11 @@ public class MaxValuesInMap {
         return temp.toString();
     }
 
-    public static String maxAwayLostGoals(Map<String, TeamResultsObject> mapOfResults) {
+    public static String minAwayLostGoals(Map<String, TeamResultsObject> mapOfResults) {
         // Znalezienie maksymalnej wartości i odpowiadających kluczy
-        List<String> result = findMaxValueAndKeys(mapOfResults, "getAwayLostGoals");
+        List<String> result = findMinValueAndKeys(mapOfResults, "getAwayLostGoals");
 
-        StringBuilder temp = new StringBuilder("Największa ilość straconych bramek w meczach wyjazdowych: [" + result.get(0) + "],  drużyny: ");
+        StringBuilder temp = new StringBuilder("Najmniejsza ilość straconych bramek w meczach wyjazdowych: [" + result.get(0) + "],  drużyny: ");
 
         for (int i = 1; i < result.size(); i++) {
             temp.append(result.get(i) + ", ");
@@ -123,11 +123,11 @@ public class MaxValuesInMap {
         return temp.toString();
     }
 
-    public static String maxHomeScoredGoals(Map<String, TeamResultsObject> mapOfResults) {
+    public static String minHomeScoredGoals(Map<String, TeamResultsObject> mapOfResults) {
         // Znalezienie maksymalnej wartości i odpowiadających kluczy
-        List<String> result = findMaxValueAndKeys(mapOfResults, "getHomeScoredGoals");
+        List<String> result = findMinValueAndKeys(mapOfResults, "getHomeScoredGoals");
 
-        StringBuilder temp = new StringBuilder("Największa ilość strzelonych bramek w meczach domowych: [" + result.get(0) + "],  drużyny: ");
+        StringBuilder temp = new StringBuilder("Najmniejsza ilość strzelonych bramek w meczach domowych: [" + result.get(0) + "],  drużyny: ");
 
         for (int i = 1; i < result.size(); i++) {
             temp.append(result.get(i) + ", ");
@@ -139,26 +139,11 @@ public class MaxValuesInMap {
         return temp.toString();
     }
 
-    public static String maxAwayScoredGoals(Map<String, TeamResultsObject> mapOfResults) {
+    public static String minAwayScoredGoals(Map<String, TeamResultsObject> mapOfResults) {
         // Znalezienie maksymalnej wartości i odpowiadających kluczy
-        List<String> result = findMaxValueAndKeys(mapOfResults, "getAwayScoredGoals");
+        List<String> result = findMinValueAndKeys(mapOfResults, "getAwayScoredGoals");
 
-        StringBuilder temp = new StringBuilder("Największa ilość strzelonych bramek w meczach wyjazdowych: [" + result.get(0) + "],  drużyny: ");
-
-        for (int i = 1; i < result.size(); i++) {
-            temp.append(result.get(i));
-        }
-        if (temp.isEmpty()) {
-            throw new IllegalArgumentException("Metoda zwraca null!");
-        }
-        return temp.toString();
-    }
-
-    public static String maxGoalDifference(Map<String, TeamResultsObject> mapOfResults) {
-        // Znalezienie maksymalnej wartości i odpowiadających kluczy
-        List<String> result = findMaxValueAndKeys(mapOfResults, "getGoalDifference");
-
-        StringBuilder temp = new StringBuilder("Najlepszy łączny bilans bramek: [" + result.get(0) + "],  drużyny: ");
+        StringBuilder temp = new StringBuilder("Najmniejsza ilość strzelonych bramek w meczach wyjazdowych: [" + result.get(0) + "],  drużyny: ");
 
         for (int i = 1; i < result.size(); i++) {
             temp.append(result.get(i) + ", ");
@@ -170,11 +155,11 @@ public class MaxValuesInMap {
         return temp.toString();
     }
 
-    public static String maxHomeGoalDifference(Map<String, TeamResultsObject> mapOfResults) {
+    public static String minGoalDifference(Map<String, TeamResultsObject> mapOfResults) {
         // Znalezienie maksymalnej wartości i odpowiadających kluczy
-        List<String> result = findMaxValueAndKeys(mapOfResults, "getHomeGoalDifference");
+        List<String> result = findMinValueAndKeys(mapOfResults, "getGoalDifference");
 
-        StringBuilder temp = new StringBuilder("Najlepszy domowy bilans bramek: [" + result.get(0) + "],  drużyny: ");
+        StringBuilder temp = new StringBuilder("Najgorszy łączny bilans bramek: [" + result.get(0) + "],  drużyny: ");
 
         for (int i = 1; i < result.size(); i++) {
             temp.append(result.get(i) + ", ");
@@ -186,11 +171,11 @@ public class MaxValuesInMap {
         return temp.toString();
     }
 
-    public static String maxAwayGoalDifference(Map<String, TeamResultsObject> mapOfResults) {
+    public static String minHomeGoalDifference(Map<String, TeamResultsObject> mapOfResults) {
         // Znalezienie maksymalnej wartości i odpowiadających kluczy
-        List<String> result = findMaxValueAndKeys(mapOfResults, "getAwayGoalDifference");
+        List<String> result = findMinValueAndKeys(mapOfResults, "getHomeGoalDifference");
 
-        StringBuilder temp = new StringBuilder("Najlepszy wyjazdowy bilans bramek:: [" + result.get(0) + "],  drużyny: ");
+        StringBuilder temp = new StringBuilder("Najgorszy domowy  bilans bramek: [" + result.get(0) + "],  drużyny: ");
 
         for (int i = 1; i < result.size(); i++) {
             temp.append(result.get(i) + ", ");
@@ -202,10 +187,25 @@ public class MaxValuesInMap {
         return temp.toString();
     }
 
+    public static String minAwayGoalDifference(Map<String, TeamResultsObject> mapOfResults) {
+        // Znalezienie maksymalnej wartości i odpowiadających kluczy
+        List<String> result = findMinValueAndKeys(mapOfResults, "getAwayGoalDifference");
 
-    public static List<String> findMaxValueAndKeys(Map<String, TeamResultsObject> map, String methodName) {
-        Integer maxValue = Integer.MIN_VALUE;
-        List<String> keysWithMaxValue = new ArrayList<>();
+        StringBuilder temp = new StringBuilder("Najgorszy wyjazdowy bilans bramek:: [" + result.get(0) + "],  drużyny: ");
+
+        for (int i = 1; i < result.size(); i++) {
+            temp.append(result.get(i) + ", ");
+        }
+        temp.replace(temp.length() - 2, temp.length(), ".");
+        if (temp.isEmpty()) {
+            throw new IllegalArgumentException("Metoda zwraca null!");
+        }
+        return temp.toString();
+    }
+
+    public static List<String> findMinValueAndKeys(Map<String, TeamResultsObject> map, String methodName) {
+        Integer minValue = Integer.MAX_VALUE;
+        List<String> keysWithMinValue = new ArrayList<>();
 
         for (Map.Entry<String, TeamResultsObject> entry : map.entrySet()) {
             String key = entry.getKey();
@@ -214,12 +214,12 @@ public class MaxValuesInMap {
             // Pobierz wartość pola przy użyciu refleksji
             try {
                 int value = (int) teamResultsObject.getClass().getMethod(methodName).invoke(teamResultsObject);
-                if (value > maxValue) {
-                    maxValue = value;
-                    keysWithMaxValue.clear();
-                    keysWithMaxValue.add(key);
-                } else if (value == maxValue) {
-                    keysWithMaxValue.add(key);
+                if (value < minValue) {
+                    minValue = value;
+                    keysWithMinValue.clear();
+                    keysWithMinValue.add(key);
+                } else if (value == minValue) {
+                    keysWithMinValue.add(key);
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -227,10 +227,9 @@ public class MaxValuesInMap {
                 throw new RuntimeException(e);
             }
         }
-
         List<String> results = new ArrayList<>();
-        results.add(maxValue.toString());
-        results.addAll(keysWithMaxValue);
+        results.add(minValue.toString());
+        results.addAll(keysWithMinValue);
         return results;
     }
 }
