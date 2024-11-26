@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public  class SortMapToTable {
+public class SortMapToTable {
+
+
+    //TODO: poprawić każdą metodę - zamiast sortowania po strzelonych brakach - zamienić na goalDifference (całkowite + home/away)
 
     public static void sortedAllMatchesInTable(Map<String, TeamResultsObject> mapOfResults) {
         List<Map.Entry<String, TeamResultsObject>> sortedList = new ArrayList<>(mapOfResults.entrySet());
@@ -83,7 +86,6 @@ public  class SortMapToTable {
             place++;
         }
     }
-
 
 
 }

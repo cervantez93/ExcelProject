@@ -29,47 +29,67 @@ public class TeamResultsObject {
     private int awayScoredGoals;
     private int awayLostGoals;
 
+    public int getGoalDifference() {
+        return getAllScoredGoals() - getAllLostGoals();
+    }
+
+    public int getAwayGoalDifference() {
+        return awayScoredGoals - awayLostGoals;
+    }
+
+    public int getHomeGoalDifference() {
+        return homeScoredGoals - homeLostGoals;
+    }
 
     @Override
     public String toString() {
-        return ", points= " + getAllPoints() +
-                ", matches=" + (getWonGames() + getLostGames() + getDrawGames()) +
-                ", matches=" + (getWonGames() + getLostGames() + getDrawGames()) +
-                ", wonGames=" + getWonGames() +
-                "(H:" + homeWonGames +
-                " / A:" + awayWonGames + ")" +
-                ", lostGames=" + getLostGames() +
-                "(H:" + homeLostGames +
-                " / A:" + awayLostGames + ")" +
-                ", drawGames=" + getDrawGames() +
-                "(H:" + homeDrawGames +
-                " / A:" + awayDrawGames + ")" +
-                ", allScoredGoals=" + getAllScoredGoals() +
-                "(H:" + homeScoredGoals +
-                " / A:" + awayScoredGoals + ")" +
-                ", allLostGoals=" + getAllLostGoals() +
-                "(H:" + homeLostGoals +
-                " / A:" + awayLostGoals + ")}\n";
+        return
+//                "Tabela łączna: \n" +
+                ", points= " + getAllPoints() +
+                        ", matches=" + (getWonGames() + getLostGames() + getDrawGames()) +
+                        ", wonGames=" + getWonGames() +
+                        "(H:" + homeWonGames +
+                        " / A:" + awayWonGames + ")" +
+                        ", lostGames=" + getLostGames() +
+                        "(H:" + homeLostGames +
+                        " / A:" + awayLostGames + ")" +
+                        ", drawGames=" + getDrawGames() +
+                        "(H:" + homeDrawGames +
+                        " / A:" + awayDrawGames + ")" +
+                        ", allScoredGoals=" + getAllScoredGoals() +
+                        "(H:" + homeScoredGoals +
+                        " / A:" + awayScoredGoals + ")" +
+                        ", allLostGoals=" + getAllLostGoals() +
+                        "(H:" + homeLostGoals +
+                        " / A:" + awayLostGoals + ")+" +
+                        ", goalDifference=}" + getGoalDifference() + "\n";
     }
 
     public String homeMatchesInTableToString() {
-        return "points= " + getHomePoints() +
-                ", matches=" + (getHomeWonGames() + getHomeLostGames() + getHomeDrawGames()) +
-                ", wonGames=" + getHomeWonGames() +
-                ", lostGames=" + getLostGames() +
-                ", drawGames=" + getHomeDrawGames() +
-                ", scoredGoals=" + homeScoredGoals +
-                ", lostGoals=" + homeLostGoals + ")}\n";
+        return
+//                "Tabela domowa: \n" +
+                "points= " + getHomePoints() +
+                        ", matches=" + (getHomeWonGames() + getHomeLostGames() + getHomeDrawGames()) +
+                        ", wonGames=" + getHomeWonGames() +
+                        ", lostGames=" + getLostGames() +
+                        ", drawGames=" + getHomeDrawGames() +
+                        ", scoredGoals=" + homeScoredGoals +
+                        ", lostGoals=" + homeLostGoals +
+                        ", goalDifference=}" + getHomeGoalDifference() + "\n";
     }
 
     public String awayMatchesInTableToString() {
-        return "points= " + getAwayPoints() +
-                ", matches=" + (getAwayWonGames() + getAwayLostGames() + getAwayDrawGames()) +
-                ", wonGames=" + getAwayWonGames() +
-                ", lostGames=" + getAwayLostGames() +
-                ", drawGames=" + getAwayDrawGames() +
-                ", scoredGoals=" + awayScoredGoals +
-                ", lostGoals=" + awayLostGoals + ")}\n";
+        return
+//                "Tabela wyjazdowa: \n" +
+                "points= " + getAwayPoints() +
+                        ", teamName= " + getTeamName() +
+                        ", matches=" + (getAwayWonGames() + getAwayLostGames() + getAwayDrawGames()) +
+                        ", wonGames=" + getAwayWonGames() +
+                        ", lostGames=" + getAwayLostGames() +
+                        ", drawGames=" + getAwayDrawGames() +
+                        ", scoredGoals=" + awayScoredGoals +
+                        ", lostGoals=" + awayLostGoals +
+                        ", goalDifference=}" + getAwayGoalDifference() + "\n";
     }
 
     public TeamResultsObject(String teamName, int getHomePoints, int getAwayPoints, int getHomeDrawGames, int getAwayDrawGames, int getHomeScoredGoals, int getHomeLostGoals,
@@ -249,6 +269,7 @@ public class TeamResultsObject {
     }
 
     public String getTeamName() {
+        //teamName.split("(?=\\p{Upper})"); //TODO: pokombinować gdzie zmienić sposób wyświetlania nazwy drużyny - dodać spację!
         return teamName;
     }
 

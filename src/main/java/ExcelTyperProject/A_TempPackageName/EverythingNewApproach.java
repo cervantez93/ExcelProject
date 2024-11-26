@@ -2,10 +2,7 @@ package ExcelTyperProject.A_TempPackageName;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EverythingNewApproach {
     Map<String, TeamResultsObject> unsortedMap = new HashMap<>();
@@ -48,8 +45,6 @@ public class EverythingNewApproach {
             typerPointsOneRoundList.add(3, 0);
 
             List<String> stringList = ReadFiles.readFiles(path);
-
-
             //regex, w którym są usuwane wszystkie (dodatkowo polskie) litery
             stringList = stringList.stream().map(e -> e.replaceAll("[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]", "")).toList();
 
@@ -64,19 +59,15 @@ public class EverythingNewApproach {
                     tempResults.add(stringList.get(stringlistIterator).substring(j + 1, j + 4));  //Wynik, Damian, Ryszard, Paweł, Łukasz <-- pierwszy jest wynik, dalej typy graczy
                 }
 
-                //TODO : aby uzupełniać dane o drużynach będzie trzeba iterować po tej liście z przyrostem stringlistIterator+=2 (pobierać dwie nazwy drużyn co iterację)
-                TeamNamesList teamNamesList = new TeamNamesList();
-                List<String> teamNamesFromThisRound = teamNamesList.getTeamNames(path); // tutaj jest lista drużyn dla każdej kolejki w ODPOWIEDNIEJ kolejności
-
-                int tempCheckResult = checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
-
+              List<String> teamNamesFromThisRound = TeamNamesList.getTeamNames(path); // tutaj jest lista drużyn dla każdej kolejki w ODPOWIEDNIEJ kolejności
                 //dopasowanie indeksów do iteracji w tej pętli, żeby nie robić oddzielnej pętli
                 int firstIndex = 2 * stringlistIterator;
                 int secondIndex = firstIndex + 1;
-
                 //pobranie informacji o drużynie gospodarzy i gości - dopasowanie poprzez klucz w mapie
                 TeamResultsObject teamResultsObjectHome = mapOfResults.get(teamNamesFromThisRound.get(firstIndex));
                 TeamResultsObject teamResultsObjectAway = mapOfResults.get(teamNamesFromThisRound.get(secondIndex));
+
+                int tempCheckResult = CheckResult.checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
 
                 if (tempCheckResult == 1) {
                     teamResultsObjectHome.setHomePoints(teamResultsObjectHome.getHomePoints() + 3);
@@ -111,10 +102,10 @@ public class EverythingNewApproach {
 
                 for (int k = 1; k <= tempResults.size() - 1; k++) {
                     //sprawdzanie typu wyniku każdego meczu
-                    int tempResultType = EverythingNewApproach.checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
+                    int tempResultType = CheckResult.checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
 
                     //sprawdzenie typu wyniku dla każdego TYPERA
-                    int tempTyperResultType = EverythingNewApproach.checkResultType(tempResults.get(k).charAt(0), tempResults.get(k).charAt(2));
+                    int tempTyperResultType = CheckResult.checkResultType(tempResults.get(k).charAt(0), tempResults.get(k).charAt(2));
 
                     if (tempResultType == tempTyperResultType) {
                         if ((tempResults.get(0).charAt(0) == tempResults.get(k).charAt(0)) && (tempResults.get(0).charAt(2) == tempResults.get(k).charAt(2))) {
@@ -146,7 +137,7 @@ public class EverythingNewApproach {
 
             //TODO: w zasadzie też powinno odjąć się punkty, bramki strzelone/stracone itd Śląskowi i Radomiakowi dopóki nie zostanie rozegrana zaległa kolejka
             if ((roundNumber + 1) == 3) {
-                //odjęcie jednego punktu za mecz 3 kolejki: Śląsk - Radomiak
+                //odjęcie statystyk za mecz 3 kolejki: Śląsk - Radomiak
                 typerPointsOneRoundList.set(1, typerPointsOneRoundList.get(1) - 1);
                 mapOfResults.get("ŚląskWrocław").addHomeScoredGoals(-9);
                 mapOfResults.get("ŚląskWrocław").setHomeWonGames(-1);
@@ -161,8 +152,18 @@ public class EverythingNewApproach {
                     + typerClassList.get(2).getName() + " uzyskał: " + typerPointsOneRoundList.get(2) + " punktów\n"
                     + typerClassList.get(3).getName() + " uzyskał: " + typerPointsOneRoundList.get(3) + " punktów\n");
 
+
+            if (roundNumber == 8) {
+                System.out.println("Stan po kolejce: " + (roundNumber));
+                for (int n = 0; n < 4; n++) {
+                    System.out.println(typerClassList.get(n).getName() + ": [" + "punkty: " + typerPointsAllRoundsList.get(n) + ", dokładne wyniki: " + typerClassList.get(n).getExactResultsAmount()
+                            + ", rekodowa ilość punktów: " + typerClassList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce " + typerClassList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber() + "]");
+                }
+            }
+
             //TODO: koniec pierwszego fora
         }
+
 
         for (int n = 0; n < 4; n++) {
             //prawidłowe ustawienie liczby zsumowanych punktów
@@ -170,23 +171,32 @@ public class EverythingNewApproach {
             System.out.println(typerClassList.get(n).getName() + ": [" + "punkty: " + typerClassList.get(n).getPoints() + ", dokładne wyniki: " + typerClassList.get(n).getExactResultsAmount()
                     + ", rekodowa ilość punktów: " + typerClassList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce " + typerClassList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber() + "]");
         }
+
+
+        //TODO: to można wyrzucić do metody (dorzucić może pętlę + ew. czyszczenie ekranu)
+        Scanner scanner = new Scanner(System.in);
+        int option = scanner.nextInt();
+        switch (option) {
+            case 1:
+                System.out.println("Tabela łączna: ");
+                SortMapToTable.sortedAllMatchesInTable(mapOfResults);
+                break;
+            case 2:
+                System.out.println("Tabela domowa: ");
+                SortMapToTable.sortedHomeMatchesInTable(mapOfResults);
+                break;
+            case 3:
+                System.out.println("Tabela wyjazdowa: ");
+                SortMapToTable.sortedAwayMatchesInTable(mapOfResults);
+                break;
+        }
+
         //TODO : SPRAWDZIĆ POZOSTAŁE WARTOŚCI PÓL KAŻDEGO TYPERA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //KONIEC MAINA
     }
 
 
     // 1 - zwycięsto gospodarzy, 2 - zwycięstwo gości, 0 - remis // 3 można uznać za błąd <-- ew przerobić metodę
-    public static int checkResultType(int homeTeamGoals, int awayTeamGoals) {
-        int result = 3;
-        if (homeTeamGoals == awayTeamGoals) {
-            result = 0;
-        } else if (homeTeamGoals > awayTeamGoals) {
-            result = 1;
-        }
-        if (homeTeamGoals < awayTeamGoals) {
-            result = 2;
-        }
-        return result;
-    }
+
 }
 
