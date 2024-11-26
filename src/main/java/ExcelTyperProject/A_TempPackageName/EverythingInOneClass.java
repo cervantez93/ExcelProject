@@ -3,8 +3,6 @@ package ExcelTyperProject.A_TempPackageName;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class EverythingInOneClass {
 
@@ -15,13 +13,13 @@ public class EverythingInOneClass {
     public static void main(String[] args) {
 
         List<Integer> typerPointsAllRoundsList = new ArrayList<>();
-        List<TyperClass> typerClassList = new ArrayList<>();
+        List<TyperObject> typerObjectList = new ArrayList<>();
         GetPlayerNames getPlayerNames = new GetPlayerNames();
 
         for (int i = 0; i < 4; i++) {
             typerPointsAllRoundsList.add(i, 0);
             try {
-                typerClassList.add(new TyperClass(getPlayerNames.getNames().get(i), 0, 0, 0, 0, 0));
+                typerObjectList.add(new TyperObject(getPlayerNames.getNames().get(i), 0, 0, 0, 0, 0));
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -126,15 +124,15 @@ public class EverythingInOneClass {
                             // dodajemy danemu zawodnikowi 3pkt, zwiększamy mu licznk exact points, sprawdzamy informacje nt rekordowej ilości pkt typera w kolejce itd
                             typerPointsOneRoundList.set(k - 1, (typerPointsOneRoundList.get(k - 1) + 3));
 
-                            typerClassList.get(k - 1).setExactResultsAmount((typerClassList.get(k - 1).getExactResultsAmount() + 1));
+                            typerObjectList.get(k - 1).setExactResultsAmount((typerObjectList.get(k - 1).getExactResultsAmount() + 1));
                             // typerClassList.get(k - 1).setPoints((typerClassList.get(k - 1).getPoints() + 3));
-                            typerClassList.get(k - 1).setCorrectResultsAmount((typerClassList.get(k - 1).getCorrectResultsAmount() + 1));
+                            typerObjectList.get(k - 1).setCorrectResultsAmount((typerObjectList.get(k - 1).getCorrectResultsAmount() + 1));
 //                            System.out.println("Dla gracza o indeksie[" + (k - 1) + "], dodaję 3 pkt za dokładny wynik [" + (tempResults.get(0).charAt(0) + ":"
 //                                    + (tempResults.get(0).charAt(2) + "]" + " ,a który obstawił wynikiem: [" + tempResults.get(k).charAt(0) + ":" + tempResults.get(k).charAt(2) + "]")));
                         } else {
                             typerPointsOneRoundList.set(k - 1, (typerPointsOneRoundList.get(k - 1) + 1));
                             //  typerClassList.get(k - 1).setPoints((typerClassList.get(k - 1).getPoints() + 1));
-                            typerClassList.get(k - 1).setCorrectResultsAmount((typerClassList.get(k - 1).getCorrectResultsAmount() + 1));
+                            typerObjectList.get(k - 1).setCorrectResultsAmount((typerObjectList.get(k - 1).getCorrectResultsAmount() + 1));
 //                            System.out.println("Dla gracza o indeksie[" + (k - 1) + "], dodaję 1 pkt za wynik [" + (tempResults.get(0).charAt(0) + ":"
 //                                    + (tempResults.get(0).charAt(2) + "]" + " ,a który obstawił wynikiem: [" + tempResults.get(k).charAt(0) + ":" + tempResults.get(k).charAt(2) + "]")));
                         }
@@ -151,9 +149,9 @@ public class EverythingInOneClass {
                 typerPointsAllRoundsList.set(n, typerPointsAllRoundsList.get(n) + typerPointsOneRoundList.get(n));
                 // TODO tutaj można ewentualnie się zastanowić czy nie zrobić z parametru setRecordAmountOfPointsInOneRound_RoundNumber listy, który w przypadku 2 lub więcej
                 //  kolejek z takim samym rekordową ilością punktów zapisywał by numery kolejek
-                if (typerClassList.get(n).getRecordAmountOfPointsInOneRound() < typerPointsOneRoundList.get(n)) {
-                    typerClassList.get(n).setRecordAmountOfPointsInOneRound(typerPointsOneRoundList.get(n));
-                    typerClassList.get(n).setRecordAmountOfPointsInOneRound_RoundNumber(roundNumber + 1);
+                if (typerObjectList.get(n).getRecordAmountOfPointsInOneRound() < typerPointsOneRoundList.get(n)) {
+                    typerObjectList.get(n).setRecordAmountOfPointsInOneRound(typerPointsOneRoundList.get(n));
+                    typerObjectList.get(n).setRecordAmountOfPointsInOneRound_RoundNumber(roundNumber + 1);
                 }
 //                System.out.println("Rekord punktów w jednej kolejce gracza [" + typerClassList.get(n).getName() + "], ilość punktów "
 //                        + typerClassList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce numer " + typerClassList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
@@ -172,9 +170,9 @@ public class EverythingInOneClass {
 
         for (int n = 0; n < 4; n++) {
             //prawidłowe ustawienie liczby zsumowanych punktów
-            typerClassList.get(n).setPoints(typerPointsAllRoundsList.get(n));
-            System.out.println(typerClassList.get(n).getName() + ": [" + "punkty: " + typerClassList.get(n).getPoints() + ", dokładne wyniki: " + typerClassList.get(n).getExactResultsAmount()
-                    + ", rekodowa ilość punktów: " + typerClassList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce " + typerClassList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber() + "]");
+            typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
+            System.out.println(typerObjectList.get(n).getName() + ": [" + "punkty: " + typerObjectList.get(n).getPoints() + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount()
+                    + ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber() + "]");
         }
 
 

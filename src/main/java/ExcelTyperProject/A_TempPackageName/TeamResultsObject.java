@@ -62,7 +62,7 @@ public class TeamResultsObject {
                         ", allLostGoals=" + getAllLostGoals() +
                         "(H:" + homeLostGoals +
                         " / A:" + awayLostGoals + ")+" +
-                        ", goalDifference=}" + getGoalDifference() + "\n";
+                        ", goalDifference=" + getGoalDifference() + "}\n";
     }
 
     public String homeMatchesInTableToString() {
@@ -75,7 +75,7 @@ public class TeamResultsObject {
                         ", drawGames=" + getHomeDrawGames() +
                         ", scoredGoals=" + homeScoredGoals +
                         ", lostGoals=" + homeLostGoals +
-                        ", goalDifference=}" + getHomeGoalDifference() + "\n";
+                        ", goalDifference=" + getHomeGoalDifference() + "}\n";
     }
 
     public String awayMatchesInTableToString() {
@@ -89,7 +89,7 @@ public class TeamResultsObject {
                         ", drawGames=" + getAwayDrawGames() +
                         ", scoredGoals=" + awayScoredGoals +
                         ", lostGoals=" + awayLostGoals +
-                        ", goalDifference=}" + getAwayGoalDifference() + "\n";
+                        ", goalDifference=" + getAwayGoalDifference() + "}\n";
     }
 
     public TeamResultsObject(String teamName, int getHomePoints, int getAwayPoints, int getHomeDrawGames, int getAwayDrawGames, int getHomeScoredGoals, int getHomeLostGoals,
@@ -271,10 +271,6 @@ public class TeamResultsObject {
     public String getTeamName() {
         //teamName.split("(?=\\p{Upper})"); //TODO: pokombinować gdzie zmienić sposób wyświetlania nazwy drużyny - dodać spację!
         return teamName;
-    }
-
-    public int getPoints() {
-        return points;
     }
 
     public int getAwayPoints() {

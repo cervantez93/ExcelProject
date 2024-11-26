@@ -37,10 +37,48 @@ public class PutResultsOnMap {
         resultsMap.put(teamHomeName, teamResultsObjectHome);
         resultsMap.put(teamAwayName, teamResultsObjectAway);
 
-        System.out.println("HomeObject = " + teamResultsObjectHome.toString());
-        System.out.println("AwayObject = " + teamResultsObjectAway.toString());
+//        System.out.println("HomeObject = " + teamResultsObjectHome.toString());
+//        System.out.println("AwayObject = " + teamResultsObjectAway.toString());
 
         System.out.println("Jestem w metodzie bothTeamResultsObjectUpdate");
         return resultsMap;
     }
+
+
+    public static void bothTeamResultsObjectUpdate2(TeamResultsObject teamResultsObjectHome, TeamResultsObject teamResultsObjectAway, int tempCheckResult, int homeTeamGaols, int awayTeamGoals) {
+
+        if (tempCheckResult == 1) {
+            teamResultsObjectHome.setHomePoints(teamResultsObjectHome.getHomePoints() + 3);
+            teamResultsObjectHome.setHomeWonGames(teamResultsObjectHome.getHomeWonGames() + 1);
+            teamResultsObjectAway.setAwayLostGames(teamResultsObjectAway.getAwayLostGames() + 1);
+
+        } else if (tempCheckResult == 2) {
+            teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getAwayPoints() + 3);
+            teamResultsObjectAway.setAwayWonGames(teamResultsObjectAway.getAwayWonGames() + 1);
+            teamResultsObjectHome.setHomeLostGames(teamResultsObjectHome.getHomeLostGames() + 1);
+
+        } else if (tempCheckResult == 0) {
+            teamResultsObjectHome.setHomePoints(teamResultsObjectHome.getHomePoints() + 1);
+            teamResultsObjectHome.setHomeDrawGames(teamResultsObjectHome.getHomeDrawGames() + 1);
+            teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getAwayPoints() + 1);
+            teamResultsObjectAway.setAwayDrawGames(teamResultsObjectAway.getAwayDrawGames() + 1);
+
+        } else if (tempCheckResult == 3) {
+            System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
+        }
+
+
+        //TODO: to są wartości int z tempResults - przerobione z charów!!!!!!!!
+        teamResultsObjectHome.addHomeScoredGoals(homeTeamGaols);
+        teamResultsObjectHome.addHomeLostGoals(awayTeamGoals);
+        // ^^ wyżej update drużyny gospodarzy
+
+        // niżej update drużyny gości
+        teamResultsObjectAway.addAwayLostGoals(homeTeamGaols);
+        teamResultsObjectAway.addAwayScoredGoals(awayTeamGoals);
+
+//        System.out.println("HomeObject = " + teamResultsObjectHome.toString());
+//        System.out.println("AwayObject = " + teamResultsObjectAway.toString());
+//        System.out.println("Jestem w metodzie bothTeamResultsObjectUpdate");
+       }
 }

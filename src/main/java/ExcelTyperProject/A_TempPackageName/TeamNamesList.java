@@ -11,7 +11,6 @@ public class TeamNamesList {
     public static List<String> getTeamNames(String path) {
         List<String> names = new ArrayList<>();
         try {
-            // TODO: ta lista musi być pobierana w każdej kolejce, żeby móc przypisywać odpowiednim drużynom odpowiedni wartości (punkty, bramki) <-- zrobione za pomocą PATH
             List<String> wholeText = ReadFiles.readFiles(path);
             wholeText = wholeText.stream().map(e -> e.replaceAll("\\d", "").replaceAll(":", "")).toList();
 
