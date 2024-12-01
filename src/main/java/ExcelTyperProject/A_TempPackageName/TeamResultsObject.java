@@ -29,6 +29,25 @@ public class TeamResultsObject {
     private int awayScoredGoals;
     private int awayLostGoals;
 
+    private String recordHomeWonResult;
+    private String recordAwayWonResult;
+
+    public String getRecordHomeWonResult() {
+        return recordHomeWonResult;
+    }
+
+    public void setRecordHomeWonResult(String recordHomeWonResult) {
+        this.recordHomeWonResult = recordHomeWonResult;
+    }
+
+    public String getRecordAwayWonResult() {
+        return recordAwayWonResult;
+    }
+
+    public void setRecordAwayWonResult(String recordAwayWonResult) {
+        this.recordAwayWonResult = recordAwayWonResult;
+    }
+
     public int getGoalDifference() {
         return getAllScoredGoals() - getAllLostGoals();
     }
@@ -62,8 +81,11 @@ public class TeamResultsObject {
                         ", allLostGoals=" + getAllLostGoals() +
                         "(H:" + homeLostGoals +
                         " / A:" + awayLostGoals + ")+" +
-                        ", goalDifference=" + getGoalDifference() + "}\n";
+                        ", goalDifference=" + getGoalDifference() + "}" +
+                        ", homeRecordWonResult = [" + getRecordHomeWonResult() + "]" +
+                        ", awayRecordWonResult= [" + getRecordAwayWonResult() + "]}\n";
     }
+
 
     public String homeMatchesInTableToString() {
         return
@@ -75,7 +97,8 @@ public class TeamResultsObject {
                         ", drawGames=" + getHomeDrawGames() +
                         ", scoredGoals=" + homeScoredGoals +
                         ", lostGoals=" + homeLostGoals +
-                        ", goalDifference=" + getHomeGoalDifference() + "}\n";
+                        ", goalDifference=" + getHomeGoalDifference() +
+                        ", homeRecordWonResult = [" + getRecordHomeWonResult() + "]" + "}\n";
     }
 
     public String awayMatchesInTableToString() {
@@ -89,11 +112,12 @@ public class TeamResultsObject {
                         ", drawGames=" + getAwayDrawGames() +
                         ", scoredGoals=" + awayScoredGoals +
                         ", lostGoals=" + awayLostGoals +
-                        ", goalDifference=" + getAwayGoalDifference() + "}\n";
+                        ", goalDifference=" + getAwayGoalDifference() +
+                        ", awayRecordWonResult= [" + getRecordAwayWonResult() + "}\n";
     }
 
     public TeamResultsObject(String teamName, int getHomePoints, int getAwayPoints, int getHomeDrawGames, int getAwayDrawGames, int getHomeScoredGoals, int getHomeLostGoals,
-                             int getAwayScoredGoals, int getAwayLostGoals, int getHomeWonGames, int getAwayWonGames, int getLostGames, int getHomeGames) {
+                             int getAwayScoredGoals, int getAwayLostGoals, int getHomeWonGames, int getAwayWonGames, int getLostGames, int getHomeGames, String recordHomeWonResult, String recordAwayWonResult) {
         this.teamName = teamName;
         this.points = getAllPoints();
         this.homePoints = getHomePoints;
@@ -118,6 +142,9 @@ public class TeamResultsObject {
         this.awayScoredGoals = getAwayScoredGoals;
         this.awayLostGoals = getAwayLostGoals;
         this.allLostGoals = getAllLostGoals();
+
+        this.recordHomeWonResult = recordHomeWonResult;
+        this.recordAwayWonResult = recordAwayWonResult;
     }
 
     //TODO: settery do pól, które i tak zliczają swoją wartość z innych wartości są raczej bez sensu - pewnie można/trzeba je skasować
@@ -128,7 +155,9 @@ public class TeamResultsObject {
         this.teamName = teamName;
     }
 
-    public TeamResultsObject() {}
+    public TeamResultsObject() {
+    }
+
     ;
 
 
@@ -137,10 +166,10 @@ public class TeamResultsObject {
         Map<String, TeamResultsObject> teamResultsObjectHashMap = new HashMap<>();
 
         teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(firstIndex), new TeamResultsObject(teamNamesList.getTeamNames(path).get(firstIndex), 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0));
+                0, 0, 0, 0, 0, 0, 0, 0, 0, "0:0", "0:0"));
 
         teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(secondIndex), new TeamResultsObject(teamNamesList.getTeamNames(path).get(secondIndex), 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0));
+                0, 0, 0, 0, 0, 0, 0, 0, 0, "0:0", "0:0"));
 
         return teamResultsObjectHashMap;
     }
@@ -152,54 +181,11 @@ public class TeamResultsObject {
 
         for (int i = 0; i < teamNamesList.getTeamNames(path).size(); i++) {
             teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(i), new TeamResultsObject(teamNamesList.getTeamNames(path).get(i), 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0));
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, "0:0", "0:0"));
         }
         return teamResultsObjectHashMap;
     }
 
-
-    public Map<String, TeamResultsObject> bothTeamResultsObjectUpdate(String path, TeamResultsObject teamResultsObject, String teamHomeName, String teamAwayName, int checkResult,
-                                                                      int homeScoredGoals, int homeLostGoals, int awayScoredGoals, int awayLostGoals, int firstIndex, int secondIndex) {
-        Map<String, TeamResultsObject> resultsMap = teamResultsObject.initilizeTeamResultsMap(path, firstIndex, secondIndex);
-        System.out.println("Rozmiar mapy = " + resultsMap.size());
-
-        //TODO: zmienić metodę na PUT - trzeba aktualizować całe obiekty, te pola, które pozostają bez zmian ustawić jako setPole(getPole)
-
-        //przypisanie dwóch obiektów - domowej i wyjazdowej drużyny
-        TeamResultsObject teamResultsObjectHome = resultsMap.get(teamHomeName);
-        TeamResultsObject teamResultsObjectAway = resultsMap.get(teamAwayName);
-
-
-        if (checkResult == 1) {
-            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomePoints() + 3);
-            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomeWonGames() + 1);
-        } else if (checkResult == 2) {
-            teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getAwayPoints() + 3);
-            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getAwayWonGames() + 1);
-        } else if (checkResult == 0) {
-            teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getHomeDrawGames() + 1);
-            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomeDrawGames() + 1);
-        } else if (checkResult == 3) {
-            System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
-        }
-
-        teamResultsObjectHome.addHomeScoredGoals(homeScoredGoals);
-        teamResultsObjectHome.addHomeLostGoals(homeLostGoals);
-        // ^^ wyżej update drużyny gospodarzy
-
-        // niżej update drużyny gości
-        teamResultsObjectHome.addAwayLostGoals(awayLostGoals);
-        teamResultsObjectHome.addAwayScoredGoals(awayScoredGoals);
-
-        System.out.println("2. Jestem w metodzie bothTeamResultsObjectUpdate");
-        return resultsMap;
-    }
-
-
-    //TODO: wszelkiego rodzaju settery można chyba zmienić tak, żeby zwracały wartość obecną powiększoną o parametr, np:
-    //public int setHomePoints(int getHomePoints) {
-    //        return this.homePoints = getHomePoints()+getHomePoints;
-    //    }
 
     //Zastanowić się co lepsze - prosta metoda zliczania punktów, czy getter do int points i aktualizowanie zmiennej
     public int getAllPoints() {

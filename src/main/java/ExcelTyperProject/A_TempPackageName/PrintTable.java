@@ -32,4 +32,10 @@ public class PrintTable {
                 break;
         }
     }
+
+    public static void printFullTable(Map<String, TeamResultsObject> mapOfResults) {
+        System.out.print("\nTabela łączna: ");
+        SortMapToTable.sortedAllMatchesInTable(mapOfResults);
+
+    }
 }

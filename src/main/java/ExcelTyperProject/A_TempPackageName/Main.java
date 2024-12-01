@@ -1,7 +1,5 @@
 package ExcelTyperProject.A_TempPackageName;
 
-import org.apache.commons.math3.analysis.function.Max;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -14,9 +12,7 @@ public class Main {
 
         List<Integer> typerPointsAllRoundsList = new ArrayList<>();
         List<TyperObject> typerObjectList = new ArrayList<>();
-
         int numberOfPlayers = GetPlayerNames.getAmountOfPlayers();
-
 
         for (int i = 0; i < numberOfPlayers; i++) {
             typerPointsAllRoundsList.add(i, 0);
@@ -30,14 +26,12 @@ public class Main {
         //zmienna określająca ilość plików do przetworzenia znajdujących się w oddzielnym package'u
         File directory = new File("src/main/java/ExcelTyperProject/AllRoundsFiles");
         int fileAmount = directory.list().length;
-        //  System.out.println("Ilość kolejek (plików) = " + fileAmount);
 
         for (int roundNumber = 0; roundNumber < fileAmount; roundNumber++) {
-            // iterowanie po pętli w celu przetworzenia wszystkich plików
-            String path = "src/main/java/ExcelTyperProject/AllRoundsFiles/Typer" + (roundNumber + 1) + ".txt";
-            //  ReadFiles.readFiles(path);
 
-            //    System.out.println("\nKolejka: " + (roundNumber + 1));
+            String path = "src/main/java/ExcelTyperProject/AllRoundsFiles/Typer" + (roundNumber + 1) + ".txt";
+
+            //System.out.println("\nKolejka: " + (roundNumber + 1));
 
             // indeks 0 = Damian, 1 = Ryszard, 2 = Paweł, 3 = Łukasz
             List<Integer> typerPointsOneRoundList = new ArrayList<>();
@@ -45,6 +39,7 @@ public class Main {
             typerPointsOneRoundList.add(1, 0);
             typerPointsOneRoundList.add(2, 0);
             typerPointsOneRoundList.add(3, 0);
+
 
             //regex, w którym są usuwane wszystkie (dodatkowo polskie) litery
             List<String> stringList = ReadFiles.readFiles(path).stream().map(e -> e.replaceAll("[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]", "")).toList();
@@ -68,7 +63,7 @@ public class Main {
 
                 int tempCheckResult = CheckResult.checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
 
-                PutResultsOnMap.bothTeamResultsObjectUpdate2(teamResultsObjectHome, teamResultsObjectAway, tempCheckResult,
+                PutResultsOnMap.bothTeamResultsObjectUpdate(teamResultsObjectHome, teamResultsObjectAway, tempCheckResult,
                         (Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(0)).toString())), (Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(2)).toString())));
 
 
@@ -110,7 +105,7 @@ public class Main {
                 //odjęcie statystyk za mecz 3 kolejki: Śląsk - Radomiak
                 typerPointsOneRoundList.set(1, typerPointsOneRoundList.get(1) - 1);
                 mapOfResults.get("ŚląskWrocław").addHomeScoredGoals(-9);
-                mapOfResults.get("ŚląskWrocław").setHomeWonGames(-1);
+                mapOfResults.get("ŚląskWrocław").setHomeWonGames(teamResultsObject.getHomeWonGames() - 1);
                 mapOfResults.get("ŚląskWrocław").setHomePoints(mapOfResults.get("ŚląskWrocław").getHomePoints() - 3);
                 mapOfResults.get("RadomiakRadom").addAwayLostGoals(-9);
                 mapOfResults.get("RadomiakRadom").setAwayLostGames(-1);
@@ -139,13 +134,14 @@ public class Main {
         for (int n = 0; n < 4; n++) {
             //prawidłowe ustawienie liczby zsumowanych punktów
             typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
-            System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerObjectList.get(n).getPoints() + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount()
-                    + ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
+            System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerObjectList.get(n).getPoints() + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount() + ", prawidłowe typy (łącznie z dokładnymi wynikami): " + typerObjectList.get(n).getCorrectResultsAmount() +
+                    ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
         }
-
-
         //funFacts(mapOfResults);
-        //PrintTable.chooseTableVariant(mapOfResults);
+
+        //TODO: poprawić tak, żeby wykonywało się to na SAMYM KOŃCU - chodzi o podmianę wyniku rekordu domowej wygranej Śląska
+        // PutResultsOnMap.slaskWroclawHomeRecordCorrection();
+        PrintTable.chooseTableVariant(mapOfResults);
 
         //TODO: pomyśleć jak dodać rekordową wygraną domową i wyjazdową
         // Można liczyć różnicę bramek i założyć, że rekordowa wygrana to ta z największą ilością strzelonych bramek (np 5:2 jest lepszym wynikiem niż 3:0)

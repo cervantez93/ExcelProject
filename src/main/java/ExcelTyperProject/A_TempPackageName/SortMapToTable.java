@@ -28,8 +28,17 @@ public class SortMapToTable {
         });
         int place = 1;
         System.out.print("\n");
+
         // Wyświetlenie posortowanych wyników
         for (Map.Entry<String, TeamResultsObject> entry : sortedList) {
+
+            //TODO: te dwa ify trzeba w zasadzie wyrzucić do jakiejkolwiek metody, która wywoływana jest po podliczeniu wyników drużyn, ale przed wyświetlaniem którejkolwiek tabeli
+            if (entry.getValue().getHomeWonGames() == 0) {
+                entry.getValue().setRecordHomeWonResult("Brak wygranej domowej = brak rekordu");
+            }
+            if (entry.getValue().getRecordAwayWonResult().equals("0:0")) {
+                entry.getValue().setRecordAwayWonResult("Brak wygranej wyjazdowej = brak rekordu");
+            }
             System.out.print(place + "." + entry.getKey() + ": " + entry.getValue().toString());
             place++;
         }
@@ -56,6 +65,14 @@ public class SortMapToTable {
         System.out.print("\n");
         // Wyświetlenie posortowanych wyników
         for (Map.Entry<String, TeamResultsObject> entry : sortedList) {
+
+            //TODO: te dwa ify trzeba w zasadzie wyrzucić do jakiejkolwiek metody, która wywoływana jest po podliczeniu wyników drużyn, ale przed wyświetlaniem którejkolwiek tabeli
+            if (entry.getValue().getHomeWonGames() == 0) {
+                entry.getValue().setRecordHomeWonResult("Brak wygranej domowej = brak rekordu");
+            }
+            if (entry.getValue().getRecordAwayWonResult().equals("0:0")) {
+                entry.getValue().setRecordAwayWonResult("Brak wygranej wyjazdowej = brak rekordu");
+            }
             System.out.print(place + "." + entry.getKey() + ": " + entry.getValue().homeMatchesInTableToString());
             place++;
         }
@@ -82,6 +99,14 @@ public class SortMapToTable {
         System.out.print("\n");
         // Wyświetlenie posortowanych wyników
         for (Map.Entry<String, TeamResultsObject> entry : sortedList) {
+
+            //TODO: te dwa ify trzeba w zasadzie wyrzucić do jakiejkolwiek metody, która wywoływana jest po podliczeniu wyników drużyn, ale przed wyświetlaniem którejkolwiek tabeli
+            if (entry.getValue().getHomeWonGames() == 0) {
+                entry.getValue().setRecordHomeWonResult("Brak wygranej domowej = brak rekordu");
+            }
+            if (entry.getValue().getRecordAwayWonResult().equals("0:0")) {
+                entry.getValue().setRecordAwayWonResult("Brak wygranej wyjazdowej = brak rekordu");
+            }
             System.out.print(place + "." + entry.getKey() + ": " + entry.getValue().awayMatchesInTableToString());
             place++;
         }

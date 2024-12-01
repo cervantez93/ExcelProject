@@ -5,57 +5,21 @@ import java.util.*;
 
 public class PutResultsOnMap {
 
-    public Map<String, TeamResultsObject> bothTeamResultsObjectUpdate(String path, TeamResultsObject teamResultsObject, String teamHomeName, String teamAwayName, int checkResult,
-                                                                      int homeScoredGoals, int homeLostGoals, int awayScoredGoals, int awayLostGoals, int firstIndex, int secondIndex) {
-        Map<String, TeamResultsObject> resultsMap = teamResultsObject.initilizeTeamResultsMap(path, firstIndex, secondIndex);
-        System.out.println("Rozmiar mapy = " + resultsMap.size());
-
-        TeamResultsObject teamResultsObjectHome = resultsMap.get(teamHomeName);
-        TeamResultsObject teamResultsObjectAway = resultsMap.get(teamAwayName);
-
-        if (checkResult == 1) {
-            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomePoints() + 3);
-            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomeWonGames() + 1);
-        } else if (checkResult == 2) {
-            teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getAwayPoints() + 3);
-            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getAwayWonGames() + 1);
-        } else if (checkResult == 0) {
-            teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getHomeDrawGames() + 1);
-            teamResultsObjectHome.setAwayPoints(teamResultsObjectHome.getHomeDrawGames() + 1);
-        } else if (checkResult == 3) {
-            System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
-        }
-
-        teamResultsObjectHome.addHomeScoredGoals(teamResultsObjectHome.getHomeScoredGoals() + homeScoredGoals);
-        teamResultsObjectHome.addHomeLostGoals(teamResultsObjectHome.getHomeLostGoals() + homeLostGoals);
-        // ^^ wyżej update drużyny gospodarzy
-
-        // niżej update drużyny gości
-        teamResultsObjectHome.addAwayLostGoals(teamResultsObjectAway.getAwayLostGoals() + awayLostGoals);
-        teamResultsObjectHome.addAwayScoredGoals(teamResultsObjectAway.getAwayScoredGoals() + awayScoredGoals);
-
-        resultsMap.put(teamHomeName, teamResultsObjectHome);
-        resultsMap.put(teamAwayName, teamResultsObjectAway);
-
-//        System.out.println("HomeObject = " + teamResultsObjectHome.toString());
-//        System.out.println("AwayObject = " + teamResultsObjectAway.toString());
-
-        System.out.println("Jestem w metodzie bothTeamResultsObjectUpdate");
-        return resultsMap;
-    }
-
-
-    public static void bothTeamResultsObjectUpdate2(TeamResultsObject teamResultsObjectHome, TeamResultsObject teamResultsObjectAway, int tempCheckResult, int homeTeamGaols, int awayTeamGoals) {
+    public static void bothTeamResultsObjectUpdate(TeamResultsObject teamResultsObjectHome, TeamResultsObject teamResultsObjectAway, int tempCheckResult, int homeTeamGoals, int awayTeamGoals) {
 
         if (tempCheckResult == 1) {
             teamResultsObjectHome.setHomePoints(teamResultsObjectHome.getHomePoints() + 3);
             teamResultsObjectHome.setHomeWonGames(teamResultsObjectHome.getHomeWonGames() + 1);
             teamResultsObjectAway.setAwayLostGames(teamResultsObjectAway.getAwayLostGames() + 1);
 
+            checkHomeWonRecordResult(teamResultsObjectHome, (homeTeamGoals + ":" + awayTeamGoals));
         } else if (tempCheckResult == 2) {
             teamResultsObjectAway.setAwayPoints(teamResultsObjectAway.getAwayPoints() + 3);
             teamResultsObjectAway.setAwayWonGames(teamResultsObjectAway.getAwayWonGames() + 1);
             teamResultsObjectHome.setHomeLostGames(teamResultsObjectHome.getHomeLostGames() + 1);
+
+            // System.out.println("Home goals = " + homeTeamGoals + ", away goals: " + awayTeamGoals + " homeRecord: " + teamResultsObjectHome.getRecordAwayWonResult() + "\n");
+            checkAwayWonRecordResult(teamResultsObjectAway, (homeTeamGoals + ":" + awayTeamGoals));
 
         } else if (tempCheckResult == 0) {
             teamResultsObjectHome.setHomePoints(teamResultsObjectHome.getHomePoints() + 1);
@@ -67,18 +31,75 @@ public class PutResultsOnMap {
             System.out.println("Wystąpił błąd powiązany z obliczeniem typu zwycięstwa (checkResult)");
         }
 
-
-        //TODO: to są wartości int z tempResults - przerobione z charów!!!!!!!!
-        teamResultsObjectHome.addHomeScoredGoals(homeTeamGaols);
+        teamResultsObjectHome.addHomeScoredGoals(homeTeamGoals);
         teamResultsObjectHome.addHomeLostGoals(awayTeamGoals);
         // ^^ wyżej update drużyny gospodarzy
 
         // niżej update drużyny gości
-        teamResultsObjectAway.addAwayLostGoals(homeTeamGaols);
+        teamResultsObjectAway.addAwayLostGoals(homeTeamGoals);
         teamResultsObjectAway.addAwayScoredGoals(awayTeamGoals);
 
 //        System.out.println("HomeObject = " + teamResultsObjectHome.toString());
 //        System.out.println("AwayObject = " + teamResultsObjectAway.toString());
 //        System.out.println("Jestem w metodzie bothTeamResultsObjectUpdate");
-       }
+    }
+
+    public static void checkHomeWonRecordResult(TeamResultsObject teamResultsObjectHome, String recordHomeWonResult) {
+
+        //TODO: usunąć po nadrobionej kolejce Śląska
+        if (teamResultsObjectHome.getTeamName().equals("ŚląskWrocław") && teamResultsObjectHome.getRecordHomeWonResult().equals("9:0") && teamResultsObjectHome.getHomeWonGames() > 0) {
+            teamResultsObjectHome.setHomeWonGames(teamResultsObjectHome.getHomeWonGames() - 1);
+        }
+
+        if (teamResultsObjectHome.getHomeWonGames() > 0) {
+            //Rozdzielenie wyniku, który jest stringiem na dwie liczby
+            int homeScoredGoals = Integer.valueOf(Arrays.stream(recordHomeWonResult.split(":")).toList().get(0));
+            int homeLostGoals = Integer.valueOf(Arrays.stream(recordHomeWonResult.split(":")).toList().get(1));
+            //Rozdzielenie wyniku, który jest stringiem na dwie liczby
+            int homeRecordScoredGoals = Integer.valueOf(Arrays.stream(teamResultsObjectHome.getRecordHomeWonResult().split(":")).toList().get(0));
+            int homeRecordLostGoals = Integer.valueOf(Arrays.stream(teamResultsObjectHome.getRecordHomeWonResult().split(":")).toList().get(1));
+
+            // Sprawdzenie czy różnica bramki w meczu jest większa niż w rekordowym rezultacie
+            if (homeScoredGoals > homeRecordScoredGoals && ((homeScoredGoals - homeLostGoals) > (homeRecordScoredGoals - homeRecordLostGoals))) {
+                teamResultsObjectHome.setRecordHomeWonResult(homeScoredGoals + ":" + homeLostGoals);
+                //System.out.println(teamResultsObjectHome.getTeamName() + ", rekord: " + teamResultsObjectHome.getRecordHomeWonResult());
+                // Sprawdzenie czy ilość strzelonych bramek (przy jednakowej różnicy bramek) jest większa niż przy rekordowym rezultacie,
+                // jeśli tak - nadal aktualizujemy rekord (czyli np 5:2  jest lepszym rekordem niż 3:0)
+            } else if (((homeScoredGoals - homeLostGoals) == (homeRecordScoredGoals - homeRecordLostGoals)) && homeScoredGoals > homeRecordScoredGoals) {
+                //System.out.println(teamResultsObjectHome.getTeamName() + ", rekord przed zmianą: " + teamResultsObjectHome.getRecordHomeWonResult());
+                teamResultsObjectHome.setRecordHomeWonResult(homeScoredGoals + ":" + homeLostGoals);
+                //System.out.println(teamResultsObjectHome.getTeamName() + ", rekord po zmianie: " + teamResultsObjectHome.getRecordHomeWonResult());
+            }
+        }
+    }
+
+    public static void checkAwayWonRecordResult(TeamResultsObject teamResultsObjectAway, String recordAwayWonResult) {
+        //System.out.println("team =  " + teamResultsObjectAway.getTeamName() + ", won away games= " + teamResultsObjectAway.getAwayWonGames());
+        if (teamResultsObjectAway.getAwayWonGames() == 0) {
+            System.out.println("team =  " + teamResultsObjectAway.getTeamName());
+        }
+
+        if (teamResultsObjectAway.getAwayWonGames() > 0) {
+            //Rozdzielenie wyniku, który jest stringiem na dwie liczby
+            int awayScoredGoals = Integer.valueOf(Arrays.stream(recordAwayWonResult.split(":")).toList().get(1));
+            int awayLostGoals = Integer.valueOf(Arrays.stream(recordAwayWonResult.split(":")).toList().get(0));
+            //Rozdzielenie wyniku, który jest stringiem na dwie liczby
+            int awayRecordScoredGoals = Integer.valueOf(Arrays.stream(teamResultsObjectAway.getRecordAwayWonResult().split(":")).toList().get(1));
+            int awayRecordLostGoals = Integer.valueOf(Arrays.stream(teamResultsObjectAway.getRecordAwayWonResult().split(":")).toList().get(0));
+
+            // Sprawdzenie czy różnica bramki w meczu jest większa niż w rekordowym rezultacie
+            if (awayScoredGoals > awayRecordScoredGoals && (awayScoredGoals - awayLostGoals) > (awayRecordScoredGoals - awayRecordLostGoals)) {
+                teamResultsObjectAway.setRecordAwayWonResult(awayLostGoals + ":" + awayScoredGoals);
+                //System.out.println(teamResultsObjectAway.getTeamName() + ", rekord: " + teamResultsObjectAway.getRecordAwayWonResult());
+                // Sprawdzenie czy ilość strzelonych bramek (przy jednakowej różnicy bramek) jest większa niż przy rekordowym rezultacie,
+                // jeśli tak - nadal aktualizujemy rekord (czyli np 5:2  jest lepszym rekordem niż 3:0)
+            } else if (((awayScoredGoals - awayLostGoals) == (awayRecordScoredGoals - awayRecordLostGoals)) && awayScoredGoals > awayRecordScoredGoals) {
+                //System.out.println(teamResultsObjectAway.getTeamName() + ", rekord przed zmianą: " + teamResultsObjectAway.getRecordAwayWonResult());
+                teamResultsObjectAway.setRecordAwayWonResult(awayLostGoals + ":" + awayScoredGoals);
+                //System.out.println(teamResultsObjectAway.getTeamName() + ", rekord po zmianie: " + teamResultsObjectAway.getRecordAwayWonResult());
+            }
+        }
+    }
+
+
 }
