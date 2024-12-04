@@ -31,6 +31,24 @@ public class TeamResultsObject {
 
     private String recordHomeWonResult;
     private String recordAwayWonResult;
+    private String recordHomeWonRivalName = "";
+    private String recordAwayWonRivalName = "";
+
+    public String getRecordHomeWonRivalName() {
+        return recordHomeWonRivalName;
+    }
+
+    public void setRecordHomeWonRivalName(String recordHomeWonRivalName) {
+        this.recordHomeWonRivalName = recordHomeWonRivalName;
+    }
+
+    public String getRecordAwayWonRivalName() {
+        return recordAwayWonRivalName;
+    }
+
+    public void setRecordAwayWonRivalName(String recordAwayWonRivalName) {
+        this.recordAwayWonRivalName = recordAwayWonRivalName;
+    }
 
     public String getRecordHomeWonResult() {
         return recordHomeWonResult;
