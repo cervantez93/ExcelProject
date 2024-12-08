@@ -141,7 +141,8 @@ public class Main {
 
         //TODO: poprawić tak, żeby wykonywało się to na SAMYM KOŃCU - chodzi o podmianę wyniku rekordu domowej wygranej Śląska
         // PutResultsOnMap.slaskWroclawHomeRecordCorrection();
-        PrintTable.chooseTableVariant(mapOfResults);
+
+        PrintTable.printAwayTable(mapOfResults);
 
         //TODO: pomyśleć jak dodać rekordową wygraną domową i wyjazdową
         // Można liczyć różnicę bramek i założyć, że rekordowa wygrana to ta z największą ilością strzelonych bramek (np 5:2 jest lepszym wynikiem niż 3:0)

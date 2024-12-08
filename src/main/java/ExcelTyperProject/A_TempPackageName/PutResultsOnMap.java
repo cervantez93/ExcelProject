@@ -38,10 +38,6 @@ public class PutResultsOnMap {
         // niżej update drużyny gości
         teamResultsObjectAway.addAwayLostGoals(homeTeamGoals);
         teamResultsObjectAway.addAwayScoredGoals(awayTeamGoals);
-
-//        System.out.println("HomeObject = " + teamResultsObjectHome.toString());
-//        System.out.println("AwayObject = " + teamResultsObjectAway.toString());
-//        System.out.println("Jestem w metodzie bothTeamResultsObjectUpdate");
     }
 
     public static void checkHomeWonRecordResult(TeamResultsObject teamResultsObjectHome, TeamResultsObject teamResultsObjectRival, String recordHomeWonResult) {
@@ -62,15 +58,19 @@ public class PutResultsOnMap {
             // Sprawdzenie czy różnica bramki w meczu jest większa niż w rekordowym rezultacie
             if (homeScoredGoals > homeRecordScoredGoals && ((homeScoredGoals - homeLostGoals) > (homeRecordScoredGoals - homeRecordLostGoals))) {
                 teamResultsObjectHome.setRecordHomeWonResult(homeScoredGoals + ":" + homeLostGoals);
-                //System.out.println(teamResultsObjectHome.getTeamName() + ", rekord: " + teamResultsObjectHome.getRecordHomeWonResult());
+                teamResultsObjectHome.setRecordHomeWonRivalName(teamResultsObjectRival.getTeamName());
+                System.out.println(teamResultsObjectHome.getTeamName() + ", rekord: " + teamResultsObjectHome.getRecordHomeWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName());
+
                 // Sprawdzenie czy ilość strzelonych bramek (przy jednakowej różnicy bramek) jest większa niż przy rekordowym rezultacie,
                 // jeśli tak - nadal aktualizujemy rekord (czyli np 5:2  jest lepszym rekordem niż 3:0)
             } else if (((homeScoredGoals - homeLostGoals) == (homeRecordScoredGoals - homeRecordLostGoals)) && homeScoredGoals > homeRecordScoredGoals) {
                 //System.out.println(teamResultsObjectHome.getTeamName() + ", rekord przed zmianą: " + teamResultsObjectHome.getRecordHomeWonResult());
                 teamResultsObjectHome.setRecordHomeWonResult(homeScoredGoals + ":" + homeLostGoals);
-                //System.out.println(teamResultsObjectHome.getTeamName() + ", rekord po zmianie: " + teamResultsObjectHome.getRecordHomeWonResult());
+                teamResultsObjectHome.setRecordHomeWonRivalName(teamResultsObjectRival.getTeamName());
+                System.out.println(teamResultsObjectHome.getTeamName() + ", rekord po zmianie (wieksza ilosc bramek): " + teamResultsObjectHome.getRecordHomeWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName());
             }
-            teamResultsObjectHome.setRecordHomeWonRivalName(teamResultsObjectRival.getTeamName());
+
+            //teamResultsObjectHome.setRecordHomeWonRivalName(teamResultsObjectRival.getTeamName());
         }
     }
 
@@ -89,17 +89,20 @@ public class PutResultsOnMap {
             int awayRecordLostGoals = Integer.valueOf(Arrays.stream(teamResultsObjectAway.getRecordAwayWonResult().split(":")).toList().get(0));
 
             // Sprawdzenie czy różnica bramki w meczu jest większa niż w rekordowym rezultacie
+
             if (awayScoredGoals > awayRecordScoredGoals && (awayScoredGoals - awayLostGoals) > (awayRecordScoredGoals - awayRecordLostGoals)) {
                 teamResultsObjectAway.setRecordAwayWonResult(awayLostGoals + ":" + awayScoredGoals);
-                //System.out.println(teamResultsObjectAway.getTeamName() + ", rekord: " + teamResultsObjectAway.getRecordAwayWonResult());
+                teamResultsObjectAway.setRecordAwayWonRivalName(teamResultsObjectRival.getTeamName());
+                //    System.out.println(teamResultsObjectAway.getTeamName() + ", rekord: " + teamResultsObjectAway.getRecordAwayWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName() + ", teamResultsObjectAway.getRecordAwayWonResult() = " + teamResultsObjectAway.getRecordAwayWonResult());
+
                 // Sprawdzenie czy ilość strzelonych bramek (przy jednakowej różnicy bramek) jest większa niż przy rekordowym rezultacie,
                 // jeśli tak - nadal aktualizujemy rekord (czyli np 5:2  jest lepszym rekordem niż 3:0)
             } else if (((awayScoredGoals - awayLostGoals) == (awayRecordScoredGoals - awayRecordLostGoals)) && awayScoredGoals > awayRecordScoredGoals) {
-                //System.out.println(teamResultsObjectAway.getTeamName() + ", rekord przed zmianą: " + teamResultsObjectAway.getRecordAwayWonResult());
-                teamResultsObjectAway.setRecordAwayWonResult(awayLostGoals + ":" + awayScoredGoals );
-                //System.out.println(teamResultsObjectAway.getTeamName() + ", rekord po zmianie: " + teamResultsObjectAway.getRecordAwayWonResult());
+                //System.out.println(teamResultsObjectAway.getTeamName() + ", rekord przed zmianą: " + teamResultsObjectAway.getRecordAwayWonResult()+ " przeciwko: "+teamResultsObjectRival.getTeamName());
+                teamResultsObjectAway.setRecordAwayWonResult(awayLostGoals + ":" + awayScoredGoals);
+                teamResultsObjectAway.setRecordAwayWonRivalName(teamResultsObjectRival.getTeamName());
+                //    System.out.println(teamResultsObjectAway.getTeamName() + ", rekord po zmianie: " + teamResultsObjectAway.getRecordAwayWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName() + ", teamResultsObjectAway.getRecordAwayWonResult() = " + teamResultsObjectAway.getRecordAwayWonResult());
             }
-            teamResultsObjectAway.setRecordAwayWonRivalName(teamResultsObjectRival.getTeamName());
         }
     }
 }

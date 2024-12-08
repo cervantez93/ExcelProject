@@ -38,4 +38,16 @@ public class PrintTable {
         SortMapToTable.sortedAllMatchesInTable(mapOfResults);
 
     }
+
+    public static void printHomeTable(Map<String, TeamResultsObject> mapOfResults) {
+        System.out.print("\nTabela łączna: ");
+        SortMapToTable.sortedHomeMatchesInTable(mapOfResults);
+
+    }
+
+    public static void printAwayTable(Map<String, TeamResultsObject> mapOfResults) {
+        System.out.print("\nTabela łączna: ");
+        SortMapToTable.sortedAwayMatchesInTable(mapOfResults);
+
+    }
 }

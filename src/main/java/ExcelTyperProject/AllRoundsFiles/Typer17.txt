@@ -1,0 +1,10 @@
+Mecz	Wynik	Damian	Ryszard	Paweł	Łukasz
+Piast Gliwice – Lech Poznań	0:0	1:2	0:2	1:3	9:4
+Cracovia Kraków – Zagłębie Lubin	1:1	3:1	2:1	2:0	9:4
+GKS Katowice – Lechia Gdańsk	2:0	2:0	0:0	1:1	9:9
+Korona Kielce – Górnik Zabrze	2:4	0:1	0:2	1:2	9:9
+Motor Lublin – Radomiak Radom	1:0	3:1	2:2	2:2	9:9
+Pogoń Szczecin – Jagiellonia Białystok	1:1	2:2	1:3	1:1	9:4
+Stal Mielec – Legia Warszawa	2:2	0:3	0:3	1:1	9:4
+Widzew Łódź – Raków Częstochowa	2:3	1:2	0:0	0:1	9:9
+Śląsk Wrocław – Puszcza Niepołomice	0:1	1:1	1:0	1:2	9:9

@@ -74,9 +74,8 @@ public class SortMapToTable {
         System.out.print("\n");
         // Wyświetlenie posortowanych wyników
         for (Map.Entry<String, TeamResultsObject> entry : sortedList) {
-
             entry.getValue().setRecordHomeWonResult(entry.getValue().getRecordHomeWonResult() + " przeciwko drużynie: ");
-            entry.getValue().setRecordAwayWonRivalName(entry.getValue().getRecordAwayWonRivalName() + " przeciwko drużynie: ");
+            //entry.getValue().setRecordAwayWonRivalName(entry.getValue().getRecordAwayWonRivalName() + " przeciwko drużynie: ");
 
             //TODO: te dwa ify trzeba w zasadzie wyrzucić do jakiejkolwiek metody, która wywoływana jest po podliczeniu wyników drużyn, ale przed wyświetlaniem którejkolwiek tabeli
             if (entry.getValue().getHomeWonGames() == 0) {
@@ -115,12 +114,12 @@ public class SortMapToTable {
         int place = 1;
         System.out.print("\n");
         // Wyświetlenie posortowanych wyników
-
-
         for (Map.Entry<String, TeamResultsObject> entry : sortedList) {
+            //entry.getValue().setRecordHomeWonResult(entry.getValue().getRecordHomeWonResult() + " przeciwko drużynie: ");
             entry.getValue().setRecordAwayWonRivalName(entry.getValue().getRecordAwayWonRivalName() + " przeciwko drużynie: ");
+
             //TODO: te dwa ify trzeba w zasadzie wyrzucić do jakiejkolwiek metody, która wywoływana jest po podliczeniu wyników drużyn, ale przed wyświetlaniem którejkolwiek tabeli
-            if (entry.getValue().getHomeWonGames() == 0) {
+            if (entry.getValue().getAwayWonGames() == 0) {
                 entry.getValue().setRecordHomeWonResult("Brak wygranej domowej = brak rekordu");
             }
             if (entry.getValue().getRecordAwayWonResult().equals("0:0")) {
@@ -128,7 +127,8 @@ public class SortMapToTable {
             }
 
             if (!(entry.getValue().getRecordAwayWonResult().equals("Brak wygranej wyjazdowej = brak rekordu")) && !(entry.getValue().getRecordAwayWonResult().equals("0:0"))) {
-                entry.getValue().setRecordAwayWonRivalName(entry.getValue().getRecordAwayWonRivalName() + entry.getValue().getRecordAwayWonRivalName());
+                entry.getValue().setRecordAwayWonResult(entry.getValue().getRecordAwayWonResult() + entry.getValue().getRecordAwayWonRivalName());
+                System.out.println("jestem tutaj: " + entry.getValue().getRecordAwayWonResult() + "  vs  " + entry.getValue().getRecordAwayWonRivalName());
             }
 
             System.out.print(place + "." + entry.getKey() + ": " + entry.getValue().awayMatchesInTableToString());
