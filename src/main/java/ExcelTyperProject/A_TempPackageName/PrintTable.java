@@ -16,19 +16,18 @@ public class PrintTable {
         switch (option) {
             case 1:
                 System.out.print("\nTabela łączna: ");
-                SortMapToTable.sortedAllMatchesInTable(mapOfResults);
+                printFullTable(mapOfResults);
                 break;
             case 2:
                 System.out.print("\nTabela domowa: ");
-                SortMapToTable.sortedHomeMatchesInTable(mapOfResults);
+                printHomeTable(mapOfResults);
                 break;
             case 3:
                 System.out.print("\nTabela wyjazdowa: ");
-                SortMapToTable.sortedAwayMatchesInTable(mapOfResults);
+                printAwayTable(mapOfResults);
                 break;
             case 4:
-                System.out.print("\nTabela wyjazdowa: ");
-                SortMapToTable.sortedAwayMatchesInTable(mapOfResults);
+                System.out.print("\nKoniec programu. ");
                 break;
         }
     }
@@ -40,13 +39,13 @@ public class PrintTable {
     }
 
     public static void printHomeTable(Map<String, TeamResultsObject> mapOfResults) {
-        System.out.print("\nTabela łączna: ");
+        System.out.print("\nTabela domowa: ");
         SortMapToTable.sortedHomeMatchesInTable(mapOfResults);
 
     }
 
     public static void printAwayTable(Map<String, TeamResultsObject> mapOfResults) {
-        System.out.print("\nTabela łączna: ");
+        System.out.print("\nTabela wyjazdowa: ");
         SortMapToTable.sortedAwayMatchesInTable(mapOfResults);
 
     }

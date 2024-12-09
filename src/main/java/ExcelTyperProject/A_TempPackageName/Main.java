@@ -12,6 +12,8 @@ public class Main {
 
         List<Integer> typerPointsAllRoundsList = new ArrayList<>();
         List<TyperObject> typerObjectList = new ArrayList<>();
+        List<TyperObject> firstRoundResults = new ArrayList<>();
+        List<TyperObject> secondRoundResults = new ArrayList<>();
         int numberOfPlayers = GetPlayerNames.getAmountOfPlayers();
 
         for (int i = 0; i < numberOfPlayers; i++) {
@@ -27,8 +29,10 @@ public class Main {
         File directory = new File("src/main/java/ExcelTyperProject/AllRoundsFiles");
         int fileAmount = directory.list().length;
 
-        for (int roundNumber = 0; roundNumber < fileAmount; roundNumber++) {
+        int roundNumber2 = 0;
 
+        for (int roundNumber = 0; roundNumber < fileAmount; roundNumber++) {
+            roundNumber2++;
             String path = "src/main/java/ExcelTyperProject/AllRoundsFiles/Typer" + (roundNumber + 1) + ".txt";
 
             //System.out.println("\nKolejka: " + (roundNumber + 1));
@@ -128,6 +132,60 @@ public class Main {
 //                }
 //            }
 
+            //Podsumowanie pierwszej rundy
+            if (roundNumber == 15) {
+                for (int n = 0; n < 4; n++) {
+                    typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
+                }
+                firstRoundResults.addAll(typerObjectList);
+                //System.out.println(" yyy gracz: " + firstRoundResults.get(0).getPoints());
+            }
+
+            //TODO:Podsumowanie drugiej rundy
+//            if (roundNumber == 33) {
+//                for (int n = 0; n < 4; n++) {
+//                    typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
+//                }
+//                TyperRoundResults.secondRoundResults(firstRoundResults, typerObjectList);
+//            }
+
+
+            //TODO: wyświetlenie aktualnego wyniku dla drugiej rundy (bez pierwszej rundy)
+            // DO POPRAWY
+            if (roundNumber > fileAmount -2) {
+                secondRoundResults.addAll(firstRoundResults);
+
+
+                for (int i = 0; i < numberOfPlayers; i++) {
+                    secondRoundResults.get(i).setPoints(0);
+                }
+                {
+                    //Resetowanie wartości punktów, a następnie nadawanie jej poprawnych wartości
+                    for (int n = 0; n < numberOfPlayers; n++) {
+                        secondRoundResults.get(n).setPoints((secondRoundResults.get(n).getPoints() + typerPointsOneRoundList.get(n)));
+                        System.out.println(typerObjectList.get(n).getName() + " - punkty w drugiej rundzie: " + secondRoundResults.get(n).getPoints());
+                    }
+                    //    TyperRoundResults.currentSecondRoundResults(typerObjectList, firstRoundResults);
+                }
+                if (roundNumber == fileAmount - 1) {
+                    //System.out.println(" zzzz gracz: " + secondRoundResults.get(0).getPoints());
+                }
+
+            }
+
+
+//            if (roundNumber == fileAmount - 2) {
+//                System.out.println(" ddddd gracz: " + firstRoundResults.get(0).getPoints());
+//                System.out.println("Kolejka: " + (roundNumber + 1) + "\n");
+//                {
+////                    for (int n = 0; n < 4; n++) {
+////                        typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
+////                    }
+//                    TyperRoundResults.currentSecondRoundResults(typerObjectList, firstRoundResults);
+//                }
+//                System.out.println(" zzzz gracz: " + firstRoundResults.get(0).getPoints());
+//
+//            }
             //TODO: koniec pierwszego fora
         }
 
@@ -137,12 +195,13 @@ public class Main {
             System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerObjectList.get(n).getPoints() + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount() + ", prawidłowe typy (łącznie z dokładnymi wynikami): " + typerObjectList.get(n).getCorrectResultsAmount() +
                     ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
         }
+
         //funFacts(mapOfResults);
 
         //TODO: poprawić tak, żeby wykonywało się to na SAMYM KOŃCU - chodzi o podmianę wyniku rekordu domowej wygranej Śląska
         // PutResultsOnMap.slaskWroclawHomeRecordCorrection();
 
-        PrintTable.printAwayTable(mapOfResults);
+        //PrintTable.printAwayTable(mapOfResults);
 
         //TODO: pomyśleć jak dodać rekordową wygraną domową i wyjazdową
         // Można liczyć różnicę bramek i założyć, że rekordowa wygrana to ta z największą ilością strzelonych bramek (np 5:2 jest lepszym wynikiem niż 3:0)
