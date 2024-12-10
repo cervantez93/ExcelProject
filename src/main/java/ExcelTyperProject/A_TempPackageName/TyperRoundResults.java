@@ -52,7 +52,7 @@ public class TyperRoundResults {
         for (int n = 0; n < numberOfPlayers; n++) {
             secondRoundResults.get(n).setCorrectResultsAmount(secondRoundResults.get(n).getCorrectResultsAmount() - firstRoundResults.get(n).getCorrectResultsAmount());
             secondRoundResults.get(n).setExactResultsAmount(secondRoundResults.get(n).getExactResultsAmount() - firstRoundResults.get(n).getExactResultsAmount());
-            secondRoundResults.get(n).setPoints(secondRoundResults.get(n).getPoints() - firstRoundResults.get(n).getPoints());
+            secondRoundResults.get(n).setPoints( secondRoundResults.get(n).getPoints() - firstRoundResults.get(n).getPoints());
 
             System.out.println(n + " gracz: " + secondRoundResults.get(n).getPoints());
 

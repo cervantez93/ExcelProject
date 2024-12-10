@@ -13,13 +13,16 @@ public class Main {
         List<Integer> typerPointsAllRoundsList = new ArrayList<>();
         List<TyperObject> typerObjectList = new ArrayList<>();
         List<TyperObject> firstRoundResults = new ArrayList<>();
+
         List<TyperObject> secondRoundResults = new ArrayList<>();
+
         int numberOfPlayers = GetPlayerNames.getAmountOfPlayers();
 
         for (int i = 0; i < numberOfPlayers; i++) {
             typerPointsAllRoundsList.add(i, 0);
             try {
                 typerObjectList.add(new TyperObject(GetPlayerNames.getNames().get(i), 0, 0, 0, 0, 0));
+                secondRoundResults.add(new TyperObject(GetPlayerNames.getNames().get(i), 0, 0, 0, 0, 0));
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -115,12 +118,15 @@ public class Main {
                 mapOfResults.get("RadomiakRadom").setAwayLostGames(-1);
             }
 
-            //TODO: NIE KASOWAĆ - KONTROLNY SOUT!
-//            System.out.println("\nPodsumowanie " + (roundNumber + 1) + " kolejki: \n"
-//                    + typerObjectList.get(0).getName() + " uzyskał: " + typerPointsOneRoundList.get(0) + " punktów\n"
-//                    + typerObjectList.get(1).getName() + " uzyskał: " + typerPointsOneRoundList.get(1) + " punktów\n"
-//                    + typerObjectList.get(2).getName() + " uzyskał: " + typerPointsOneRoundList.get(2) + " punktów\n"
-//                    + typerObjectList.get(3).getName() + " uzyskał: " + typerPointsOneRoundList.get(3) + " punktów\n");
+//            TODO: NIE KASOWAĆ - KONTROLNY SOUT!
+//            if (roundNumber>15){
+//                System.out.println("\nPodsumowanie " + (roundNumber + 1) + " kolejki: \n"
+//                        + typerObjectList.get(0).getName() + " uzyskał: " + typerPointsOneRoundList.get(0) + " punktów\n"
+//                        + typerObjectList.get(1).getName() + " uzyskał: " + typerPointsOneRoundList.get(1) + " punktów\n"
+//                        + typerObjectList.get(2).getName() + " uzyskał: " + typerPointsOneRoundList.get(2) + " punktów\n"
+//                        + typerObjectList.get(3).getName() + " uzyskał: " + typerPointsOneRoundList.get(3) + " punktów\n");
+//            }
+
 
             //wypisanie wyniku po 8 kolejce - w momencie gdy Łukasz zrezygnował
             //TODO: NIE KASOWAĆ - KONTROLNY SOUT!
@@ -133,13 +139,42 @@ public class Main {
 //            }
 
             //Podsumowanie pierwszej rundy
-            if (roundNumber == 15) {
+            if (roundNumber == 16) {
                 for (int n = 0; n < 4; n++) {
                     typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
                 }
                 firstRoundResults.addAll(typerObjectList);
-                //System.out.println(" yyy gracz: " + firstRoundResults.get(0).getPoints());
+                //TODO:   secondRoundResults.addAll(firstRoundResults);
+
+//                System.out.println(" yyy gracz: " + firstRoundResults.get(0).getPoints());
+//                System.out.println(" yyy gracz: " + firstRoundResults.get(1).getPoints());
+//                System.out.println(" yyy gracz: " + firstRoundResults.get(2).getPoints());
+//                System.out.println(" yyy gracz: " + firstRoundResults.get(3).getPoints());
             }
+
+
+            //TODO: wyświetlenie aktualnego wyniku dla drugiej rundy (bez pierwszej rundy)
+
+
+            //TODO:  DO POPRAWY - LICZENIE POPRAWNYCH TYPÓW I DOKŁADNYCH WYNIKÓW + REKORDOWA KOLEJKA W DRUGIEJ RUNDZIE
+            //roundNumber > fileAmount - 2 -> liczymy od 18 kolejki włącznie (pierwsza runda wiosenna)
+            if (roundNumber > fileAmount - 2) {
+                System.out.println("Round number = " + roundNumber);
+                System.out.println("File amount = " + fileAmount);
+
+                for (int i = 0; i < numberOfPlayers; i++) {
+                    secondRoundResults.get(i).setPoints((secondRoundResults.get(i).getPoints() + typerPointsOneRoundList.get(i)));
+
+                    secondRoundResults.get(i).setExactResultsAmount((typerObjectList.get(i).getExactResultsAmount() - firstRoundResults.get(i).getExactResultsAmount()));
+                    secondRoundResults.get(i).setCorrectResultsAmount((typerObjectList.get(i).getCorrectResultsAmount() - firstRoundResults.get(i).getCorrectResultsAmount()));
+                    System.out.println("");
+                    System.out.println(" xxxxxxx gracz: " + typerObjectList.get(i).getExactResultsAmount());
+
+                    System.out.println(secondRoundResults.get(i).getName() + " - punkty: " + secondRoundResults.get(i).getPoints() + ", dokładne wyniki: " + secondRoundResults.get(i).getExactResultsAmount() + ", prawidłowe typy (łącznie z dokładnymi wynikami): "
+                            + secondRoundResults.get(i).getCorrectResultsAmount() + ", rekodowa ilość punktów: " + secondRoundResults.get(i).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + secondRoundResults.get(i).getRecordAmountOfPointsInOneRound_RoundNumber());
+                }
+            }
+
 
             //TODO:Podsumowanie drugiej rundy
 //            if (roundNumber == 33) {
@@ -148,53 +183,17 @@ public class Main {
 //                }
 //                TyperRoundResults.secondRoundResults(firstRoundResults, typerObjectList);
 //            }
-
-
-            //TODO: wyświetlenie aktualnego wyniku dla drugiej rundy (bez pierwszej rundy)
-            // DO POPRAWY
-            if (roundNumber > fileAmount -2) {
-                secondRoundResults.addAll(firstRoundResults);
-
-
-                for (int i = 0; i < numberOfPlayers; i++) {
-                    secondRoundResults.get(i).setPoints(0);
-                }
-                {
-                    //Resetowanie wartości punktów, a następnie nadawanie jej poprawnych wartości
-                    for (int n = 0; n < numberOfPlayers; n++) {
-                        secondRoundResults.get(n).setPoints((secondRoundResults.get(n).getPoints() + typerPointsOneRoundList.get(n)));
-                        System.out.println(typerObjectList.get(n).getName() + " - punkty w drugiej rundzie: " + secondRoundResults.get(n).getPoints());
-                    }
-                    //    TyperRoundResults.currentSecondRoundResults(typerObjectList, firstRoundResults);
-                }
-                if (roundNumber == fileAmount - 1) {
-                    //System.out.println(" zzzz gracz: " + secondRoundResults.get(0).getPoints());
-                }
-
-            }
-
-
-//            if (roundNumber == fileAmount - 2) {
-//                System.out.println(" ddddd gracz: " + firstRoundResults.get(0).getPoints());
-//                System.out.println("Kolejka: " + (roundNumber + 1) + "\n");
-//                {
-////                    for (int n = 0; n < 4; n++) {
-////                        typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
-////                    }
-//                    TyperRoundResults.currentSecondRoundResults(typerObjectList, firstRoundResults);
-//                }
-//                System.out.println(" zzzz gracz: " + firstRoundResults.get(0).getPoints());
-//
-//            }
-            //TODO: koniec pierwszego fora
         }
+        //TODO: koniec pierwszego fora
 
-        for (int n = 0; n < 4; n++) {
-            //prawidłowe ustawienie liczby zsumowanych punktów
-            typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
-            System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerObjectList.get(n).getPoints() + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount() + ", prawidłowe typy (łącznie z dokładnymi wynikami): " + typerObjectList.get(n).getCorrectResultsAmount() +
-                    ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
-        }
+
+        //TODO: kluczowy SOUT! Wyświetlanie całkowitych wyników
+//        for (int n = 0; n < 4; n++) {
+//            //prawidłowe ustawienie liczby zsumowanych punktów
+//            typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
+//            System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerObjectList.get(n).getPoints() + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount() + ", prawidłowe typy (łącznie z dokładnymi wynikami): " + typerObjectList.get(n).getCorrectResultsAmount() +
+//                    ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
+//        }
 
         //funFacts(mapOfResults);
 
