@@ -136,30 +136,28 @@ public class Main {
 //                    System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerPointsAllRoundsList.get(n) + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount()
 //                            + ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
 //                }
-//            }
+//           }
 
-            //Podsumowanie pierwszej rundy
+
+            //Podsumowanie pierwszej rundy (roundNumber == 16 -> 17 kolejek łącznie)
             if (roundNumber == 16) {
-                for (int n = 0; n < 4; n++) {
-                    typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
-                }
                 firstRoundResults.addAll(typerObjectList);
-                //TODO:   secondRoundResults.addAll(firstRoundResults);
-
-//                System.out.println(" yyy gracz: " + firstRoundResults.get(0).getPoints());
-//                System.out.println(" yyy gracz: " + firstRoundResults.get(1).getPoints());
-//                System.out.println(" yyy gracz: " + firstRoundResults.get(2).getPoints());
-//                System.out.println(" yyy gracz: " + firstRoundResults.get(3).getPoints());
+                System.out.println("\nPodusmowanie pierwszej rundy:");
+                for (int n = 0; n < 4; n++) {
+                    System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerPointsAllRoundsList.get(n) + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount()
+                            + ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
+                }
             }
 
 
             //TODO: wyświetlenie aktualnego wyniku dla drugiej rundy (bez pierwszej rundy)
 
 
-            //TODO:  DO POPRAWY - LICZENIE POPRAWNYCH TYPÓW I DOKŁADNYCH WYNIKÓW + REKORDOWA KOLEJKA W DRUGIEJ RUNDZIE
-            //roundNumber > fileAmount - 2 -> liczymy od 18 kolejki włącznie (pierwsza runda wiosenna)
-            if (roundNumber > fileAmount - 2) {
-                System.out.println("Round number = " + roundNumber);
+            //TODO: powinno być dobrze, zakomentować  SOUT, wyczyścić niepotrzebne instrukcje, przenieść do metody
+            // W ramach testów można dodać 1 plik (np kopie typer18) ze zmienionymi nieco typami - ważne, żeby było tam trochę dobrych typów / DW, że sprawdzić czy punkty itd są prawidłowo liczone
+            //Liczenie od 18 kolejki - wyniki aktualne dla drugiej rundy
+            if ((roundNumber + 1) > 17) {
+                System.out.println("\n\nRound number = " + (roundNumber + 1));
                 System.out.println("File amount = " + fileAmount);
 
                 for (int i = 0; i < numberOfPlayers; i++) {
@@ -167,8 +165,10 @@ public class Main {
 
                     secondRoundResults.get(i).setExactResultsAmount((typerObjectList.get(i).getExactResultsAmount() - firstRoundResults.get(i).getExactResultsAmount()));
                     secondRoundResults.get(i).setCorrectResultsAmount((typerObjectList.get(i).getCorrectResultsAmount() - firstRoundResults.get(i).getCorrectResultsAmount()));
-                    System.out.println("");
-                    System.out.println(" xxxxxxx gracz: " + typerObjectList.get(i).getExactResultsAmount());
+                    System.out.println("xxxxxxx gracz: " + typerObjectList.get(i).getPoints());
+                    System.out.println("yyyyyyy gracz: " + firstRoundResults.get(i).getPoints());
+//                    System.out.println("xxxxxxx gracz: " + typerObjectList.get(i).getExactResultsAmount());
+//                    System.out.println("yyyyyyy gracz: " + firstRoundResults.get(i).getExactResultsAmount());
 
                     System.out.println(secondRoundResults.get(i).getName() + " - punkty: " + secondRoundResults.get(i).getPoints() + ", dokładne wyniki: " + secondRoundResults.get(i).getExactResultsAmount() + ", prawidłowe typy (łącznie z dokładnymi wynikami): "
                             + secondRoundResults.get(i).getCorrectResultsAmount() + ", rekodowa ilość punktów: " + secondRoundResults.get(i).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + secondRoundResults.get(i).getRecordAmountOfPointsInOneRound_RoundNumber());
@@ -178,13 +178,16 @@ public class Main {
 
             //TODO:Podsumowanie drugiej rundy
 //            if (roundNumber == 33) {
+            //TODO: trzeba od całkowitego wyniku odjąć wyniki punktowe z pierwszej rundy
+            // + opracować sposób do zapisywania rekordowej ilości punktów w kolejce (i numeru kolejki) w drugiej rundzie - można np dodać dwie nowe zmienne
 //                for (int n = 0; n < 4; n++) {
 //                    typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
 //                }
 //                TyperRoundResults.secondRoundResults(firstRoundResults, typerObjectList);
 //            }
-        }
-        //TODO: koniec pierwszego fora
+
+
+        }//TODO: koniec pierwszego fora
 
 
         //TODO: kluczowy SOUT! Wyświetlanie całkowitych wyników
@@ -206,9 +209,8 @@ public class Main {
         // Można liczyć różnicę bramek i założyć, że rekordowa wygrana to ta z największą ilością strzelonych bramek (np 5:2 jest lepszym wynikiem niż 3:0)
         // Analogicznie dla rekordowych przegranych, remisów nie ma chyba sensu.
 
-        //KONIEC MAINA
-    }
 
+    }//TODO:KONIEC MAINA
 
     public static void funFacts(Map<String, TeamResultsObject> mapOfResults) {
         System.out.println("Statystyki:\n" +
