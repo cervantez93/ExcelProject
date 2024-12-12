@@ -86,12 +86,29 @@ public class Main {
                             typerPointsOneRoundList.set(k - 1, (typerPointsOneRoundList.get(k - 1) + 3));
                             typerObjectList.get(k - 1).setExactResultsAmount((typerObjectList.get(k - 1).getExactResultsAmount() + 1));
                             typerObjectList.get(k - 1).setCorrectResultsAmount((typerObjectList.get(k - 1).getCorrectResultsAmount() + 1));
+
+
+                            //TODO: sprawdzić czy prawidłowo dolicza tutaj i niżej w else dla samego prawidłowego typu
+                            //Ustawienie wartości dla drugiej rundy
+                            if ((roundNumber + 1) > 17) {
+                                System.out.println("jestem tutaj yyyy");
+                                secondRoundResults.get(k - 1).setExactResultsAmount((secondRoundResults.get(k - 1).getExactResultsAmount() + 1));
+                                secondRoundResults.get(k - 1).setCorrectResultsAmount((secondRoundResults.get(k - 1).getCorrectResultsAmount() + 1));
+                            }
+
                             //TODO: NIE KASOWAĆ - KONTROLNY SOUT!
 //                            System.out.println("Dla gracza " + typerObjectList.get(k - 1).getName() + " dodaję 3 pkt za DOKŁADNY WYNIK [" + teamResultsObjectHome.getTeamName() + " - " + teamResultsObjectAway.getTeamName() + ", wynik:  " + (tempResults.get(0).charAt(0) + ":"
 //                                    + (tempResults.get(0).charAt(2) + "]" + ", a który obstawił wynikiem: [" + tempResults.get(k).charAt(0) + ":" + tempResults.get(k).charAt(2) + "]")));
                         } else {
                             typerPointsOneRoundList.set(k - 1, (typerPointsOneRoundList.get(k - 1) + 1));
                             typerObjectList.get(k - 1).setCorrectResultsAmount((typerObjectList.get(k - 1).getCorrectResultsAmount() + 1));
+
+                            //Ustawienie wartości dla drugiej rundy
+                            if ((roundNumber + 1) > 17) {
+                                System.out.println("jestem tutaj xxxx");
+                                secondRoundResults.get(k - 1).setCorrectResultsAmount((secondRoundResults.get(k - 1).getCorrectResultsAmount() + 1));
+                            }
+
                             //TODO: NIE KASOWAĆ - KONTROLNY SOUT!
 //                            System.out.println("Dla gracza  " + typerObjectList.get(k - 1).getName() + " dodaję 1 pkt za mecz zakończony wynikiem [" + teamResultsObjectHome.getTeamName() + " - " + teamResultsObjectAway.getTeamName() + ", wynik:  " + (tempResults.get(0).charAt(0) + ":"
 //                                    + (tempResults.get(0).charAt(2) + "]" + ", a który obstawił typem: [" + tempResults.get(k).charAt(0) + ":" + tempResults.get(k).charAt(2) + "]")));
@@ -105,6 +122,13 @@ public class Main {
                 if (typerObjectList.get(n).getRecordAmountOfPointsInOneRound() < typerPointsOneRoundList.get(n)) {
                     typerObjectList.get(n).setRecordAmountOfPointsInOneRound(typerPointsOneRoundList.get(n));
                     typerObjectList.get(n).setRecordAmountOfPointsInOneRound_RoundNumber(roundNumber + 1);
+
+                }//Ustawienie wartości dla drugiej rundy
+                if (secondRoundResults.get(n).getRecordAmountOfPointsInOneRound() < typerPointsOneRoundList.get(n)) {
+                    if ((roundNumber + 1) > 17) {
+                        secondRoundResults.get(n).setRecordAmountOfPointsInOneRound_RoundNumber(roundNumber + 1);
+                        secondRoundResults.get(n).setRecordAmountOfPointsInOneRound(typerPointsOneRoundList.get(n));
+                    }
                 }
             }
 
@@ -151,8 +175,6 @@ public class Main {
 
 
             //TODO: wyświetlenie aktualnego wyniku dla drugiej rundy (bez pierwszej rundy)
-
-
             //TODO: powinno być dobrze, zakomentować  SOUT, wyczyścić niepotrzebne instrukcje, przenieść do metody
             // W ramach testów można dodać 1 plik (np kopie typer18) ze zmienionymi nieco typami - ważne, żeby było tam trochę dobrych typów / DW, że sprawdzić czy punkty itd są prawidłowo liczone
             //Liczenie od 18 kolejki - wyniki aktualne dla drugiej rundy
@@ -163,13 +185,7 @@ public class Main {
                 for (int i = 0; i < numberOfPlayers; i++) {
                     secondRoundResults.get(i).setPoints((secondRoundResults.get(i).getPoints() + typerPointsOneRoundList.get(i)));
 
-                    secondRoundResults.get(i).setExactResultsAmount((typerObjectList.get(i).getExactResultsAmount() - firstRoundResults.get(i).getExactResultsAmount()));
-                    secondRoundResults.get(i).setCorrectResultsAmount((typerObjectList.get(i).getCorrectResultsAmount() - firstRoundResults.get(i).getCorrectResultsAmount()));
-                    System.out.println("xxxxxxx gracz: " + typerObjectList.get(i).getPoints());
-                    System.out.println("yyyyyyy gracz: " + firstRoundResults.get(i).getPoints());
-//                    System.out.println("xxxxxxx gracz: " + typerObjectList.get(i).getExactResultsAmount());
-//                    System.out.println("yyyyyyy gracz: " + firstRoundResults.get(i).getExactResultsAmount());
-
+                    //TODO: SOUT kontrolny, można zostawić do wyświetlania wyników co kolejkę w drugiej rundzie
                     System.out.println(secondRoundResults.get(i).getName() + " - punkty: " + secondRoundResults.get(i).getPoints() + ", dokładne wyniki: " + secondRoundResults.get(i).getExactResultsAmount() + ", prawidłowe typy (łącznie z dokładnymi wynikami): "
                             + secondRoundResults.get(i).getCorrectResultsAmount() + ", rekodowa ilość punktów: " + secondRoundResults.get(i).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + secondRoundResults.get(i).getRecordAmountOfPointsInOneRound_RoundNumber());
                 }
@@ -181,7 +197,7 @@ public class Main {
             //TODO: trzeba od całkowitego wyniku odjąć wyniki punktowe z pierwszej rundy
             // + opracować sposób do zapisywania rekordowej ilości punktów w kolejce (i numeru kolejki) w drugiej rundzie - można np dodać dwie nowe zmienne
 //                for (int n = 0; n < 4; n++) {
-//                    typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
+//                    secondRoundResults.get(i).setPoints((secondRoundResults.get(i).getPoints() + typerPointsOneRoundList.get(i)));
 //                }
 //                TyperRoundResults.secondRoundResults(firstRoundResults, typerObjectList);
 //            }
