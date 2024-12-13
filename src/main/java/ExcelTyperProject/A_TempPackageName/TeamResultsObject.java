@@ -78,6 +78,7 @@ public class TeamResultsObject {
         return homeScoredGoals - homeLostGoals;
     }
 
+    //Tabela całkowita
     @Override
     public String toString() {
         return
@@ -104,7 +105,7 @@ public class TeamResultsObject {
                         ", awayRecordWonResult= [" + getRecordAwayWonResult() + "]}\n";
     }
 
-
+    //Tabela domowa
     public String homeMatchesInTableToString() {
         return
 //                "Tabela domowa: \n" +
@@ -118,7 +119,7 @@ public class TeamResultsObject {
                         ", goalDifference=" + getHomeGoalDifference() +
                         ", homeRecordWonResult = [" + getRecordHomeWonResult() + "]" + "}\n";
     }
-
+    //Tabela wyjazdowa
     public String awayMatchesInTableToString() {
         return
 //                "Tabela wyjazdowa: \n" +
@@ -134,6 +135,7 @@ public class TeamResultsObject {
                         ", awayRecordWonResult= [" + getRecordAwayWonResult() + "}\n";
     }
 
+    //Konstruktor do inicjalizacji drużyn
     public TeamResultsObject(String teamName, int getHomePoints, int getAwayPoints, int getHomeDrawGames, int getAwayDrawGames, int getHomeScoredGoals, int getHomeLostGoals,
                              int getAwayScoredGoals, int getAwayLostGoals, int getHomeWonGames, int getAwayWonGames, int getLostGames, int getHomeGames, String recordHomeWonResult, String recordAwayWonResult) {
         this.teamName = teamName;
@@ -179,24 +181,27 @@ public class TeamResultsObject {
     ;
 
 
-    public Map<String, TeamResultsObject> initilizeTeamResultsMap(String path, int firstIndex, int secondIndex) {
-        TeamNamesList teamNamesList = new TeamNamesList();
-        Map<String, TeamResultsObject> teamResultsObjectHashMap = new HashMap<>();
+//    public Map<String, TeamResultsObject> initilizeTeamResultsMap(String path, int firstIndex, int secondIndex) {
+//        TeamNamesList teamNamesList = new TeamNamesList();
+//        Map<String, TeamResultsObject> teamResultsObjectHashMap = new HashMap<>();
+//
+//        teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(firstIndex), new TeamResultsObject(teamNamesList.getTeamNames(path).get(firstIndex), 0, 0, 0,
+//                0, 0, 0, 0, 0, 0, 0, 0, 0, "0:0", "0:0"));
+//
+//        teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(secondIndex), new TeamResultsObject(teamNamesList.getTeamNames(path).get(secondIndex), 0, 0, 0,
+//                0, 0, 0, 0, 0, 0, 0, 0, 0, "0:0", "0:0"));
+//
+//        return teamResultsObjectHashMap;
+//    }
 
-        teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(firstIndex), new TeamResultsObject(teamNamesList.getTeamNames(path).get(firstIndex), 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, "0:0", "0:0"));
-
-        teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(secondIndex), new TeamResultsObject(teamNamesList.getTeamNames(path).get(secondIndex), 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, "0:0", "0:0"));
-
-        return teamResultsObjectHashMap;
-    }
-
+    //Inicjalizacja wszystkich drużyn jako obiektów
+    //Mapa <Nazwa drużyny, obiekt>
     public Map<String, TeamResultsObject> initilizeAllTeamResultsMap() {
         String path = "src/main/java/ExcelTyperProject/AllRoundsFiles/Typer1.txt";
         TeamNamesList teamNamesList = new TeamNamesList();
         Map<String, TeamResultsObject> teamResultsObjectHashMap = new HashMap<>();
 
+        //Każdą drużynę inicjalizuje się w ten sam sposób - kluczowa wartość to nazwa drużyny pobrana z listy nazw drużyn, reszta pól ma zerowe wartości na starcie
         for (int i = 0; i < teamNamesList.getTeamNames(path).size(); i++) {
             teamResultsObjectHashMap.put(teamNamesList.getTeamNames(path).get(i), new TeamResultsObject(teamNamesList.getTeamNames(path).get(i), 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, "0:0", "0:0"));

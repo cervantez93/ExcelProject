@@ -2,18 +2,18 @@ package ExcelTyperProject.A_TempPackageName;
 
 public class TyperObject {
 
-    private String name;
+    private final String name;
     private int points;
 
     private int correctResultsAmount;
     private int exactResultsAmount;
     private int recordAmountOfPointsInOneRound;
 
-    //numer kolejki w której zdobyto rekordową ilość punktów - przydałoby się lepiej ją nazwać
     private int recordAmountOfPointsInOneRound_RoundNumber;
 
-      public TyperObject(String name, int points, int correctResultsAmount, int exactResultsAmount,
-                         int recordAmountOfPointsInOneRound, int recordAmountOfPointsInOneRound_RoundNumber) {
+    //Konstruktor do stworzenia typera
+    public TyperObject(String name, int points, int correctResultsAmount, int exactResultsAmount,
+                       int recordAmountOfPointsInOneRound, int recordAmountOfPointsInOneRound_RoundNumber) {
         this.name = name;
         this.points = points;
         this.correctResultsAmount = correctResultsAmount;
@@ -21,7 +21,6 @@ public class TyperObject {
         this.recordAmountOfPointsInOneRound = recordAmountOfPointsInOneRound;
         this.recordAmountOfPointsInOneRound_RoundNumber = recordAmountOfPointsInOneRound_RoundNumber;
     }
-
 
 
     public String getName() {

@@ -5,6 +5,8 @@ import java.util.*;
 
 public class PutResultsOnMap {
 
+    //Aktualizacja wyników obu drużyn na podstawie dostarczonego wyniku meczu
+    //TempCheckResult to rodzaj wyniku, 1- zwycięstwo gospodarzy, 2 - zwycięstwo gości, 0 - remis
     public static void bothTeamResultsObjectUpdate(TeamResultsObject teamResultsObjectHome, TeamResultsObject teamResultsObjectAway, int tempCheckResult, int homeTeamGoals, int awayTeamGoals) {
 
         if (tempCheckResult == 1) {
@@ -18,7 +20,6 @@ public class PutResultsOnMap {
             teamResultsObjectAway.setAwayWonGames(teamResultsObjectAway.getAwayWonGames() + 1);
             teamResultsObjectHome.setHomeLostGames(teamResultsObjectHome.getHomeLostGames() + 1);
 
-            // System.out.println("Home goals = " + homeTeamGoals + ", away goals: " + awayTeamGoals + " homeRecord: " + teamResultsObjectHome.getRecordAwayWonResult() + "\n");
             checkAwayWonRecordResult(teamResultsObjectAway, teamResultsObjectHome, (homeTeamGoals + ":" + awayTeamGoals));
 
         } else if (tempCheckResult == 0) {
@@ -40,6 +41,7 @@ public class PutResultsOnMap {
         teamResultsObjectAway.addAwayScoredGoals(awayTeamGoals);
     }
 
+    //Sprawdzenie najwyżej domowej wygranej drużyny
     public static void checkHomeWonRecordResult(TeamResultsObject teamResultsObjectHome, TeamResultsObject teamResultsObjectRival, String recordHomeWonResult) {
 
         //TODO: usunąć po nadrobionej kolejce Śląska
@@ -69,11 +71,10 @@ public class PutResultsOnMap {
                 teamResultsObjectHome.setRecordHomeWonRivalName(teamResultsObjectRival.getTeamName());
                 System.out.println(teamResultsObjectHome.getTeamName() + ", rekord po zmianie (wieksza ilosc bramek): " + teamResultsObjectHome.getRecordHomeWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName());
             }
-
-            //teamResultsObjectHome.setRecordHomeWonRivalName(teamResultsObjectRival.getTeamName());
         }
     }
 
+    //Sprawdzenie najwyżej wyjazdowej wygranej drużyny
     public static void checkAwayWonRecordResult(TeamResultsObject teamResultsObjectAway, TeamResultsObject teamResultsObjectRival, String recordAwayWonResult) {
         //System.out.println("team =  " + teamResultsObjectAway.getTeamName() + ", won away games= " + teamResultsObjectAway.getAwayWonGames());
         if (teamResultsObjectAway.getAwayWonGames() == 0) {
@@ -89,7 +90,6 @@ public class PutResultsOnMap {
             int awayRecordLostGoals = Integer.valueOf(Arrays.stream(teamResultsObjectAway.getRecordAwayWonResult().split(":")).toList().get(0));
 
             // Sprawdzenie czy różnica bramki w meczu jest większa niż w rekordowym rezultacie
-
             if (awayScoredGoals > awayRecordScoredGoals && (awayScoredGoals - awayLostGoals) > (awayRecordScoredGoals - awayRecordLostGoals)) {
                 teamResultsObjectAway.setRecordAwayWonResult(awayLostGoals + ":" + awayScoredGoals);
                 teamResultsObjectAway.setRecordAwayWonRivalName(teamResultsObjectRival.getTeamName());
@@ -101,10 +101,11 @@ public class PutResultsOnMap {
                 //System.out.println(teamResultsObjectAway.getTeamName() + ", rekord przed zmianą: " + teamResultsObjectAway.getRecordAwayWonResult()+ " przeciwko: "+teamResultsObjectRival.getTeamName());
                 teamResultsObjectAway.setRecordAwayWonResult(awayLostGoals + ":" + awayScoredGoals);
                 teamResultsObjectAway.setRecordAwayWonRivalName(teamResultsObjectRival.getTeamName());
-                //    System.out.println(teamResultsObjectAway.getTeamName() + ", rekord po zmianie: " + teamResultsObjectAway.getRecordAwayWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName() + ", teamResultsObjectAway.getRecordAwayWonResult() = " + teamResultsObjectAway.getRecordAwayWonResult());
+                //System.out.println(teamResultsObjectAway.getTeamName() + ", rekord po zmianie: " + teamResultsObjectAway.getRecordAwayWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName() + ", teamResultsObjectAway.getRecordAwayWonResult() = " + teamResultsObjectAway.getRecordAwayWonResult());
             }
         }
     }
+
 }
 
 

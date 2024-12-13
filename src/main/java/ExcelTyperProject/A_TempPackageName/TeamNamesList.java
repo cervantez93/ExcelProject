@@ -1,13 +1,10 @@
 package ExcelTyperProject.A_TempPackageName;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
-//TODO: DZIAŁA!
 
 public class TeamNamesList {
 
-    //Lista drużyn będzie prawidłowa przy założeniu, że w każdym innym pliku drużyny są zapisane w takim samym formacie (np polskie znaki)
+    //Lista drużyn będzie prawidłowa przy założeniu, że w każdym innym pliku drużyny są zapisane w takim samym formacie (np polskie znaki)!
     public static List<String> getTeamNames(String path) {
         List<String> names = new ArrayList<>();
         try {

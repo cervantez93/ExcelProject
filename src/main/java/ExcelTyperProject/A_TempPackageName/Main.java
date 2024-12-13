@@ -10,32 +10,32 @@ public class Main {
         TeamResultsObject teamResultsObject = new TeamResultsObject();
         Map<String, TeamResultsObject> mapOfResults = teamResultsObject.initilizeAllTeamResultsMap();
 
-        List<Integer> typerPointsAllRoundsList = new ArrayList<>();
+        List<Integer> typerPointsAllRoundsList = new ArrayList<>(); // lista zdobytych punktów per typer
         List<TyperObject> typerObjectList = new ArrayList<>();
-        List<TyperObject> firstRoundResults = new ArrayList<>();
-
         List<TyperObject> secondRoundResults = new ArrayList<>();
 
-        int numberOfPlayers = GetPlayerNames.getAmountOfPlayers();
+        int numberOfPlayers = GetPlayerNames.getAmountOfPlayers(); // liczba typerów
 
+        //Inicjalizacja list wyników dla typerów
         for (int i = 0; i < numberOfPlayers; i++) {
             typerPointsAllRoundsList.add(i, 0);
             try {
+                //Ta lista będzie trzymać łączne wyniki dla wszystkich kolejek (plików)
                 typerObjectList.add(new TyperObject(GetPlayerNames.getNames().get(i), 0, 0, 0, 0, 0));
+                //Ta lista będzie trzymać wyniki dla drugiej rundy (od 18 kolejki włącznie)
                 secondRoundResults.add(new TyperObject(GetPlayerNames.getNames().get(i), 0, 0, 0, 0, 0));
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        //zmienna określająca ilość plików do przetworzenia znajdujących się w oddzielnym package'u
+        //Zmienna określająca ilość plików do przetworzenia znajdujących się w oddzielnym package'u
         File directory = new File("src/main/java/ExcelTyperProject/AllRoundsFiles");
         int fileAmount = directory.list().length;
 
-        int roundNumber2 = 0;
 
         for (int roundNumber = 0; roundNumber < fileAmount; roundNumber++) {
-            roundNumber2++;
+            //Ustalenie ścieżki pobierania pliku, każdy plik ma w nazwie liczbę oznaczającą numer kolejki
             String path = "src/main/java/ExcelTyperProject/AllRoundsFiles/Typer" + (roundNumber + 1) + ".txt";
 
             //System.out.println("\nKolejka: " + (roundNumber + 1));
@@ -48,7 +48,7 @@ public class Main {
             typerPointsOneRoundList.add(3, 0);
 
 
-            //regex, w którym są usuwane wszystkie (dodatkowo polskie) litery
+            //Regex, w którym są usuwane wszystkie (dodatkowo polskie) litery
             List<String> stringList = ReadFiles.readFiles(path).stream().map(e -> e.replaceAll("[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]", "")).toList();
 
             //stringList.size to ilość meczów w jednej kolejce
@@ -60,27 +60,33 @@ public class Main {
                     tempResults.add(stringList.get(stringlistIterator).substring(j + 1, j + 4));  //Wynik, Damian, Ryszard, Paweł, Łukasz <-- pierwszy jest wynik, dalej typy graczy
                 }
 
-                List<String> teamNamesFromThisRound = TeamNamesList.getTeamNames(path); // tutaj jest lista drużyn w ODPOWIEDNIEJ kolejności dla każdej kolejki
-                //dopasowanie indeksów do iteracji w tej pętli, żeby nie robić oddzielnej pętli
+                //Lista drużyn w ODPOWIEDNIEJ kolejności dla każdej kolejki (unikalna dla każdej kolejki)
+                List<String> teamNamesFromThisRound = TeamNamesList.getTeamNames(path);
+                //Dopasowanie indeksów do iteracji w tej pętli, żeby nie robić oddzielnej pętli
                 int firstIndex = 2 * stringlistIterator;
                 int secondIndex = firstIndex + 1;
-                //pobranie informacji o drużynie gospodarzy i gości - dopasowanie poprzez klucz w mapie
+                //Pobranie informacji o drużynie gospodarzy i gości - dopasowanie poprzez klucz w mapie
                 TeamResultsObject teamResultsObjectHome = mapOfResults.get(teamNamesFromThisRound.get(firstIndex));
                 TeamResultsObject teamResultsObjectAway = mapOfResults.get(teamNamesFromThisRound.get(secondIndex));
 
+                //Ustalenie rodzaju wyniku dla danego meczu
                 int tempCheckResult = CheckResult.checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
 
+                //Aktualizacja danych obu drużyn z danego meczu
                 PutResultsOnMap.bothTeamResultsObjectUpdate(teamResultsObjectHome, teamResultsObjectAway, tempCheckResult,
                         (Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(0)).toString())), (Integer.valueOf(Character.valueOf(tempResults.get(0).charAt(2)).toString())));
 
+                //TODO: sprawdzić czy tempCheckResult to dokładnie ta sama wartość co tempResultType, jeśli tak, to można jedną z nich
 
+                //Sprawdzanie czy dany typer miał prawidłowy typ / dokładny wynk
                 for (int k = 1; k <= numberOfPlayers; k++) {
-                    //sprawdzanie typu wyniku każdego meczu
+                    //Sprawdzanie typu wyniku każdego meczu
                     int tempResultType = CheckResult.checkResultType(tempResults.get(0).charAt(0), tempResults.get(0).charAt(2));
 
-                    //sprawdzenie typu wyniku dla każdego TYPERA
+                    //Sprawdzenie typu wyniku dla każdego TYPERA
                     int tempTyperResultType = CheckResult.checkResultType(tempResults.get(k).charAt(0), tempResults.get(k).charAt(2));
 
+                    //Porównanie typów wyników --> mecz == typ danego gracza
                     if (tempResultType == tempTyperResultType) {
                         if ((tempResults.get(0).charAt(0) == tempResults.get(k).charAt(0)) && (tempResults.get(0).charAt(2) == tempResults.get(k).charAt(2))) {
                             typerPointsOneRoundList.set(k - 1, (typerPointsOneRoundList.get(k - 1) + 3));
@@ -91,7 +97,7 @@ public class Main {
                             //TODO: sprawdzić czy prawidłowo dolicza tutaj i niżej w else dla samego prawidłowego typu
                             //Ustawienie wartości dla drugiej rundy
                             if ((roundNumber + 1) > 17) {
-                                System.out.println("jestem tutaj yyyy");
+                                //    System.out.println("jestem tutaj yyyy");
                                 secondRoundResults.get(k - 1).setExactResultsAmount((secondRoundResults.get(k - 1).getExactResultsAmount() + 1));
                                 secondRoundResults.get(k - 1).setCorrectResultsAmount((secondRoundResults.get(k - 1).getCorrectResultsAmount() + 1));
                             }
@@ -105,7 +111,7 @@ public class Main {
 
                             //Ustawienie wartości dla drugiej rundy
                             if ((roundNumber + 1) > 17) {
-                                System.out.println("jestem tutaj xxxx");
+                                //      System.out.println("jestem tutaj xxxx");
                                 secondRoundResults.get(k - 1).setCorrectResultsAmount((secondRoundResults.get(k - 1).getCorrectResultsAmount() + 1));
                             }
 
@@ -117,15 +123,19 @@ public class Main {
                 }
             }
 
+            //Aktualizacja wyników typerów, ustawienie ilości punktów, sprawdzenie czy w danej kolejce padł rekord punktowy dla danego gracza
             for (int n = 0; n < 4; n++) {
                 typerPointsAllRoundsList.set(n, typerPointsAllRoundsList.get(n) + typerPointsOneRoundList.get(n));
+                typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n) + typerPointsOneRoundList.get(n));
                 if (typerObjectList.get(n).getRecordAmountOfPointsInOneRound() < typerPointsOneRoundList.get(n)) {
                     typerObjectList.get(n).setRecordAmountOfPointsInOneRound(typerPointsOneRoundList.get(n));
                     typerObjectList.get(n).setRecordAmountOfPointsInOneRound_RoundNumber(roundNumber + 1);
 
                 }//Ustawienie wartości dla drugiej rundy
-                if (secondRoundResults.get(n).getRecordAmountOfPointsInOneRound() < typerPointsOneRoundList.get(n)) {
-                    if ((roundNumber + 1) > 17) {
+                if ((roundNumber + 1) > 17) {
+                    secondRoundResults.get(n).setPoints(secondRoundResults.get(n).getPoints() + typerPointsOneRoundList.get(n));
+                    if (secondRoundResults.get(n).getRecordAmountOfPointsInOneRound() < typerPointsOneRoundList.get(n)) {
+                        // System.out.println("Jestem tutaj, kolejka: " + (roundNumber + 1));
                         secondRoundResults.get(n).setRecordAmountOfPointsInOneRound_RoundNumber(roundNumber + 1);
                         secondRoundResults.get(n).setRecordAmountOfPointsInOneRound(typerPointsOneRoundList.get(n));
                     }
@@ -142,15 +152,6 @@ public class Main {
                 mapOfResults.get("RadomiakRadom").setAwayLostGames(-1);
             }
 
-//            TODO: NIE KASOWAĆ - KONTROLNY SOUT!
-//            if (roundNumber>15){
-//                System.out.println("\nPodsumowanie " + (roundNumber + 1) + " kolejki: \n"
-//                        + typerObjectList.get(0).getName() + " uzyskał: " + typerPointsOneRoundList.get(0) + " punktów\n"
-//                        + typerObjectList.get(1).getName() + " uzyskał: " + typerPointsOneRoundList.get(1) + " punktów\n"
-//                        + typerObjectList.get(2).getName() + " uzyskał: " + typerPointsOneRoundList.get(2) + " punktów\n"
-//                        + typerObjectList.get(3).getName() + " uzyskał: " + typerPointsOneRoundList.get(3) + " punktów\n");
-//            }
-
 
             //wypisanie wyniku po 8 kolejce - w momencie gdy Łukasz zrezygnował
             //TODO: NIE KASOWAĆ - KONTROLNY SOUT!
@@ -163,56 +164,41 @@ public class Main {
 //           }
 
 
+            //TODO: trzeba poprawić i sprawdzić SOUTami ustawianie punktów dla różnych metod / list (poza typerObjectList - do 18 kolejki liczy prawidłowo)!!!!
+            //TODO: trzeba poprawić i sprawdzić SOUTami ustawianie punktów dla różnych metod / list (poza typerObjectList - do 18 kolejki liczy prawidłowo)!!!!
+
             //Podsumowanie pierwszej rundy (roundNumber == 16 -> 17 kolejek łącznie)
-            if (roundNumber == 16) {
-                firstRoundResults.addAll(typerObjectList);
-                System.out.println("\nPodusmowanie pierwszej rundy:");
-                for (int n = 0; n < 4; n++) {
-                    System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerPointsAllRoundsList.get(n) + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount()
-                            + ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
-                }
-            }
-
-
-            //TODO: wyświetlenie aktualnego wyniku dla drugiej rundy (bez pierwszej rundy)
-            //TODO: powinno być dobrze, zakomentować  SOUT, wyczyścić niepotrzebne instrukcje, przenieść do metody
-            // W ramach testów można dodać 1 plik (np kopie typer18) ze zmienionymi nieco typami - ważne, żeby było tam trochę dobrych typów / DW, że sprawdzić czy punkty itd są prawidłowo liczone
-            //Liczenie od 18 kolejki - wyniki aktualne dla drugiej rundy
-            if ((roundNumber + 1) > 17) {
-                System.out.println("\n\nRound number = " + (roundNumber + 1));
-                System.out.println("File amount = " + fileAmount);
-
-                for (int i = 0; i < numberOfPlayers; i++) {
-                    secondRoundResults.get(i).setPoints((secondRoundResults.get(i).getPoints() + typerPointsOneRoundList.get(i)));
-
-                    //TODO: SOUT kontrolny, można zostawić do wyświetlania wyników co kolejkę w drugiej rundzie
-                    System.out.println(secondRoundResults.get(i).getName() + " - punkty: " + secondRoundResults.get(i).getPoints() + ", dokładne wyniki: " + secondRoundResults.get(i).getExactResultsAmount() + ", prawidłowe typy (łącznie z dokładnymi wynikami): "
-                            + secondRoundResults.get(i).getCorrectResultsAmount() + ", rekodowa ilość punktów: " + secondRoundResults.get(i).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + secondRoundResults.get(i).getRecordAmountOfPointsInOneRound_RoundNumber());
-                }
-            }
-
-
-            //TODO:Podsumowanie drugiej rundy
-//            if (roundNumber == 33) {
-            //TODO: trzeba od całkowitego wyniku odjąć wyniki punktowe z pierwszej rundy
-            // + opracować sposób do zapisywania rekordowej ilości punktów w kolejce (i numeru kolejki) w drugiej rundzie - można np dodać dwie nowe zmienne
-//                for (int n = 0; n < 4; n++) {
-//                    secondRoundResults.get(i).setPoints((secondRoundResults.get(i).getPoints() + typerPointsOneRoundList.get(i)));
-//                }
-//                TyperRoundResults.secondRoundResults(firstRoundResults, typerObjectList);
+            TyperRoundResults.firstRoundResults(typerObjectList, roundNumber);
+//            if (roundNumber == 16) {
+//                TyperRoundResults.firstRoundResults(typerObjectList, roundNumber);
 //            }
+
+
+            //Liczenie od 18 kolejki włącznie - wyniki aktualne dla drugiej rundy
+            // Jeśli potrzebne tylko podsumowanie dla aktualnej kolejki, wystarczy zmienić na if ((roundNumber + 1) == fileAmount
+            if ((roundNumber + 1) > 17) {
+                //  System.out.println("Kolejka:" + (roundNumber + 1));
+                // TyperRoundResults.currentOrSecondRoundResults(secondRoundResults);
+            }//TODO: plik Typer19.txt dodany tylko do testów!!
+
+            //TODO:  do sprawdzenia czy 33/34 zależnie gdzie jest inkrementowany licznik kolejek
+            if ((roundNumber + 1) == 34) {
+                System.out.println("Kolejka:" + (roundNumber + 1));
+                TyperRoundResults.currentOrSecondRoundResults(secondRoundResults);
+            }
 
 
         }//TODO: koniec pierwszego fora
 
 
-        //TODO: kluczowy SOUT! Wyświetlanie całkowitych wyników
-//        for (int n = 0; n < 4; n++) {
-//            //prawidłowe ustawienie liczby zsumowanych punktów
-//            typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
-//            System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerObjectList.get(n).getPoints() + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount() + ", prawidłowe typy (łącznie z dokładnymi wynikami): " + typerObjectList.get(n).getCorrectResultsAmount() +
-//                    ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
-//        }
+        //TODO: kluczowy SOUT! Wyświetlanie całkowitych wyników - DZIAŁA NA 100% PRAWIDŁOWO!!!
+        for (int n = 0; n < 4; n++) {
+            //prawidłowe ustawienie liczby zsumowanych punktów
+            typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
+            System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerObjectList.get(n).getPoints() + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount() + ", prawidłowe typy (łącznie z dokładnymi wynikami): " + typerObjectList.get(n).getCorrectResultsAmount() +
+                    ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
+        }
+
 
         //funFacts(mapOfResults);
 
@@ -221,13 +207,10 @@ public class Main {
 
         //PrintTable.printAwayTable(mapOfResults);
 
-        //TODO: pomyśleć jak dodać rekordową wygraną domową i wyjazdową
-        // Można liczyć różnicę bramek i założyć, że rekordowa wygrana to ta z największą ilością strzelonych bramek (np 5:2 jest lepszym wynikiem niż 3:0)
-        // Analogicznie dla rekordowych przegranych, remisów nie ma chyba sensu.
-
 
     }//TODO:KONIEC MAINA
 
+    //Ciekawostki, statystyki - największe i najmniejsze wartości dla drużyn
     public static void funFacts(Map<String, TeamResultsObject> mapOfResults) {
         System.out.println("Statystyki:\n" +
                 MaxValuesInMap.maxAmountOfWins(mapOfResults) + "\n" +

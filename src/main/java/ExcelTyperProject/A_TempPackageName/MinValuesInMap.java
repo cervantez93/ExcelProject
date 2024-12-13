@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
+//Metody zwracają tutaj najmniejsze wartości dla podanych nazw metod
 public class MinValuesInMap {
 
     public static String minAmountOfWins(Map<String, TeamResultsObject> mapOfResults) {

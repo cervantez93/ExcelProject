@@ -3,11 +3,11 @@ package ExcelTyperProject.A_TempPackageName;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+
+//Metody zwracają tutaj największe wartości dla podanych nazw metod
 public class MaxValuesInMap {
 
-    //TODO: dodać goalDifference (+home/away)
-
-    public static String maxAmountOfWins(Map<String, TeamResultsObject> mapOfResults) {
+   public static String maxAmountOfWins(Map<String, TeamResultsObject> mapOfResults) {
 
         // Znalezienie maksymalnej wartości i odpowiadających kluczy
         List<String> result = findMaxValueAndKeys(mapOfResults, "getWonGames");

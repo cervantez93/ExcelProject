@@ -3,6 +3,7 @@ package ExcelTyperProject.A_TempPackageName;
 import java.util.Map;
 import java.util.Scanner;
 
+//Drukowanie tabeli drużyn w zależności od wybranej opcji - łącznej / domowej / wyjazdowej.
 public class PrintTable {
 
     public static void chooseTableVariant(Map<String, TeamResultsObject> mapOfResults) {

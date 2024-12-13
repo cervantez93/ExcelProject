@@ -9,6 +9,7 @@ public class SortMapToTable {
 
     //TODO: poprawić każdą metodę - zamiast sortowania po strzelonych brakach - zamienić na goalDifference (całkowite + home/away)
 
+    //Sortowanie całkowitej tabeli, najpierw punkty, później wszystkie strzelone bramki
     public static void sortedAllMatchesInTable(Map<String, TeamResultsObject> mapOfResults) {
         List<Map.Entry<String, TeamResultsObject>> sortedList = new ArrayList<>(mapOfResults.entrySet());
         sortedList.sort((entry1, entry2) -> {
@@ -29,10 +30,8 @@ public class SortMapToTable {
         int place = 1;
         System.out.print("\n");
 
-
         // Wyświetlenie posortowanych wyników
         for (Map.Entry<String, TeamResultsObject> entry : sortedList) {
-
             entry.getValue().setRecordHomeWonResult(entry.getValue().getRecordHomeWonResult() + " przeciwko drużynie: ");
             entry.getValue().setRecordAwayWonRivalName(entry.getValue().getRecordAwayWonRivalName() + " przeciwko drużynie: ");
 
@@ -53,6 +52,7 @@ public class SortMapToTable {
         }
     }
 
+    //Sortowanie domowej tabeli, najpierw punkty, później strzelone bramki u siebie
     public static void sortedHomeMatchesInTable(Map<String, TeamResultsObject> mapOfResults) {
         List<Map.Entry<String, TeamResultsObject>> sortedList = new ArrayList<>(mapOfResults.entrySet());
         sortedList.sort((entry1, entry2) -> {
@@ -94,6 +94,7 @@ public class SortMapToTable {
         }
     }
 
+    //Sortowanie wyjazdowej tabeli, najpierw punkty, później strzelone bramki na wyjeździe
     public static void sortedAwayMatchesInTable(Map<String, TeamResultsObject> mapOfResults) {
         List<Map.Entry<String, TeamResultsObject>> sortedList = new ArrayList<>(mapOfResults.entrySet());
         sortedList.sort((entry1, entry2) -> {
