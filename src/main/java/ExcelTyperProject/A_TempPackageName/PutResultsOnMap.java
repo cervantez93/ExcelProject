@@ -2,7 +2,6 @@ package ExcelTyperProject.A_TempPackageName;
 
 import java.util.*;
 
-
 public class PutResultsOnMap {
 
     //Aktualizacja wyników obu drużyn na podstawie dostarczonego wyniku meczu
@@ -44,11 +43,6 @@ public class PutResultsOnMap {
     //Sprawdzenie najwyżej domowej wygranej drużyny
     public static void checkHomeWonRecordResult(TeamResultsObject teamResultsObjectHome, TeamResultsObject teamResultsObjectRival, String recordHomeWonResult) {
 
-        //TODO: usunąć po nadrobionej kolejce Śląska
-        if (teamResultsObjectHome.getTeamName().equals("ŚląskWrocław") && teamResultsObjectHome.getRecordHomeWonResult().equals("9:0") && teamResultsObjectHome.getHomeWonGames() > 0) {
-            teamResultsObjectHome.setHomeWonGames(teamResultsObjectHome.getHomeWonGames() - 1);
-        }
-
         if (teamResultsObjectHome.getHomeWonGames() > 0) {
             //Rozdzielenie wyniku, który jest stringiem na dwie liczby
             int homeScoredGoals = Integer.valueOf(Arrays.stream(recordHomeWonResult.split(":")).toList().get(0));
@@ -61,7 +55,7 @@ public class PutResultsOnMap {
             if (homeScoredGoals > homeRecordScoredGoals && ((homeScoredGoals - homeLostGoals) > (homeRecordScoredGoals - homeRecordLostGoals))) {
                 teamResultsObjectHome.setRecordHomeWonResult(homeScoredGoals + ":" + homeLostGoals);
                 teamResultsObjectHome.setRecordHomeWonRivalName(teamResultsObjectRival.getTeamName());
-                System.out.println(teamResultsObjectHome.getTeamName() + ", rekord: " + teamResultsObjectHome.getRecordHomeWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName());
+                //System.out.println(teamResultsObjectHome.getTeamName() + ", rekord: " + teamResultsObjectHome.getRecordHomeWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName());
 
                 // Sprawdzenie czy ilość strzelonych bramek (przy jednakowej różnicy bramek) jest większa niż przy rekordowym rezultacie,
                 // jeśli tak - nadal aktualizujemy rekord (czyli np 5:2  jest lepszym rekordem niż 3:0)
@@ -69,17 +63,13 @@ public class PutResultsOnMap {
                 //System.out.println(teamResultsObjectHome.getTeamName() + ", rekord przed zmianą: " + teamResultsObjectHome.getRecordHomeWonResult());
                 teamResultsObjectHome.setRecordHomeWonResult(homeScoredGoals + ":" + homeLostGoals);
                 teamResultsObjectHome.setRecordHomeWonRivalName(teamResultsObjectRival.getTeamName());
-                System.out.println(teamResultsObjectHome.getTeamName() + ", rekord po zmianie (wieksza ilosc bramek): " + teamResultsObjectHome.getRecordHomeWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName());
+                //System.out.println(teamResultsObjectHome.getTeamName() + ", rekord po zmianie (wieksza ilosc bramek): " + teamResultsObjectHome.getRecordHomeWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName());
             }
         }
     }
 
     //Sprawdzenie najwyżej wyjazdowej wygranej drużyny
     public static void checkAwayWonRecordResult(TeamResultsObject teamResultsObjectAway, TeamResultsObject teamResultsObjectRival, String recordAwayWonResult) {
-        //System.out.println("team =  " + teamResultsObjectAway.getTeamName() + ", won away games= " + teamResultsObjectAway.getAwayWonGames());
-        if (teamResultsObjectAway.getAwayWonGames() == 0) {
-            System.out.println("team =  " + teamResultsObjectAway.getTeamName());
-        }
 
         if (teamResultsObjectAway.getAwayWonGames() > 0) {
             //Rozdzielenie wyniku, który jest stringiem na dwie liczby
@@ -93,7 +83,7 @@ public class PutResultsOnMap {
             if (awayScoredGoals > awayRecordScoredGoals && (awayScoredGoals - awayLostGoals) > (awayRecordScoredGoals - awayRecordLostGoals)) {
                 teamResultsObjectAway.setRecordAwayWonResult(awayLostGoals + ":" + awayScoredGoals);
                 teamResultsObjectAway.setRecordAwayWonRivalName(teamResultsObjectRival.getTeamName());
-                //    System.out.println(teamResultsObjectAway.getTeamName() + ", rekord: " + teamResultsObjectAway.getRecordAwayWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName() + ", teamResultsObjectAway.getRecordAwayWonResult() = " + teamResultsObjectAway.getRecordAwayWonResult());
+                //System.out.println(teamResultsObjectAway.getTeamName() + ", rekord: " + teamResultsObjectAway.getRecordAwayWonResult() + " przeciwko: " + teamResultsObjectRival.getTeamName() + ", teamResultsObjectAway.getRecordAwayWonResult() = " + teamResultsObjectAway.getRecordAwayWonResult());
 
                 // Sprawdzenie czy ilość strzelonych bramek (przy jednakowej różnicy bramek) jest większa niż przy rekordowym rezultacie,
                 // jeśli tak - nadal aktualizujemy rekord (czyli np 5:2  jest lepszym rekordem niż 3:0)

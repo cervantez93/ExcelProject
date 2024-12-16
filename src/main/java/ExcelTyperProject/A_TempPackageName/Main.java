@@ -126,7 +126,9 @@ public class Main {
             //Aktualizacja wyników typerów, ustawienie ilości punktów, sprawdzenie czy w danej kolejce padł rekord punktowy dla danego gracza
             for (int n = 0; n < 4; n++) {
                 typerPointsAllRoundsList.set(n, typerPointsAllRoundsList.get(n) + typerPointsOneRoundList.get(n));
-                typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n) + typerPointsOneRoundList.get(n));
+                //  System.out.println("Y: " + typerPointsAllRoundsList.get(n) + ", punkty:" + typerObjectList.get(n).getPoints());
+                typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
+                //  System.out.println("Z: " + typerObjectList.get(n).getName() + ", punkty:" + typerObjectList.get(n).getPoints());
                 if (typerObjectList.get(n).getRecordAmountOfPointsInOneRound() < typerPointsOneRoundList.get(n)) {
                     typerObjectList.get(n).setRecordAmountOfPointsInOneRound(typerPointsOneRoundList.get(n));
                     typerObjectList.get(n).setRecordAmountOfPointsInOneRound_RoundNumber(roundNumber + 1);
@@ -142,18 +144,8 @@ public class Main {
                 }
             }
 
-            if ((roundNumber + 1) == 3) {
-                //odjęcie statystyk za mecz 3 kolejki: Śląsk - Radomiak
-                typerPointsOneRoundList.set(1, typerPointsOneRoundList.get(1) - 1);
-                mapOfResults.get("ŚląskWrocław").addHomeScoredGoals(-9);
-                mapOfResults.get("ŚląskWrocław").setHomeWonGames(teamResultsObject.getHomeWonGames() - 1);
-                mapOfResults.get("ŚląskWrocław").setHomePoints(mapOfResults.get("ŚląskWrocław").getHomePoints() - 3);
-                mapOfResults.get("RadomiakRadom").addAwayLostGoals(-9);
-                mapOfResults.get("RadomiakRadom").setAwayLostGames(-1);
-            }
 
-
-            //wypisanie wyniku po 8 kolejce - w momencie gdy Łukasz zrezygnował
+            //wypisanie wyniku po 8 kolejce - w momencie gdy Łukasz zrezygnował z typowania
             //TODO: NIE KASOWAĆ - KONTROLNY SOUT!
 //            if (roundNumber == 8) {
 //                System.out.println("Stan po kolejce: " + (roundNumber));
@@ -164,11 +156,9 @@ public class Main {
 //           }
 
 
-            //TODO: trzeba poprawić i sprawdzić SOUTami ustawianie punktów dla różnych metod / list (poza typerObjectList - do 18 kolejki liczy prawidłowo)!!!!
-            //TODO: trzeba poprawić i sprawdzić SOUTami ustawianie punktów dla różnych metod / list (poza typerObjectList - do 18 kolejki liczy prawidłowo)!!!!
-
             //Podsumowanie pierwszej rundy (roundNumber == 16 -> 17 kolejek łącznie)
             TyperRoundResults.firstRoundResults(typerObjectList, roundNumber);
+
 //            if (roundNumber == 16) {
 //                TyperRoundResults.firstRoundResults(typerObjectList, roundNumber);
 //            }
@@ -178,7 +168,7 @@ public class Main {
             // Jeśli potrzebne tylko podsumowanie dla aktualnej kolejki, wystarczy zmienić na if ((roundNumber + 1) == fileAmount
             if ((roundNumber + 1) > 17) {
                 //  System.out.println("Kolejka:" + (roundNumber + 1));
-                // TyperRoundResults.currentOrSecondRoundResults(secondRoundResults);
+                 TyperRoundResults.currentOrSecondRoundResults(secondRoundResults);
             }//TODO: plik Typer19.txt dodany tylko do testów!!
 
             //TODO:  do sprawdzenia czy 33/34 zależnie gdzie jest inkrementowany licznik kolejek
@@ -194,17 +184,13 @@ public class Main {
         //TODO: kluczowy SOUT! Wyświetlanie całkowitych wyników - DZIAŁA NA 100% PRAWIDŁOWO!!!
         for (int n = 0; n < 4; n++) {
             //prawidłowe ustawienie liczby zsumowanych punktów
-            typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
-            System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerObjectList.get(n).getPoints() + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount() + ", prawidłowe typy (łącznie z dokładnymi wynikami): " + typerObjectList.get(n).getCorrectResultsAmount() +
-                    ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
+            //TODO: (do zweryfikowanie czy potrzebne?) typerObjectList.get(n).setPoints(typerPointsAllRoundsList.get(n));
+//            System.out.println(typerObjectList.get(n).getName() + " - punkty: " + typerObjectList.get(n).getPoints() + ", dokładne wyniki: " + typerObjectList.get(n).getExactResultsAmount() + ", prawidłowe typy (łącznie z dokładnymi wynikami): " + typerObjectList.get(n).getCorrectResultsAmount() +
+//                    ", rekodowa ilość punktów: " + typerObjectList.get(n).getRecordAmountOfPointsInOneRound() + " w kolejce nr:" + typerObjectList.get(n).getRecordAmountOfPointsInOneRound_RoundNumber());
         }
 
 
         //funFacts(mapOfResults);
-
-        //TODO: poprawić tak, żeby wykonywało się to na SAMYM KOŃCU - chodzi o podmianę wyniku rekordu domowej wygranej Śląska
-        // PutResultsOnMap.slaskWroclawHomeRecordCorrection();
-
         //PrintTable.printAwayTable(mapOfResults);
 
 
